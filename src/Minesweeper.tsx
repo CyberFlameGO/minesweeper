@@ -59,7 +59,10 @@ const Minesweeper: React.FC = () => {
     };
 
     return (
-        <div className={`board ${lost ? "lost" : ""}`}>
+        <div
+            className={`board ${lost ? "lost" : ""}`}
+            onContextMenu={(event) => event.preventDefault()}
+        >
             {board.map((row, y) => (
                 <div className="row" key={y}>
                     {row.map((cell, x) => (
