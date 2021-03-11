@@ -52,7 +52,7 @@ const Minesweeper: React.FC = () => {
                 setLost(true);
             }
         } else if (rightClick) {
-            cell.flagged = true;
+            cell.flagged = !cell.flagged;
         }
 
         setBoard(newBoard);
