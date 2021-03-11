@@ -1,0 +1,77 @@
+@font-face {
+    font-family: "MineSweeper";
+    src: url("./assets/mine-sweeper.ttf") format("truetype");
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+}
+
+* {
+    user-select: none;
+    box-sizing: border-box;
+}
+
+div.board {
+    $cellSize: 32px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: $cellSize * 2;
+
+    font-family: "MineSweeper";
+
+    div.row {
+        display: flex;
+        flex-direction: row;
+
+        div.cell {
+            --color-background: #bdbdbd;
+            --color-highlight-1: #eeeeee;
+            --color-highlight-2: #7b7b7b;
+
+            width: $cellSize;
+            height: $cellSize;
+
+            background: var(--color-background);
+
+            border-top: solid 4px var(--color-highlight-1);
+            border-left: solid 4px var(--color-highlight-1);
+            border-right: solid 4px var(--color-highlight-2);
+            border-bottom: solid 4px var(--color-highlight-2);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                $imageSize: $cellSize - 8px;
+                height: $imageSize;
+            }
+        }
+    }
+}
+
+div.board:not(.lost) {
+    div.row {
+        div.cell {
+            &:active,
+            &.open {
+                border: 2px solid var(--color-highlight-2) !important;
+                padding: 2px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
