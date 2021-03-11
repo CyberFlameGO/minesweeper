@@ -11,10 +11,14 @@ const Minesweeper: React.FC = () => {
 
     const [board, setBoard] = useState(baseBoard(WIDTH, HEIGHT));
 
-    const handleClick = (x: number, y: number, cell: ICell) => () => {
+    const handleClick = (x: number, y: number, cell: ICell) => (
+        event: React.MouseEvent
+    ) => {
         if (lost) return;
+        const leftClick = event.button === 0;
+        const rightClick = event.button === 2;
 
-        if (!started) {
+        if (!started && leftClick) {
             const newBoard = setupBoard({
                 width: WIDTH,
                 height: HEIGHT,
@@ -31,20 +35,24 @@ const Minesweeper: React.FC = () => {
 
         const newBoard = board.slice();
 
-        cell.open = true;
+        if (leftClick) {
+            cell.open = true;
 
-        if (cell.value === 0) {
-            openSurroundingZeros(x, y, board);
-        } else if (cell.value === -1) {
-            board.forEach((row) =>
-                row.forEach((cell) => {
-                    if (cell.value === -1) {
-                        cell.open = true;
-                    }
-                })
-            );
+            if (cell.value === 0) {
+                openSurroundingZeros(x, y, board);
+            } else if (cell.value === -1) {
+                board.forEach((row) =>
+                    row.forEach((cell) => {
+                        if (cell.value === -1) {
+                            cell.open = true;
+                        }
+                    })
+                );
 
-            setLost(true);
+                setLost(true);
+            }
+        } else if (rightClick) {
+            cell.flagged = true;
         }
 
         setBoard(newBoard);
