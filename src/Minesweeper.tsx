@@ -1,41 +1,55 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
-import { ICell, setupBoard, openSurroundingZeros, baseBoard } from "./board";
+import {
+    ICell,
+    setupBoard,
+    openSurroundingZeros,
+    baseBoard,
+    isWin,
+} from "./board";
+
+const State = {
+    NOT_STARTED: -2,
+    LOSS: -1,
+    PLAYING: 0,
+    WIN: 1,
+};
 
 const WIDTH = 16;
 const HEIGHT = 16;
 
 const Minesweeper: React.FC = () => {
-    const [started, setStarted] = useState(false);
-    const [lost, setLost] = useState(false);
+    const [gameState, setGameState] = useState<number>(State.NOT_STARTED);
 
     const [board, setBoard] = useState(baseBoard(WIDTH, HEIGHT));
 
     const handleClick = (x: number, y: number, cell: ICell) => (
         event: React.MouseEvent
     ) => {
-        if (lost) return;
         const leftClick = event.button === 0;
         const rightClick = event.button === 2;
 
-        if (!started && leftClick) {
-            const newBoard = setupBoard({
-                width: WIDTH,
-                height: HEIGHT,
-                mines: 50,
-                click: { x, y },
-            });
+        if (gameState === State.NOT_STARTED) {
+            if (leftClick) {
+                const newBoard = setupBoard({
+                    width: WIDTH,
+                    height: HEIGHT,
+                    mines: 10,
+                    click: { x, y },
+                });
 
-            openSurroundingZeros(x, y, newBoard);
+                openSurroundingZeros(x, y, newBoard);
 
-            setBoard(newBoard);
-            setStarted(true);
-            return;
+                setBoard(newBoard);
+                setGameState(State.PLAYING);
+            }
         }
+
+        if (gameState !== State.PLAYING) return;
 
         const newBoard = board.slice();
 
-        if (leftClick) {
+        if (leftClick && !cell.flagged) {
             cell.open = true;
 
             if (cell.value === 0) {
@@ -49,10 +63,15 @@ const Minesweeper: React.FC = () => {
                     })
                 );
 
-                setLost(true);
+                setGameState(State.LOSS);
             }
         } else if (rightClick) {
             cell.flagged = !cell.flagged;
+        }
+
+        if (isWin(newBoard)) {
+            console.log("win");
+            setGameState(State.WIN);
         }
 
         setBoard(newBoard);
@@ -60,7 +79,7 @@ const Minesweeper: React.FC = () => {
 
     return (
         <div
-            className={`board ${lost ? "lost" : ""}`}
+            className="board"
             onContextMenu={(event) => event.preventDefault()}
         >
             {board.map((row, y) => (
