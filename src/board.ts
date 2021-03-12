@@ -56,6 +56,15 @@ export const baseBoard = (width: number, height: number) =>
         flagged: false,
     }));
 
+export const isWin = (board: ICell[][]) =>
+    board.every((row) =>
+        row.every(
+            (cell) =>
+                (cell.value !== -1 && !cell.flagged) ||
+                (cell.value === -1 && cell.flagged)
+        )
+    );
+
 export const setupBoard = ({
     mines,
     width,
