@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import className from "./util/className";
 import { ICell } from "./util/board";
 import bomb from "./assets/bomb.png";
@@ -22,16 +22,17 @@ const colors: { [key: number]: string } = {
 
 const Cell: React.FC<CellProps> = ({ cell, onClick }) => {
     const { value, open } = cell;
+    const [red, setRed] = useState(false);
 
     const openCell = (event: React.MouseEvent) => {
         onClick(event);
+
+        if (cell.value === -1) setRed(true);
     };
 
     return (
         <div
-            className={
-                "cell" + className({ open, bomb: open && cell.value === -1 })
-            }
+            className={"cell" + className({ open, red })}
             onMouseDown={openCell}
             style={{ color: colors[value] }}
         >
