@@ -6,7 +6,7 @@ import {
     openSurroundingZeros,
     baseBoard,
     isWin,
-} from "./board";
+} from "./util/board";
 
 const State = {
     NOT_STARTED: -2,
