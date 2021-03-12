@@ -78,22 +78,26 @@ const Minesweeper: React.FC = () => {
     };
 
     return (
-        <div
-            className="board"
-            onContextMenu={(event) => event.preventDefault()}
-        >
-            {board.map((row, y) => (
-                <div className="row" key={y}>
-                    {row.map((cell, x) => (
-                        <Cell
-                            cell={cell}
-                            key={x}
-                            onClick={handleClick(x, y, cell)}
-                        />
-                    ))}
-                </div>
-            ))}
-        </div>
+        <>
+            {gameState === State.WIN && <h1>You won!</h1>}
+            {gameState === State.LOSS && <h1>You lost!</h1>}
+            <div
+                className="board"
+                onContextMenu={(event) => event.preventDefault()}
+            >
+                {board.map((row, y) => (
+                    <div className="row" key={y}>
+                        {row.map((cell, x) => (
+                            <Cell
+                                cell={cell}
+                                key={x}
+                                onClick={handleClick(x, y, cell)}
+                            />
+                        ))}
+                    </div>
+                ))}
+            </div>
+        </>
     );
 };
 
