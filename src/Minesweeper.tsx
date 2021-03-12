@@ -34,7 +34,7 @@ const Minesweeper: React.FC = () => {
                 const newBoard = setupBoard({
                     width: WIDTH,
                     height: HEIGHT,
-                    mines: 10,
+                    mines: 60,
                     click: { x, y },
                 });
 
