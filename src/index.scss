@@ -52,18 +52,6 @@ div.board {
             align-items: center;
             justify-content: center;
 
-            img {
-                $imageSize: $cellSize - 8px;
-                height: $imageSize;
-            }
-        }
-    }
-}
-
-div.board:not(.lost) {
-    div.row {
-        div.cell {
-            &:active,
             &.open {
                 border: 2px solid var(--color-highlight-2) !important;
                 padding: 2px;
@@ -71,6 +59,17 @@ div.board:not(.lost) {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                border: 2px solid var(--color-highlight-2) !important;
+                padding: 2px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            img {
+                $imageSize: $cellSize - 8px;
+                height: $imageSize;
             }
         }
     }
