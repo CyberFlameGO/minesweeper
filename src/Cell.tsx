@@ -1,6 +1,6 @@
 import React from "react";
 import className from "./util/className";
-import { ICell } from "./board";
+import { ICell } from "./util/board";
 import bomb from "./assets/bomb.png";
 import flag from "./assets/flag.svg";
 
@@ -29,7 +29,9 @@ const Cell: React.FC<CellProps> = ({ cell, onClick }) => {
 
     return (
         <div
-            className={"cell " + className({ open })}
+            className={
+                "cell" + className({ open, bomb: open && cell.value === -1 })
+            }
             onMouseDown={openCell}
             style={{ color: colors[value] }}
         >
