@@ -3,7 +3,7 @@ const className = (classNames: { [key: string]: boolean }) => {
 
     for (const key in classNames) {
         if (classNames[key] === true) {
-            name += key;
+            name += ` ${key}`;
         }
     }
 
