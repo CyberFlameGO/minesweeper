@@ -79,8 +79,6 @@ const Minesweeper: React.FC = () => {
 
     return (
         <>
-            {gameState === State.WIN && <h1>You won!</h1>}
-            {gameState === State.LOSS && <h1>You lost!</h1>}
             <div
                 className="board"
                 onContextMenu={(event) => event.preventDefault()}
@@ -97,6 +95,9 @@ const Minesweeper: React.FC = () => {
                     </div>
                 ))}
             </div>
+
+            {gameState === State.WIN && <h1>You won!</h1>}
+            {gameState === State.LOSS && <h1>You lost!</h1>}
         </>
     );
 };
