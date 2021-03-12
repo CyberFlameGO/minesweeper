@@ -55,13 +55,13 @@ div.board {
             justify-content: center;
 
             &.open {
-                border: 2px solid var(--color-highlight-2) !important;
+                border: 2px solid var(--color-highlight-2);
                 padding: 2px;
 
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 2px solid var(--color-highlight-2) !important;
+                border: 2px solid var(--color-highlight-2);
                 padding: 2px;
 
                 display: flex;
