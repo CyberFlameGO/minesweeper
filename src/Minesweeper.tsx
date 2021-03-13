@@ -77,7 +77,6 @@ const Minesweeper: React.FC = () => {
         }
 
         if (isWin(newBoard)) {
-            console.log("win");
             setGameState(State.WIN);
         }
 
