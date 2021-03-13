@@ -38,20 +38,18 @@ const Minesweeper: React.FC = () => {
         const leftClick = event.button === 0;
         const rightClick = event.button === 2;
 
-        if (gameState === State.NOT_STARTED) {
-            if (leftClick) {
-                const newBoard = setupBoard({
-                    width,
-                    height,
-                    mines,
-                    click: { x, y },
-                });
+        if (gameState === State.NOT_STARTED && leftClick) {
+            const newBoard = setupBoard({
+                width,
+                height,
+                mines,
+                click: { x, y },
+            });
 
-                openSurroundingZeros(x, y, newBoard);
+            openSurroundingZeros(x, y, newBoard);
 
-                setBoard(newBoard);
-                setGameState(State.PLAYING);
-            }
+            setBoard(newBoard);
+            setGameState(State.PLAYING);
         }
 
         if (gameState !== State.PLAYING) return;
