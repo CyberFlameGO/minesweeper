@@ -27,8 +27,10 @@ const Minesweeper: React.FC = () => {
     const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
 
     useEffect(() => {
-        setBoard(baseBoard(width, height));
-    }, [width, height]);
+        if (gameState === State.NOT_STARTED) {
+            setBoard(baseBoard(width, height));
+        }
+    }, [width, height, gameState]);
 
     const handleClick = (x: number, y: number, cell: ICell) => (
         event: React.MouseEvent
