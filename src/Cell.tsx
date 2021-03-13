@@ -25,10 +25,15 @@ const Cell: React.FC<CellProps> = ({ cell, onClick }) => {
     const [red, setRed] = useState(false);
 
     const openCell = (event: React.MouseEvent) => {
-        onClick(event);
-
-        if (cell.value === -1 && !cell.flagged && event.button === 0)
+        if (
+            cell.value === -1 &&
+            !cell.flagged &&
+            !cell.open &&
+            event.button === 0
+        )
             setRed(true);
+
+        onClick(event);
     };
 
     return (
