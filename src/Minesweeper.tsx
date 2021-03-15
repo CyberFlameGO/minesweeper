@@ -8,12 +8,12 @@ import {
     isWin,
 } from "./util/board";
 
-const State = {
-    NOT_STARTED: -2,
-    LOSS: -1,
-    PLAYING: 0,
-    WIN: 1,
-};
+enum State {
+    NOT_STARTED = -2,
+    LOSS = -1,
+    PLAYING = 0,
+    WIN = 1,
+}
 
 const WIDTH = 16;
 const HEIGHT = 16;
