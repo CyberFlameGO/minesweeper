@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "Minesweeper",
+    "short_name": "Minesweeper",
+    "version": "0.0.1",
+    "description": "Single player puzzle game",
+
+    "icons": {
+        "16": "bomb.png",
+        "48": "bomb.png",
+        "128": "bomb.png"
+    },
+
+    "browser_action": {
+        "default_icon": "bomb.png",
+        "default_popup": "index.html",
+        "default_title": "Play a game of Minesweeper"
+    },
+
+    "offline_enabled": true
+}
