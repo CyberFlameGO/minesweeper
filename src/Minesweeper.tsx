@@ -8,7 +8,7 @@ import {
     isWin,
 } from "./util/board";
 
-enum State {
+enum GameState {
     NOT_STARTED = -2,
     LOSS = -1,
     PLAYING = 0,
@@ -23,11 +23,11 @@ const Minesweeper: React.FC = () => {
     const [height, setHeight] = useState(16);
     const [mines, setMines] = useState(64);
 
-    const [gameState, setGameState] = useState<number>(State.NOT_STARTED);
+    const [gameState, setGameState] = useState<number>(GameState.NOT_STARTED);
     const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
 
     useEffect(() => {
-        if (gameState === State.NOT_STARTED) {
+        if (gameState === GameState.NOT_STARTED) {
             setBoard(baseBoard(width, height));
         }
     }, [width, height, gameState]);
@@ -38,7 +38,7 @@ const Minesweeper: React.FC = () => {
         const leftClick = event.button === 0;
         const rightClick = event.button === 2;
 
-        if (gameState === State.NOT_STARTED && leftClick) {
+        if (gameState === GameState.NOT_STARTED && leftClick) {
             const newBoard = setupBoard({
                 width,
                 height,
@@ -49,10 +49,10 @@ const Minesweeper: React.FC = () => {
             openSurroundingZeros(x, y, newBoard);
 
             setBoard(newBoard);
-            setGameState(State.PLAYING);
+            setGameState(GameState.PLAYING);
         }
 
-        if (gameState !== State.PLAYING) return;
+        if (gameState !== GameState.PLAYING) return;
 
         const newBoard = board.slice();
 
@@ -70,14 +70,14 @@ const Minesweeper: React.FC = () => {
                     })
                 );
 
-                setGameState(State.LOSS);
+                setGameState(GameState.LOSS);
             }
         } else if (rightClick) {
             cell.flagged = !cell.flagged;
         }
 
         if (isWin(newBoard)) {
-            setGameState(State.WIN);
+            setGameState(GameState.WIN);
         }
 
         setBoard(newBoard);
@@ -140,8 +140,8 @@ const Minesweeper: React.FC = () => {
                 />
             </label>
 
-            {gameState === State.WIN && <h1>You won!</h1>}
-            {gameState === State.LOSS && <h1>You lost!</h1>}
+            {gameState === GameState.WIN && <h1>You won!</h1>}
+            {gameState === GameState.LOSS && <h1>You lost!</h1>}
         </>
     );
 };
