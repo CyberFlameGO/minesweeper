@@ -11,18 +11,15 @@ export enum GameState {
     WIN = 1,
 }
 
-const WIDTH = 16;
-const HEIGHT = 16;
-
 const Minesweeper: React.FC = () => {
-    const [width, setWidth] = useState(16);
-    const [height, setHeight] = useState(16);
-    const [mines, setMines] = useState(64);
+    const [width] = useState(16);
+    const [height] = useState(16);
+    const [mines] = useState(64);
 
     const [gameState, setGameState] = useState<GameState>(
         GameState.NOT_STARTED
     );
-    const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
+    const [board, setBoard] = useState(() => baseBoard(width, height));
 
     const createBoard = useCallback(
         (click: { x: number; y: number }) => {
