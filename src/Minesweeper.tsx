@@ -18,7 +18,9 @@ const Minesweeper: React.FC = () => {
     const [height, setHeight] = useState(16);
     const [mines, setMines] = useState(64);
 
-    const [gameState, setGameState] = useState<number>(GameState.NOT_STARTED);
+    const [gameState, setGameState] = useState<GameState>(
+        GameState.NOT_STARTED
+    );
     const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
 
     const handleClick = createHandleClickFactory({
