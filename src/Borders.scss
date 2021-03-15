@@ -1,0 +1,21 @@
+@import "./variables";
+
+$size: 10px;
+$border-width: 4px;
+
+div.Borders {
+    padding: $size;
+    background: $color-background;
+
+    border-top: solid $border-width $color-highlight-1;
+    border-left: solid $border-width $color-highlight-1;
+    border-right: solid $border-width $color-highlight-2;
+    border-bottom: solid $border-width $color-highlight-2;
+
+    div.content {
+        border-top: solid $border-width $color-highlight-2;
+        border-left: solid $border-width $color-highlight-2;
+        border-right: solid $border-width $color-highlight-1;
+        border-bottom: solid $border-width $color-highlight-1;
+    }
+}
