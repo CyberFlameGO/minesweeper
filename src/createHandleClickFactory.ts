@@ -1,5 +1,5 @@
 import React from "react";
-import { ICell, setupBoard, openSurroundingZeros, isWin } from "./util/board";
+import { ICell, openSurroundingZeros, isWin } from "./util/board";
 import { GameState } from "./Minesweeper";
 
 interface HandleClickFactoryProps {
