@@ -40,7 +40,7 @@ div#root {
                 width: $cellSize;
                 height: $cellSize;
 
-                background: color-background;
+                background: $color-background;
 
                 border-top: solid 4px $color-highlight-1;
                 border-left: solid 4px $color-highlight-1;
@@ -52,13 +52,13 @@ div#root {
                 justify-content: center;
 
                 &.open {
-                    border: 2px solid color-highlight-2;
+                    border: 2px solid $color-highlight-2;
                     padding: 2px;
 
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border: 2px solid color-highlight-2;
+                    border: 2px solid $color-highlight-2;
                     padding: 2px;
 
                     display: flex;
