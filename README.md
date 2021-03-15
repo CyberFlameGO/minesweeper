@@ -1,9 +1,9 @@
 # Todo
 
--   [] Overlay
+-   [ ] Overlay
 
-    -   [] Settings
+    -   [ ] Settings
 
--   [] Make chrome extension
+-   [ ] Make chrome extension
 
--   [] Make openSurroundingZeros pure if possible
+-   [ ] Make openSurroundingZeros pure if possible
