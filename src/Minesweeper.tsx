@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Cell from "./Cell";
-import {
-    ICell,
-    setupBoard,
-    openSurroundingZeros,
-    baseBoard,
-    isWin,
-} from "./util/board";
+import { createHandleClickFactory } from "./createHandleClickFactory";
+import { baseBoard } from "./util/board";
 
-enum GameState {
+export enum GameState {
     NOT_STARTED = -2,
     LOSS = -1,
     PLAYING = 0,
@@ -26,62 +21,21 @@ const Minesweeper: React.FC = () => {
     const [gameState, setGameState] = useState<number>(GameState.NOT_STARTED);
     const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
 
+    const handleClick = createHandleClickFactory({
+        gameState,
+        setGameState,
+        board,
+        setBoard,
+        mines,
+        width,
+        height,
+    });
+
     useEffect(() => {
         if (gameState === GameState.NOT_STARTED) {
             setBoard(baseBoard(width, height));
         }
     }, [width, height, gameState]);
-
-    const handleClick = (x: number, y: number, cell: ICell) => (
-        event: React.MouseEvent
-    ) => {
-        const leftClick = event.button === 0;
-        const rightClick = event.button === 2;
-
-        if (gameState === GameState.NOT_STARTED && leftClick) {
-            const newBoard = setupBoard({
-                width,
-                height,
-                mines,
-                click: { x, y },
-            });
-
-            openSurroundingZeros(x, y, newBoard);
-
-            setBoard(newBoard);
-            setGameState(GameState.PLAYING);
-        }
-
-        if (gameState !== GameState.PLAYING) return;
-
-        const newBoard = board.slice();
-
-        if (leftClick && !cell.flagged) {
-            cell.open = true;
-
-            if (cell.value === 0) {
-                openSurroundingZeros(x, y, board);
-            } else if (cell.value === -1) {
-                board.forEach((row) =>
-                    row.forEach((cell) => {
-                        if (cell.value === -1) {
-                            cell.open = true;
-                        }
-                    })
-                );
-
-                setGameState(GameState.LOSS);
-            }
-        } else if (rightClick) {
-            cell.flagged = !cell.flagged;
-        }
-
-        if (isWin(newBoard)) {
-            setGameState(GameState.WIN);
-        }
-
-        setBoard(newBoard);
-    };
 
     return (
         <>
