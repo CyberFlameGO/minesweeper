@@ -58,44 +58,6 @@ const Minesweeper: React.FC = () => {
                 ))}
             </div>
 
-            <label>
-                Width
-                <input
-                    type="range"
-                    min={1}
-                    max={32}
-                    value={width}
-                    onInput={({ target }) =>
-                        setWidth(Number((target as HTMLInputElement).value))
-                    }
-                />
-            </label>
-            <label>
-                Height
-                <input
-                    type="range"
-                    min={1}
-                    max={32}
-                    value={height}
-                    onInput={({ target }) =>
-                        setHeight(Number((target as HTMLInputElement).value))
-                    }
-                />
-            </label>
-
-            <label>
-                Mines
-                <input
-                    type="number"
-                    min={1}
-                    max={500}
-                    value={mines}
-                    onInput={({ target }) =>
-                        setMines(Number((target as HTMLInputElement).value))
-                    }
-                />
-            </label>
-
             {gameState === GameState.WIN && <h1>You won!</h1>}
             {gameState === GameState.LOSS && <h1>You lost!</h1>}
         </>
