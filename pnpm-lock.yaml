@@ -13,6 +13,8 @@ dependencies:
   tsargs: 1.4.1_typescript@4.2.3
   typescript: 4.2.3
   web-vitals: 1.1.0
+devDependencies:
+  '@types/chrome': 0.0.133
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
@@ -1904,6 +1906,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-kSjgDMZONiIfSH1Nxcr5JIRMwUetDki63FSQfpTCz8ogF3Ulqm8+mr5f78dUYs6vMiB6gBusQqfQmBvHZj/lwg==
+  /@types/chrome/0.0.133:
+    dependencies:
+      '@types/filesystem': 0.0.29
+      '@types/har-format': 1.2.5
+    dev: true
+    resolution:
+      integrity: sha512-G8uIUdaCTBILprQvQXBWGXZxjAWbkCkFQit17cdH3zYQEwU8f/etNl8+M7e8MRz9Xj8daHaVpysneMZMx8/ldQ==
   /@types/eslint/7.2.7:
     dependencies:
       '@types/estree': 0.0.46
@@ -1919,6 +1928,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-laIjwTQaD+5DukBZaygQ79K1Z0jb1bPEMRrkXSLjtCcZm+abyp5YbrqpSLzD42FwWW6gK/aS4NYpJ804nG2brg==
+  /@types/filesystem/0.0.29:
+    dependencies:
+      '@types/filewriter': 0.0.28
+    dev: true
+    resolution:
+      integrity: sha512-85/1KfRedmfPGsbK8YzeaQUyV1FQAvMPMTuWFQ5EkLd2w7szhNO96bk3Rh/SKmOfd9co2rCLf0Voy4o7ECBOvw==
+  /@types/filewriter/0.0.28:
+    dev: true
+    resolution:
+      integrity: sha1-wFTor02d11205jq8dviFFocU1LM=
   /@types/glob/7.1.3:
     dependencies:
       '@types/minimatch': 3.0.3
@@ -1932,6 +1951,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==
+  /@types/har-format/1.2.5:
+    dev: true
+    resolution:
+      integrity: sha512-IG8AE1m2pWtPqQ7wXhFhy6Q59bwwnLwO36v5Rit2FrbXCIp8Sk8E2PfUCreyrdo17STwFSKDAkitVuVYbpEHvQ==
   /@types/html-minifier-terser/5.1.1:
     dev: false
     resolution:
@@ -12741,6 +12764,7 @@ specifiers:
   '@testing-library/jest-dom': ^5.11.4
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.1.10
+  '@types/chrome': ^0.0.133
   '@types/jest': ^26.0.15
   '@types/node': ^12.0.0
   '@types/react': ^17.0.0
