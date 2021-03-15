@@ -7,9 +7,7 @@ interface HandleClickFactoryProps {
     setGameState: React.Dispatch<React.SetStateAction<number>>;
     board: ICell[][];
     setBoard: React.Dispatch<React.SetStateAction<ICell[][]>>;
-    width: number;
-    height: number;
-    mines: number;
+    createBoard: (click: { x: number; y: number }) => ICell[][];
 }
 
 export const createHandleClickFactory = ({
@@ -17,9 +15,7 @@ export const createHandleClickFactory = ({
     setGameState,
     board,
     setBoard,
-    width,
-    height,
-    mines,
+    createBoard,
 }: HandleClickFactoryProps) => (x: number, y: number, cell: ICell) => (
     event: React.MouseEvent
 ) => {
@@ -27,14 +23,7 @@ export const createHandleClickFactory = ({
     const rightClick = event.button === 2;
 
     if (gameState === GameState.NOT_STARTED && leftClick) {
-        const newBoard = setupBoard({
-            width,
-            height,
-            mines,
-            click: { x, y },
-        });
-
-        openSurroundingZeros(x, y, newBoard);
+        const newBoard = createBoard({ x, y });
 
         setBoard(newBoard);
         setGameState(GameState.PLAYING);

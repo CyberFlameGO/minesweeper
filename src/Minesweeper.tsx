@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Borders from "./Borders";
 import Cell from "./Cell";
 import { createHandleClickFactory } from "./createHandleClickFactory";
-import { baseBoard } from "./util/board";
+import { baseBoard, openSurroundingZeros, setupBoard } from "./util/board";
 
 export enum GameState {
     NOT_STARTED = -2,
@@ -24,14 +24,22 @@ const Minesweeper: React.FC = () => {
     );
     const [board, setBoard] = useState(() => baseBoard(WIDTH, HEIGHT));
 
+    const createBoard = useCallback(
+        (click: { x: number; y: number }) => {
+            const board = setupBoard({ width, height, mines, click });
+            openSurroundingZeros(click.x, click.y, board);
+
+            return board;
+        },
+        [mines, height, width]
+    );
+
     const handleClick = createHandleClickFactory({
         gameState,
         setGameState,
         board,
         setBoard,
-        mines,
-        width,
-        height,
+        createBoard,
     });
 
     useEffect(() => {
