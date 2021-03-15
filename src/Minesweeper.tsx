@@ -12,9 +12,11 @@ export enum GameState {
 }
 
 const Minesweeper: React.FC = () => {
-    const [width] = useState(16);
-    const [height] = useState(16);
-    const [mines] = useState(64);
+    const [{ width, height, mines }, setGameOptions] = useState({
+        width: 16,
+        height: 16,
+        mines: 64,
+    });
 
     const [gameState, setGameState] = useState<GameState>(
         GameState.NOT_STARTED
