@@ -1,3 +1,5 @@
+@import "./variables";
+
 html,
 body {
     padding: 0;
@@ -35,32 +37,28 @@ div#root {
             flex-direction: row;
 
             div.cell {
-                --color-background: #bdbdbd;
-                --color-highlight-1: #eeeeee;
-                --color-highlight-2: #7b7b7b;
-
                 width: $cellSize;
                 height: $cellSize;
 
-                background: var(--color-background);
+                background: color-background;
 
-                border-top: solid 4px var(--color-highlight-1);
-                border-left: solid 4px var(--color-highlight-1);
-                border-right: solid 4px var(--color-highlight-2);
-                border-bottom: solid 4px var(--color-highlight-2);
+                border-top: solid 4px $color-highlight-1;
+                border-left: solid 4px $color-highlight-1;
+                border-right: solid 4px $color-highlight-2;
+                border-bottom: solid 4px $color-highlight-2;
 
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 &.open {
-                    border: 2px solid var(--color-highlight-2);
+                    border: 2px solid color-highlight-2;
                     padding: 2px;
 
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border: 2px solid var(--color-highlight-2);
+                    border: 2px solid color-highlight-2;
                     padding: 2px;
 
                     display: flex;
