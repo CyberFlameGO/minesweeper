@@ -7,7 +7,11 @@ const Borders: React.FC = ({ children }) => {
             <div className="content">{children}</div>
             <p className="bottom">
                 Minesweeper font provided by{" "}
-                <a href="https://fontstruct.com/fontstructors/593973/gezoda">
+                <a
+                    href="https://fontstruct.com/fontstructors/593973/gezoda"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     Gezoda
                 </a>{" "}
                 on fontstruct.com.
