@@ -23,6 +23,8 @@ div.Borders {
     p.bottom {
         position: absolute;
         bottom: -$border-width + $border-width - 2.4px;
+        left: 0;
+
         margin: 0;
         width: 100%;
         text-align: center;
