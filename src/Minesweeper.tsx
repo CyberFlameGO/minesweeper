@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Borders from "./Borders";
 import Cell from "./Cell";
 import { createHandleClickFactory } from "./createHandleClickFactory";
@@ -40,12 +40,6 @@ const Minesweeper: React.FC = () => {
         setBoard,
         createBoard,
     });
-
-    useEffect(() => {
-        if (gameState === GameState.NOT_STARTED) {
-            setBoard(baseBoard(width, height));
-        }
-    }, [width, height, gameState]);
 
     return (
         <>
