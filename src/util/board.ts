@@ -94,13 +94,9 @@ export const setupBoard = ({
                 return cell;
             }
 
-            let surroundingMines = 0;
-
-            surroundingSquares({ x, y }, board).forEach(
-                ({ cell: neighbour }) => {
-                    if (neighbour.value === -1) surroundingMines++;
-                }
-            );
+            const surroundingMines = surroundingSquares({ x, y }, board).filter(
+                ({ cell }) => cell.value === -1
+            ).length;
 
             return { ...cell, value: surroundingMines } as ICell;
         })
