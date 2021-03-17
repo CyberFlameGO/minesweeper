@@ -7,3 +7,7 @@ Intended to become a chrome extension where you can play minesweeper. Join me on
 -   [ ] Overlay
 
     -   [ ] Settings
+
+-   [ ] Open / flag cells (finished in main branch, do in more functional manner)
+
+-   [ ] Display bomb / flag images
