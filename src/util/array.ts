@@ -1,3 +1,5 @@
+import { notNull } from "./functions";
+
 export type Length<T extends any[]> = T extends { length: infer L } ? L : never;
 export type DropFirst<T extends any[]> = ((...args: T) => any) extends (
     arg: any,
@@ -23,10 +25,28 @@ export const area = (arr: number[][]) => (
     x2: number,
     y2: number
 ) =>
-    array(y2 + 1 - y1).map((_, y) =>
-        array(x2 + 1 - x1).map((_, x) => ({
-            x: x1 + x,
-            y: y1 + y,
-            value: arr[y1 + y][x1 + x],
-        }))
-    );
+    array(y2 + 1 - y1)
+        .map((_, offsetY) => {
+            const y = y1 + offsetY;
+
+            if (y < 0 || y >= arr.length) {
+                return null;
+            }
+
+            return array(x2 + 1 - x1)
+                .map((_, offsetX) => {
+                    const x = x1 + offsetX;
+
+                    if (x < 0 || x > arr[y].length) {
+                        return null;
+                    }
+
+                    return {
+                        x,
+                        y,
+                        value: arr[y][x],
+                    };
+                })
+                .filter(notNull);
+        })
+        .filter(notNull);
