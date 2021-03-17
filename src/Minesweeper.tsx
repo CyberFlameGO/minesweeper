@@ -16,17 +16,19 @@ const Minesweeper: React.FC<{}> = () => {
 
     return (
         <table id="Minesweeper">
-            {board.map((row, y) => (
-                <tr key={y}>
-                    {row.map((value, x) => (
-                        <Cell
-                            value={value}
-                            onClick={handleClick(x, y)}
-                            key={x}
-                        />
-                    ))}
-                </tr>
-            ))}
+            <tbody>
+                {board.map((row, y) => (
+                    <tr key={y}>
+                        {row.map((value, x) => (
+                            <Cell
+                                value={value}
+                                onClick={handleClick(x, y)}
+                                key={x}
+                            />
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
         </table>
     );
 };
