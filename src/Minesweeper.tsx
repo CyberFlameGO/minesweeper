@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { array2d } from "./util/array";
 import { addBombs, calculateValues } from "./util/board";
 import { pipe } from "./util/functions";
+import "./Minesweeper.scss";
 
 const Minesweeper: React.FC<{}> = () => {
     const [board] = useState(() =>
@@ -9,7 +10,7 @@ const Minesweeper: React.FC<{}> = () => {
     );
 
     return (
-        <table>
+        <table id="Minesweeper">
             {board.map((row) => (
                 <tr>
                     {row.map((x) => (
