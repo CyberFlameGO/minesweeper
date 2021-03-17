@@ -8,3 +8,6 @@ export const pipe = <
     arg: Argument,
     ...functions: Functions
 ): Return => functions.reduce((prev, cur) => cur(prev), arg) as Return;
+
+export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
+    x !== null;
