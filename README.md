@@ -7,7 +7,3 @@ Intended to become a chrome extension where you can play minesweeper. Join me on
 -   [ ] Overlay
 
     -   [ ] Settings
-
--   [ ] Make chrome extension
-
--   [ ] Make openSurroundingZeros pure if possible
