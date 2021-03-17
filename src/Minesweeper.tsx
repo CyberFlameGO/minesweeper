@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { array2d } from "./util/array";
 import { addBombs, calculateValues, clearClick } from "./util/board";
-import { pipe } from "./util/functions";
+import { match, pipe } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 
@@ -18,10 +18,14 @@ const Minesweeper: React.FC<{}> = () => {
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
     const handleClick = (clickX: number, clickY: number) => () => {
-        if (gameState === GameState.NOT_STARTED) {
-            setBoard(clearClick(board)(clickX, clickY));
-            setGameState(GameState.STARTED);
-        }
+        match(gameState)
+            .on(GameState.NOT_STARTED, () => {
+                setBoard(clearClick(board)(clickX, clickY));
+                setGameState(GameState.STARTED);
+            })
+            .on(GameState.STARTED, () => {
+                console.log("Started");
+            });
     };
 
     return (
