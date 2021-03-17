@@ -1,4 +1,4 @@
-import { area, oneDimension } from "./array";
+import { area, flatten } from "./array";
 
 export const surroundingSquares = (board: number[][]) => (
     squareX: number,
@@ -29,7 +29,7 @@ export const clearClick = (board: number[][]) => (
     const calc = calculateValue(board);
 
     const newBoard = board.slice();
-    oneDimension(
+    flatten(
         area(board)(clickX - 1, clickY - 1, clickX + 1, clickY + 1)
     ).forEach(({ x, y }) => (newBoard[y][x] = 0));
 

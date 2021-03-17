@@ -19,8 +19,8 @@ export const array2d = (width: number) => (height: number) => <T>(
         .fill(null)
         .map(() => Array(width).fill(value));
 
-export const oneDimension = (arr: any[][]) =>
-    arr.reduce((prev, cur) => [...prev, ...cur], []);
+export const flatten = (arr2d: any[][]) =>
+    arr2d.reduce((prev, cur) => [...prev, ...cur], []);
 
 export const area = (arr: number[][]) => (
     x1: number,
