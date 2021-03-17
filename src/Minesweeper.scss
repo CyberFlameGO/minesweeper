@@ -1,0 +1,59 @@
+@mixin size($size) {
+    width: $size;
+    height: $size;
+}
+
+@mixin highlight-and-shadows($width, $highlight, $shadow) {
+    border-top: $width solid $highlight;
+    border-left: $width solid $highlight;
+    border-right: $width solid $shadow;
+    border-bottom: $width solid $shadow;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+
+    height: fit-content;
+    width: fit-content;
+
+    background-color: #1b1b1b;
+}
+
+* {
+    user-select: none;
+    box-sizing: border-box;
+}
+
+table#Minesweeper {
+    $color-background: #bdbdbd;
+    $color-highlight: #eeeeee;
+    $color-shadows: #7b7b7b;
+
+    $size-cell: 28px;
+    $size-borders: 4px;
+
+    font-family: "MineSweeper";
+    font-weight: 900;
+
+    tr {
+        display: flex;
+        flex-direction: row;
+
+        td {
+            @include size($size-cell);
+            @include highlight-and-shadows(
+                $size-borders,
+                $color-highlight,
+                $color-shadows
+            );
+
+            background-color: $color-background;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
