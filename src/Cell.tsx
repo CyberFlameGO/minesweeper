@@ -6,7 +6,8 @@ interface Props {
 }
 
 const Cell: React.FC<Props> = ({ value, ...props }) => {
-    return <td {...props}>{value}</td>;
+    // Temporary
+    return <td {...props}>{value === -1 ? "X" : value === 0 ? "" : value}</td>;
 };
 
 export default Cell;
