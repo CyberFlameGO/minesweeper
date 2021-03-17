@@ -1,4 +1,4 @@
-import { area } from "./array";
+import { area, oneDimension } from "./array";
 
 export const surroundingSquares = (board: number[][]) => (
     squareX: number,
@@ -21,3 +21,21 @@ export const addBombs = (percent: number) => (board: number[][]) =>
     board.map((row) =>
         row.map((val) => (Math.random() > (100 - percent) / 100 ? -1 : val))
     );
+
+export const clearClick = (board: number[][]) => (
+    clickX: number,
+    clickY: number
+) => {
+    const calc = calculateValue(board);
+
+    const newBoard = board.slice();
+    oneDimension(
+        area(board)(clickX - 1, clickY - 1, clickX + 1, clickY + 1)
+    ).forEach(({ x, y }) => (newBoard[y][x] = 0));
+
+    surroundingSquares(board)(clickX, clickY).forEach(
+        ({ x, y }) => (newBoard[y][x] = calc(x, y))
+    );
+
+    return newBoard;
+};
