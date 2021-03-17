@@ -19,5 +19,5 @@ export const calculateValues = (board: number[][]) =>
 
 export const addBombs = (percent: number) => (board: number[][]) =>
     board.map((row) =>
-        row.map((val) => (Math.random() > percent / 100 ? -1 : val))
+        row.map((val) => (Math.random() > (100 - percent) / 100 ? -1 : val))
     );
