@@ -9,12 +9,15 @@ export const surroundingSquares = (board: number[][]) => (
         .filter(({ x, y }) => x !== squareX || y !== squareY);
 
 export const calculateValue = (board: number[][]) => (x: number, y: number) =>
-    surroundingSquares(board)(x, y).filter(({ value }) => value === -1).length;
+    board[y][x] === -1
+        ? -1
+        : surroundingSquares(board)(x, y).filter(({ value }) => value === -1)
+              .length;
 
 export const calculateValues = (board: number[][]) =>
     board.map((row, y) => row.map((_, x) => calculateValue(board)(x, y)));
 
-export const addBombs = (board: number[][]) => (percent: number) =>
+export const addBombs = (percent: number) => (board: number[][]) =>
     board.map((row) =>
         row.map((val) => (Math.random() > percent / 100 ? -1 : val))
     );
