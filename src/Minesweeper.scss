@@ -58,6 +58,11 @@ table#Minesweeper {
             img {
                 @include size($size-cell - 7px);
             }
+
+            &.open {
+                border: ($size-borders/2) solid $color-shadows;
+                padding: $size-borders / 2;
+            }
         }
     }
 }
