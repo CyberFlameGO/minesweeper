@@ -57,6 +57,9 @@ const Minesweeper: React.FC<{}> = () => {
             });
     };
 
+    const opened = (actions: Action[]) => (x: number, y: number): boolean =>
+        !!actions.find((it) => it.x === x && it.y === y);
+
     return (
         <table id="Minesweeper">
             <tbody>
@@ -65,6 +68,7 @@ const Minesweeper: React.FC<{}> = () => {
                         {row.map((value, x) => (
                             <Cell
                                 value={value}
+                                opened={opened(actions)(x, y)}
                                 onClick={handleClick(x, y)}
                                 key={x}
                             />

@@ -22,6 +22,8 @@ export const array2d = (width: number) => (height: number) => <T>(
 export const flatten = (arr2d: any[][]) =>
     arr2d.reduce((prev, cur) => [...prev, ...cur], []);
 
+export const isIndex = (arr: any[]) => (i: number) => i >= 0 && i < arr.length;
+
 export const area = (arr: number[][]) => (
     x1: number,
     y1: number,

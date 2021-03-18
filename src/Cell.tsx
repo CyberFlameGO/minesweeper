@@ -1,10 +1,12 @@
 import React from "react";
 import bomb from "./assets/bomb.png";
+import { className } from "./util/functions";
 import { Range } from "./util/types";
 
 interface Props {
     value: number;
-    [key: string]: any;
+    opened: boolean;
+    onClick: React.EventHandler<React.MouseEvent>;
 }
 
 const COLORS = {
@@ -18,11 +20,15 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const Cell: React.FC<Props> = ({ value, ...props }) => {
+const Cell: React.FC<Props> = ({ value, onClick, opened }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
     return (
-        <td style={{ color }} {...props}>
+        <td
+            className={className({ opened })}
+            style={{ color }}
+            onClick={onClick}
+        >
             {value === -1 && <img src={bomb} alt="bomb" />}
             {value > 0 && value}
         </td>

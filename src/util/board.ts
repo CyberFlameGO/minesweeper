@@ -1,12 +1,18 @@
-import { area, flatten } from "./array";
+import { area, flatten, isIndex } from "./array";
+
+export const validCoordinates = (board: number[][]) => (x: number, y: number) =>
+    isIndex(board)(y) && isIndex(board[0])(x);
 
 export const surroundingSquares = (board: number[][]) => (
     squareX: number,
     squareY: number
 ) =>
-    area(board)(squareX - 1, squareY - 1, squareX + 1, squareY + 1)
-        .reduce((prev, cur) => [...prev, ...cur], [])
-        .filter(({ x, y }) => x !== squareX || y !== squareY);
+    flatten(
+        area(board)(squareX - 1, squareY - 1, squareX + 1, squareY + 1)
+    ).filter(
+        ({ x, y }) =>
+            (x !== squareX || y !== squareY) && validCoordinates(board)(x, y)
+    );
 
 export const calculateValue = (board: number[][]) => (x: number, y: number) =>
     board[y][x] === -1
@@ -29,9 +35,10 @@ export const clearClick = (board: number[][]) => (
     const calc = calculateValue(board);
 
     const newBoard = board.slice();
-    flatten(
-        area(board)(clickX - 1, clickY - 1, clickX + 1, clickY + 1)
-    ).forEach(({ x, y }) => (newBoard[y][x] = 0));
+
+    flatten(area(newBoard)(clickX - 1, clickY - 1, clickX + 1, clickY + 1))
+        .filter(({ x, y }) => validCoordinates(newBoard)(x, y))
+        .forEach(({ x, y }) => (newBoard[y][x] = 0));
 
     surroundingSquares(board)(clickX, clickY).forEach(
         ({ x, y }) => (newBoard[y][x] = calc(x, y))
