@@ -68,7 +68,7 @@ const Minesweeper: React.FC<{}> = () => {
                         {row.map((value, x) => (
                             <Cell
                                 value={value}
-                                opened={opened(actions)(x, y)}
+                                open={opened(actions)(x, y)}
                                 onClick={handleClick(x, y)}
                                 key={x}
                             />
