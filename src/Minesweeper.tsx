@@ -47,13 +47,17 @@ const Minesweeper: React.FC<{}> = () => {
     );
 
     const handleClick = (clickX: number, clickY: number) => () => {
+        const click = () =>
+            pushAction({ type: ActionType.OPEN, x: clickX, y: clickY });
+
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
                 setBoard(clearClick(board)(clickX, clickY));
+                click();
                 setGameState(GameState.STARTED);
             })
             .on(GameState.STARTED, () => {
-                pushAction({ type: ActionType.OPEN, x: clickX, y: clickY });
+                click();
             });
     };
 
