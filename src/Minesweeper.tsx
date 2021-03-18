@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { array2d } from "./util/array";
 import { addBombs, calculateValues, clearClick } from "./util/board";
-import { match, pipe } from "./util/functions";
+import { pipe } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
+import match from "./util/functions/match";
 
 enum GameState {
     NOT_STARTED,
