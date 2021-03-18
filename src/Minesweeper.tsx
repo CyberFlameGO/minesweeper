@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { array2d } from "./util/array";
 import { addBombs, calculateValues, clearClick } from "./util/board";
 import { pipe } from "./util/functions";
@@ -11,12 +11,40 @@ enum GameState {
     STARTED,
 }
 
+enum ActionType {
+    FLAG,
+    OPEN,
+}
+
+interface Action {
+    type: ActionType;
+    x: number;
+    y: number;
+}
+
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard] = useState(() =>
         pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
     );
 
+    const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
+
+    const pushAction = useCallback(
+        (action: Action) => {
+            const sameSquare = actions.find(
+                ({ x, y }) => x === action.x && y === action.y
+            );
+
+            if (!sameSquare || sameSquare.type !== action.type) {
+                const updated = actions.slice();
+                updated.push(action);
+
+                setActions(updated.filter((it) => it !== sameSquare));
+            }
+        },
+        [actions, setActions]
+    );
 
     const handleClick = (clickX: number, clickY: number) => () => {
         match(gameState)
@@ -25,7 +53,7 @@ const Minesweeper: React.FC<{}> = () => {
                 setGameState(GameState.STARTED);
             })
             .on(GameState.STARTED, () => {
-                console.log("Started");
+                pushAction({ type: ActionType.OPEN, x: clickX, y: clickY });
             });
     };
 
