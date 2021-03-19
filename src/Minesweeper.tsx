@@ -4,7 +4,8 @@ import {
     addBombs,
     calculateValues,
     clearClick,
-    openSurrounding,
+    Coordinates,
+    openNeighbours,
 } from "./util/board";
 import { notNull, pipe } from "./util/functions";
 import "./Minesweeper.scss";
@@ -27,6 +28,19 @@ interface Action {
     y: number;
 }
 
+const createOpen = (actions: Action[]) => ({
+    x,
+    y,
+}: Coordinates): Action | null => {
+    const sameSquare = actions.find(
+        (action) => action.x === x && action.y === y
+    );
+
+    return !sameSquare || sameSquare.type !== ActionType.OPEN
+        ? { x, y, type: ActionType.OPEN }
+        : null;
+};
+
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard] = useState(() =>
         pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
@@ -35,35 +49,17 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
-    const createOpen = (actions: Action[]) => (
-        x: number,
-        y: number
-    ): Action | null => {
-        const sameSquare = actions.find(
-            (action) => action.x === x && action.y === y
-        );
-
-        return !sameSquare || sameSquare.type !== ActionType.OPEN
-            ? { x, y, type: ActionType.OPEN }
-            : null;
-    };
-
     const handleClick = (clickX: number, clickY: number) => () => {
         const open = createOpen(actions);
         const newActions: Array<Action | null> = [];
+        const surrounding = openNeighbours(board);
 
         const click = () => {
             if (board[clickY][clickX] === 0) {
-                const openSurroundingActions = openSurrounding(
-                    board,
-                    clickX,
-                    clickY
-                ).map(({ x, y }) => open(x, y));
-
-                newActions.push(...openSurroundingActions);
+                newActions.push(...surrounding(clickX, clickY).map(open));
             }
 
-            newActions.push(open(clickX, clickY));
+            newActions.push(open({ x: clickX, y: clickY }));
         };
 
         match(gameState)

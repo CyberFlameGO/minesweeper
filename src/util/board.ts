@@ -1,12 +1,15 @@
 import { area, flatten, isIndex } from "./array";
+import { unique } from "./functions";
+
+export interface Coordinates {
+    x: number;
+    y: number;
+}
 
 export const validCoordinates = (board: number[][]) => ({
     x,
     y,
-}: {
-    x: number;
-    y: number;
-}) => isIndex(board)(y) && isIndex(board[0])(x);
+}: Coordinates) => isIndex(board)(y) && isIndex(board[0])(x);
 
 export const surroundingSquares = (board: number[][]) => (
     squareX: number,
@@ -53,8 +56,7 @@ export const clearClick = (board: number[][]) => (
     return newBoard;
 };
 
-export const openSurrounding = (
-    board: number[][],
+export const openNeighbours = (board: number[][]) => (
     sx: number,
     sy: number,
     opened: Array<{ x: number; y: number }> = []
@@ -64,14 +66,11 @@ export const openSurrounding = (
             opened.push({ x, y });
 
             if (value === 0) {
-                const surrounding = openSurrounding(board, x, y, opened);
-
-                opened.push(
-                    ...surrounding.filter(
-                        (it) =>
-                            !opened.find((o) => o.x === it.x && o.y === it.y)
-                    )
+                const surrounding = openNeighbours(board)(x, y, opened).filter(
+                    unique(opened, ["x", "y"])
                 );
+
+                opened.push(...surrounding);
             }
         }
     });
