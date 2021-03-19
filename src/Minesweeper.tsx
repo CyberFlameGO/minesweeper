@@ -41,6 +41,9 @@ const createOpen = (actions: Action[]) => ({
         : null;
 };
 
+const opened = (actions: Action[]) => (x: number, y: number): boolean =>
+    !!actions.find((it) => it.x === x && it.y === y);
+
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard] = useState(() =>
         pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
@@ -75,9 +78,6 @@ const Minesweeper: React.FC<{}> = () => {
         const filteredNewActions = newActions.filter(notNull);
         setActions([...actions, ...filteredNewActions]);
     };
-
-    const opened = (actions: Action[]) => (x: number, y: number): boolean =>
-        !!actions.find((it) => it.x === x && it.y === y);
 
     return (
         <table id="Minesweeper">
