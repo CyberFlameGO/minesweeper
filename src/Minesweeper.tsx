@@ -1,7 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { array2d } from "./util/array";
-import { addBombs, calculateValues, clearClick } from "./util/board";
-import { pipe } from "./util/functions";
+import {
+    addBombs,
+    calculateValues,
+    clearClick,
+    openSurrounding,
+} from "./util/board";
+import { notNull, pipe } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
@@ -30,25 +35,25 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
-    const pushAction = useCallback(
-        (action: Action) => {
-            const sameSquare = actions.find(
-                ({ x, y }) => x === action.x && y === action.y
-            );
+    const open = (actions: Action[]) => (
+        x: number,
+        y: number
+    ): Action | null => {
+        const sameSquare = actions.find(
+            (action) => action.x === x && action.y === y
+        );
 
-            if (!sameSquare || sameSquare.type !== action.type) {
-                const updated = actions.slice();
-                updated.push(action);
-
-                setActions(updated.filter((it) => it !== sameSquare));
-            }
-        },
-        [actions, setActions]
-    );
+        if (!sameSquare || sameSquare.type !== ActionType.OPEN) {
+            return { x, y, type: ActionType.OPEN };
+        } else {
+            return null;
+        }
+    };
 
     const handleClick = (clickX: number, clickY: number) => () => {
-        const click = () =>
-            pushAction({ type: ActionType.OPEN, x: clickX, y: clickY });
+        const newActions: Array<Action | null> = [];
+
+        const click = () => newActions.push(open(actions)(clickX, clickY));
 
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
@@ -59,6 +64,9 @@ const Minesweeper: React.FC<{}> = () => {
             .on(GameState.STARTED, () => {
                 click();
             });
+
+        const filteredNewActions = newActions.filter(notNull);
+        setActions([...actions, ...filteredNewActions]);
     };
 
     const opened = (actions: Action[]) => (x: number, y: number): boolean =>
