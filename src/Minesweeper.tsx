@@ -41,7 +41,7 @@ const createOpenActionFactory = (actions: Action[]) => ({
         : null;
 };
 
-const opened = (actions: Action[]) => (x: number, y: number): boolean =>
+const createOpened = (actions: Action[]) => (x: number, y: number): boolean =>
     !!actions.find((it) => it.x === x && it.y === y);
 
 const createClick = (board: number[][], actions: Action[]) => (
@@ -88,6 +88,8 @@ const Minesweeper: React.FC<{}> = () => {
         setActions([...actions, ...filteredNewActions]);
     };
 
+    const opened = createOpened(actions);
+
     return (
         <table id="Minesweeper">
             <tbody>
@@ -96,7 +98,7 @@ const Minesweeper: React.FC<{}> = () => {
                         {row.map((value, x) => (
                             <Cell
                                 value={value}
-                                open={opened(actions)(x, y)}
+                                open={opened(x, y)}
                                 onClick={handleClick(x, y)}
                                 key={x}
                             />
