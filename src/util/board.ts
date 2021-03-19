@@ -37,7 +37,7 @@ export const addBombs = (percent: number) => (board: number[][]) =>
         row.map((val) => (Math.random() > (100 - percent) / 100 ? -1 : val))
     );
 
-export const clearClick = (board: number[][]) => (
+export const createClearClick = (board: number[][]) => (
     clickX: number,
     clickY: number
 ) => {
@@ -56,7 +56,7 @@ export const clearClick = (board: number[][]) => (
     return newBoard;
 };
 
-export const openNeighbours = (board: number[][]) => (
+export const createOpenNeighbours = (board: number[][]) => (
     sx: number,
     sy: number,
     opened: Array<{ x: number; y: number }> = []
@@ -66,9 +66,11 @@ export const openNeighbours = (board: number[][]) => (
             opened.push({ x, y });
 
             if (value === 0) {
-                const surrounding = openNeighbours(board)(x, y, opened).filter(
-                    unique(opened, ["x", "y"])
-                );
+                const surrounding = createOpenNeighbours(board)(
+                    x,
+                    y,
+                    opened
+                ).filter(unique(opened, ["x", "y"]));
 
                 opened.push(...surrounding);
             }

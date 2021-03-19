@@ -3,9 +3,9 @@ import { array2d } from "./util/array";
 import {
     addBombs,
     calculateValues,
-    clearClick,
+    createClearClick,
     Coordinates,
-    openNeighbours,
+    createOpenNeighbours,
 } from "./util/board";
 import { notNull, pipe } from "./util/functions";
 import "./Minesweeper.scss";
@@ -28,7 +28,7 @@ interface Action {
     y: number;
 }
 
-const createOpen = (actions: Action[]) => ({
+const createOpenActionFactory = (actions: Action[]) => ({
     x,
     y,
 }: Coordinates): Action | null => {
@@ -44,6 +44,22 @@ const createOpen = (actions: Action[]) => ({
 const opened = (actions: Action[]) => (x: number, y: number): boolean =>
     !!actions.find((it) => it.x === x && it.y === y);
 
+const createClick = (board: number[][], actions: Action[]) => (
+    x: number,
+    y: number
+) => {
+    const openNeighbours = createOpenNeighbours(board);
+    const createOpenAction = createOpenActionFactory(actions);
+
+    const newActions = [];
+
+    if (board[y][x] === 0) {
+        newActions.push(...openNeighbours(x, y).map(createOpenAction));
+    }
+
+    return [...actions, createOpenAction({ x, y })];
+};
+
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard] = useState(() =>
         pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
@@ -52,27 +68,20 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
-    const handleClick = (clickX: number, clickY: number) => () => {
-        const open = createOpen(actions);
+    const handleClick = (x: number, y: number) => () => {
         const newActions: Array<Action | null> = [];
-        const surrounding = openNeighbours(board);
 
-        const click = () => {
-            if (board[clickY][clickX] === 0) {
-                newActions.push(...surrounding(clickX, clickY).map(open));
-            }
-
-            newActions.push(open({ x: clickX, y: clickY }));
-        };
+        const click = createClick(board, actions);
+        const clearClick = createClearClick(board);
 
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
-                setBoard(clearClick(board)(clickX, clickY));
-                click();
+                setBoard(clearClick(x, y));
+                click(x, y);
                 setGameState(GameState.STARTED);
             })
             .on(GameState.STARTED, () => {
-                click();
+                click(x, y);
             });
 
         const filteredNewActions = newActions.filter(notNull);
