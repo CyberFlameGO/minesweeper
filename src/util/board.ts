@@ -36,13 +36,13 @@ export const clearClick = (board: number[][]) => (
 
     const newBoard = board.slice();
 
-    flatten(area(newBoard)(clickX - 2, clickY - 2, clickX + 2, clickY + 2))
+    flatten(area(newBoard)(clickX - 1, clickY - 1, clickX + 1, clickY + 1))
         .filter(({ x, y }) => validCoordinates(newBoard)(x, y))
         .forEach(({ x, y }) => (newBoard[y][x] = 0));
 
-    surroundingSquares(board)(clickX, clickY).forEach(
-        ({ x, y }) => (newBoard[y][x] = calc(x, y))
-    );
+    flatten(
+        area(newBoard)(clickX - 2, clickY - 2, clickX + 2, clickY + 2)
+    ).forEach(({ x, y }) => (newBoard[y][x] = calc(x, y)));
 
     return newBoard;
 };
