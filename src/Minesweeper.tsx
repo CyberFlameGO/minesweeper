@@ -84,8 +84,7 @@ const Minesweeper: React.FC<{}> = () => {
                 newActions.push(...click(x, y));
             });
 
-        const filteredNewActions = newActions.filter(notNull);
-        setActions([...actions, ...filteredNewActions]);
+        setActions([...actions, ...newActions.filter(notNull)]);
     };
 
     const opened = createOpened(actions);
