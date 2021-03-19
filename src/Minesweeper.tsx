@@ -43,11 +43,9 @@ const Minesweeper: React.FC<{}> = () => {
             (action) => action.x === x && action.y === y
         );
 
-        if (!sameSquare || sameSquare.type !== ActionType.OPEN) {
-            return { x, y, type: ActionType.OPEN };
-        } else {
-            return null;
-        }
+        return !sameSquare || sameSquare.type !== ActionType.OPEN
+            ? { x, y, type: ActionType.OPEN }
+            : null;
     };
 
     const handleClick = (clickX: number, clickY: number) => () => {
