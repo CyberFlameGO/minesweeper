@@ -52,7 +52,19 @@ const Minesweeper: React.FC<{}> = () => {
         const open = createOpen(actions);
         const newActions: Array<Action | null> = [];
 
-        const click = () => newActions.push(open(clickX, clickY));
+        const click = () => {
+            if (board[clickY][clickX] === 0) {
+                const openSurroundingActions = openSurrounding(
+                    board,
+                    clickX,
+                    clickY
+                ).map(({ x, y }) => open(x, y));
+
+                newActions.push(...openSurroundingActions);
+            }
+
+            newActions.push(open(clickX, clickY));
+        };
 
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
