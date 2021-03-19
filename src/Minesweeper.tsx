@@ -35,7 +35,7 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
-    const open = (actions: Action[]) => (
+    const createOpen = (actions: Action[]) => (
         x: number,
         y: number
     ): Action | null => {
@@ -49,9 +49,10 @@ const Minesweeper: React.FC<{}> = () => {
     };
 
     const handleClick = (clickX: number, clickY: number) => () => {
+        const open = createOpen(actions);
         const newActions: Array<Action | null> = [];
 
-        const click = () => newActions.push(open(actions)(clickX, clickY));
+        const click = () => newActions.push(open(clickX, clickY));
 
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
