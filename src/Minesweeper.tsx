@@ -57,7 +57,7 @@ const createClick = (board: number[][], actions: Action[]) => (
         newActions.push(...openNeighbours(x, y).map(createOpenAction));
     }
 
-    return [...actions, createOpenAction({ x, y })];
+    return [...newActions, createOpenAction({ x, y })];
 };
 
 const Minesweeper: React.FC<{}> = () => {
@@ -77,11 +77,11 @@ const Minesweeper: React.FC<{}> = () => {
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
                 setBoard(clearClick(x, y));
-                click(x, y);
+                newActions.push(...click(x, y));
                 setGameState(GameState.STARTED);
             })
             .on(GameState.STARTED, () => {
-                click(x, y);
+                newActions.push(...click(x, y));
             });
 
         const filteredNewActions = newActions.filter(notNull);
