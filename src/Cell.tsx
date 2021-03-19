@@ -24,7 +24,11 @@ const Cell: React.FC<Props> = ({ value, onClick, open }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
     return (
-        <td className={className({ open })} style={{ color }} onClick={onClick}>
+        <td
+            className={className({ open })}
+            style={{ color }}
+            onMouseDown={onClick}
+        >
             {value === -1 && <img src={bomb} alt="bomb" />}
             {value > 0 && value}
         </td>
