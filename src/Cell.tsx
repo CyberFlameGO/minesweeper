@@ -29,8 +29,8 @@ const Cell: React.FC<Props> = ({ value, onClick, open }) => {
             style={{ color }}
             onMouseDown={onClick}
         >
-            {value === -1 && <img src={bomb} alt="bomb" />}
-            {value > 0 && value}
+            {open && value === -1 && <img src={bomb} alt="bomb" />}
+            {open && value > 0 && value}
         </td>
     );
 };
