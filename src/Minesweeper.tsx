@@ -46,7 +46,7 @@ const createOpenActionFactory = (actions: Action[]) => ({
     return uniqueAction(actions, action) ? action : null;
 };
 
-const createIsOpened = (actions: Action[]) => (x: number, y: number): boolean =>
+const createIsOpen = (actions: Action[]) => (x: number, y: number): boolean =>
     !unique(actions, ["x", "y", "type"])({ x, y, type: ActionType.OPEN });
 
 const createClick = (board: number[][], actions: Action[]) => (
@@ -98,7 +98,7 @@ const Minesweeper: React.FC<{}> = () => {
         setActions([...actions, ...newActions.filter(notNull)]);
     };
 
-    const isOpened = createIsOpened(actions);
+    const isOpen = createIsOpen(actions);
     const lastOpen = getLastOpen(actions);
 
     return (
@@ -110,7 +110,7 @@ const Minesweeper: React.FC<{}> = () => {
                 {board.map((row, y) => (
                     <tr key={y}>
                         {row.map((value, x) => {
-                            const open = isOpened(x, y);
+                            const open = isOpen(x, y);
                             const bomb = value === -1;
                             const lost = gameState === GameState.LOST;
                             const wasLastOpen =
