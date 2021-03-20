@@ -6,6 +6,7 @@ import { Range } from "./util/types";
 interface Props {
     value: number;
     open: boolean;
+    red: boolean;
     onClick: React.EventHandler<React.MouseEvent>;
 }
 
@@ -20,12 +21,12 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const Cell: React.FC<Props> = ({ value, onClick, open }) => {
+const Cell: React.FC<Props> = ({ value, onClick, open, red }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
     return (
         <td
-            className={className({ open })}
+            className={className({ open, red })}
             style={{ color }}
             onMouseDown={onClick}
         >
