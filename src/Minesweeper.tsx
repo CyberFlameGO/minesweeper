@@ -47,7 +47,7 @@ const createOpenActionFactory = (actions: Action[]) => ({
 };
 
 const createIsOpened = (actions: Action[]) => (x: number, y: number): boolean =>
-    !!actions.find((it) => it.x === x && it.y === y);
+    !unique(actions, ["x", "y", "type"])({ x, y, type: ActionType.OPEN });
 
 const createClick = (board: number[][], actions: Action[]) => (
     x: number,
