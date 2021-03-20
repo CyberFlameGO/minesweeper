@@ -95,6 +95,9 @@ const Minesweeper: React.FC<{}> = () => {
     };
 
     const opened = createOpened(actions);
+    const [lastOpen] = actions
+        .filter((it) => it.type === ActionType.OPEN)
+        .slice(-1);
 
     return (
         <table id="Minesweeper">
@@ -105,11 +108,16 @@ const Minesweeper: React.FC<{}> = () => {
                             const open = opened(x, y);
                             const bomb = value === -1;
                             const lost = gameState === GameState.LOST;
+                            const wasLastOpen =
+                                lastOpen &&
+                                lastOpen.y === y &&
+                                lastOpen.x === x;
 
                             return (
                                 <Cell
                                     value={value}
                                     open={open || (bomb && lost)}
+                                    red={bomb && lost && wasLastOpen}
                                     onClick={handleClick(x, y)}
                                     key={x}
                                 />
