@@ -79,20 +79,21 @@ const Minesweeper: React.FC<{}> = () => {
 
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
-                const clearClick = createClearClick(board);
-
-                setBoard(clearClick(x, y));
-                newActions.push(...click(x, y));
-
+                setBoard(createClearClick(board)(x, y));
                 setGameState(GameState.STARTED);
             })
-            .on(GameState.STARTED, () => {
-                newActions.push(...click(x, y));
+            .on(
+                (state) =>
+                    state === GameState.STARTED ||
+                    state === GameState.NOT_STARTED,
+                () => {
+                    newActions.push(...click(x, y));
 
-                if (board[y][x] === -1) {
-                    setGameState(GameState.LOST);
+                    if (board[y][x] === -1) {
+                        setGameState(GameState.LOST);
+                    }
                 }
-            });
+            );
 
         setActions([...actions, ...newActions.filter(notNull)]);
     };
