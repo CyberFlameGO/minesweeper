@@ -63,6 +63,10 @@ table#Minesweeper {
                 border: ($size-borders/2) solid $color-shadows;
                 padding: $size-borders / 2;
             }
+
+            &.red {
+                background-color: red;
+            }
         }
     }
 }
