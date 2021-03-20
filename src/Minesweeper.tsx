@@ -7,7 +7,7 @@ import {
     Coordinates,
     createOpenNeighbours,
 } from "./util/board";
-import { notNull, pipe } from "./util/functions";
+import { notNull, pipe, unique } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
@@ -34,17 +34,16 @@ const isOpen = (action: Action) => action.type === ActionType.OPEN;
 const getOpened = (actions: Action[]) => actions.filter(isOpen);
 const getLastOpen = (actions: Action[]) => getOpened(actions).slice(-1)[0];
 
+const uniqueAction = (actions: Action[], action: Action) =>
+    unique(actions, ["x", "y", "type"])(action);
+
 const createOpenActionFactory = (actions: Action[]) => ({
     x,
     y,
 }: Coordinates): Action | null => {
-    const sameSquare = actions.find(
-        (action) => action.x === x && action.y === y
-    );
+    const action = { x, y, type: ActionType.OPEN };
 
-    return !sameSquare || sameSquare.type !== ActionType.OPEN
-        ? { x, y, type: ActionType.OPEN }
-        : null;
+    return uniqueAction(actions, action) ? action : null;
 };
 
 const createOpened = (actions: Action[]) => (x: number, y: number): boolean =>
@@ -57,13 +56,12 @@ const createClick = (board: number[][], actions: Action[]) => (
     const openNeighbours = createOpenNeighbours(board);
     const createOpenAction = createOpenActionFactory(actions);
 
-    const newActions = [];
-
-    if (board[y][x] === 0) {
-        newActions.push(...openNeighbours(x, y).map(createOpenAction));
-    }
-
-    return [...newActions, createOpenAction({ x, y })];
+    return [
+        createOpenAction({ x, y }),
+        ...(board[y][x] === 0
+            ? openNeighbours(x, y).map(createOpenAction)
+            : []),
+    ];
 };
 
 const Minesweeper: React.FC<{}> = () => {
