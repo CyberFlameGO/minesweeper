@@ -13,15 +13,15 @@ export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
     x !== null;
 
 export const className = (classNames: { [key: string]: boolean }) => {
-    let name = "";
+    const names = [];
 
     for (const key in classNames) {
         if (classNames[key] === true) {
-            name += ` ${key}`;
+            names.push(key);
         }
     }
 
-    return name;
+    return names.join(" ");
 };
 
 export const unique = <T>(arr: T[], keys: string[]) => (it: any) =>
