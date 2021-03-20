@@ -59,9 +59,19 @@ table#Minesweeper {
                 @include size($size-cell - 7px);
             }
 
+            $open-border: ($size-borders/2) solid $color-shadows;
+            $open-padding: $size-borders / 2;
+
             &.open {
-                border: ($size-borders/2) solid $color-shadows;
-                padding: $size-borders / 2;
+                border: $open-border;
+                padding: $open-padding;
+            }
+
+            @at-root {
+                table#Minesweeper:not(.lost):active td:hover {
+                    border: $open-border !important;
+                    padding: $open-border / 2 !important;
+                }
             }
 
             &.red {
