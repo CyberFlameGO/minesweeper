@@ -81,6 +81,7 @@ const Minesweeper: React.FC<{}> = () => {
 
                 setBoard(clearClick(x, y));
                 newActions.push(...click(x, y));
+
                 setGameState(GameState.STARTED);
             })
             .on(GameState.STARTED, () => {
