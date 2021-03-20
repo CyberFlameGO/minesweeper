@@ -70,7 +70,7 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(GameState.NOT_STARTED);
 
-    const handleClick = (x: number, y: number) => () => {
+    const createClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action | null> = [];
 
         const click = createClick(board, actions);
@@ -118,7 +118,7 @@ const Minesweeper: React.FC<{}> = () => {
                                     value={value}
                                     open={open || (bomb && lost)}
                                     red={bomb && lost && wasLastOpen}
-                                    onClick={handleClick(x, y)}
+                                    onClick={createClickHandler(x, y)}
                                     key={x}
                                 />
                             );
