@@ -30,6 +30,10 @@ interface Action {
     y: number;
 }
 
+const isOpen = (action: Action) => action.type === ActionType.OPEN;
+const getOpened = (actions: Action[]) => actions.filter(isOpen);
+const getLastOpen = (actions: Action[]) => getOpened(actions).slice(-1)[0];
+
 const createOpenActionFactory = (actions: Action[]) => ({
     x,
     y,
@@ -96,9 +100,7 @@ const Minesweeper: React.FC<{}> = () => {
     };
 
     const opened = createOpened(actions);
-    const [lastOpen] = actions
-        .filter((it) => it.type === ActionType.OPEN)
-        .slice(-1);
+    const lastOpen = getLastOpen(actions);
 
     return (
         <table id="Minesweeper">
