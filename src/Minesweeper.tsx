@@ -15,6 +15,8 @@ import match from "./util/functions/match";
 enum GameState {
     NOT_STARTED,
     STARTED,
+    WON,
+    LOST,
 }
 
 enum ActionType {
@@ -82,6 +84,10 @@ const Minesweeper: React.FC<{}> = () => {
             })
             .on(GameState.STARTED, () => {
                 newActions.push(...click(x, y));
+
+                if (board[y][x] === -1) {
+                    setGameState(GameState.LOST);
+                }
             });
 
         setActions([...actions, ...newActions.filter(notNull)]);
@@ -94,14 +100,20 @@ const Minesweeper: React.FC<{}> = () => {
             <tbody>
                 {board.map((row, y) => (
                     <tr key={y}>
-                        {row.map((value, x) => (
-                            <Cell
-                                value={value}
-                                open={opened(x, y)}
-                                onClick={handleClick(x, y)}
-                                key={x}
-                            />
-                        ))}
+                        {row.map((value, x) => {
+                            const open = opened(x, y);
+                            const bomb = value === -1;
+                            const lost = gameState === GameState.LOST;
+
+                            return (
+                                <Cell
+                                    value={value}
+                                    open={open || (bomb && lost)}
+                                    onClick={handleClick(x, y)}
+                                    key={x}
+                                />
+                            );
+                        })}
                     </tr>
                 ))}
             </tbody>
