@@ -9,16 +9,17 @@ interface MatchObject<T, F = (arg: T) => any> {
     otherwise: (fn: F) => any;
 }
 
-const matched = <T>(x: T): MatchObject<T> => ({
-    on: () => matched(x),
-    otherwise: () => null,
-});
-
 const match = <T>(x: T): MatchObject<T> => ({
-    on: (condition, fn) =>
-        (isConditionFunction(condition) && condition(x)) || x === condition
-            ? matched(fn(x))
-            : match(x),
+    on: (condition, fn) => {
+        if (
+            (isConditionFunction(condition) && condition(x)) ||
+            x === condition
+        ) {
+            fn(x);
+        }
+
+        return match(x);
+    },
     otherwise: (fn) => fn(x),
 });
 
