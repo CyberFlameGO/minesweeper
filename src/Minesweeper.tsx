@@ -7,7 +7,7 @@ import {
     Coordinates,
     createOpenNeighbours,
 } from "./util/board";
-import { notNull, pipe, unique } from "./util/functions";
+import { className, notNull, pipe, unique } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
@@ -102,7 +102,10 @@ const Minesweeper: React.FC<{}> = () => {
     const lastOpen = getLastOpen(actions);
 
     return (
-        <table id="Minesweeper">
+        <table
+            id="Minesweeper"
+            className={className({ lost: gameState === GameState.LOST })}
+        >
             <tbody>
                 {board.map((row, y) => (
                     <tr key={y}>
