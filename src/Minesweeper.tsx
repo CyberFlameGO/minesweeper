@@ -14,7 +14,6 @@ import {
     notNull,
     pipe,
     preventDefault,
-    unique,
 } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
@@ -50,7 +49,7 @@ const getLast = (actions: Action[], actionType: ActionType) =>
     actions.filter(({ type }) => type === actionType).slice(-1)[0];
 
 const uniqueAction = (actions: Action[], action: Action) =>
-    unique(actions, ["x", "y", "type"])(action);
+    !actions.find(actionEquals(action));
 
 const createActionFactory = (actions: Action[], type: ActionType) => ({
     x,
