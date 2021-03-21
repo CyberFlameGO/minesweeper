@@ -13,17 +13,10 @@ export const pipe = <
 export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
     x !== null;
 
-export const className = (classNames: { [key: string]: boolean }) => {
-    const names = [];
+export const element = (n: number) => <T>(array: Array<T>) => array[n];
 
-    for (const key in classNames) {
-        if (classNames[key] === true) {
-            names.push(key);
-        }
-    }
-
-    return names.join(" ");
-};
+export const className = (classNames: { [key: string]: boolean }) =>
+    Object.entries(classNames).filter(element(1)).map(element(0)).join(" ");
 
 export const unique = <T>(arr: T[], keys: string[]) => (it: any) =>
     !arr.find((x: any) => keys.every((key) => x[key] === it[key]));
