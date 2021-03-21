@@ -58,6 +58,12 @@ const createIsType = (actions: Action[]) => (type: ActionType) => (
     y: number
 ): boolean => !unique(actions, ["x", "y", "type"])({ x, y, type });
 
+const createRemove = (type: ActionType) => (
+    actions: Action[],
+    x: number,
+    y: number
+) => actions.filter((it) => !(it.x === x && it.y === y && it.type === type));
+
 const createClick = (board: number[][], actions: Action[]) => (
     x: number,
     y: number
@@ -114,7 +120,14 @@ const Minesweeper: React.FC<{}> = () => {
         match(gameState).on(
             either<State>(State.NOT_STARTED, State.STARTED),
             () => {
-                setActions(addIfNotNull(actions, createFlagAction({ x, y })));
+                if (isFlagged(x, y)) {
+                    const removeFlag = createRemove(ActionType.FLAG);
+                    setActions(removeFlag(actions, x, y));
+                } else {
+                    setActions(
+                        addIfNotNull(actions, createFlagAction({ x, y }))
+                    );
+                }
             }
         );
     };
