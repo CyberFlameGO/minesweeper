@@ -19,7 +19,7 @@ import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 
-enum GameState {
+enum State {
     NOT_STARTED,
     STARTED,
     WON,
@@ -77,7 +77,7 @@ const Minesweeper: React.FC<{}> = () => {
     );
 
     const [actions, setActions] = useState<Action[]>([]);
-    const [gameState, setGameState] = useState(GameState.NOT_STARTED);
+    const [gameState, setGameState] = useState(State.NOT_STARTED);
 
     const createClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action | null> = [];
@@ -85,20 +85,17 @@ const Minesweeper: React.FC<{}> = () => {
         const click = createClick(board, actions);
 
         match(gameState)
-            .on(GameState.NOT_STARTED, () => {
+            .on(State.NOT_STARTED, () => {
                 setBoard(createClearClick(board)(x, y));
-                setGameState(GameState.STARTED);
+                setGameState(State.STARTED);
             })
-            .on(
-                either<GameState>(GameState.STARTED, GameState.NOT_STARTED),
-                () => {
-                    newActions.push(...click(x, y));
+            .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
+                newActions.push(...click(x, y));
 
-                    if (board[y][x] === -1) {
-                        setGameState(GameState.LOST);
-                    }
+                if (board[y][x] === -1) {
+                    setGameState(State.LOST);
                 }
-            );
+            });
 
         setActions([...actions, ...newActions.filter(notNull)]);
     };
@@ -110,7 +107,7 @@ const Minesweeper: React.FC<{}> = () => {
         <table
             id="Minesweeper"
             onContextMenu={preventDefault}
-            className={className({ lost: gameState === GameState.LOST })}
+            className={className({ lost: gameState === State.LOST })}
         >
             <tbody>
                 {board.map((row, y) => (
@@ -118,7 +115,7 @@ const Minesweeper: React.FC<{}> = () => {
                         {row.map((value, x) => {
                             const open = isOpen(x, y);
                             const bomb = value === -1;
-                            const lost = gameState === GameState.LOST;
+                            const lost = gameState === State.LOST;
                             const wasLastOpen =
                                 lastOpen &&
                                 lastOpen.y === y &&
