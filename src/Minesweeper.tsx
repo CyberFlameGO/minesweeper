@@ -108,10 +108,12 @@ const Minesweeper: React.FC<{}> = () => {
                 setGameState(State.STARTED);
             })
             .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
-                newActions.push(...click(x, y));
+                if (!isFlagged(x, y)) {
+                    newActions.push(...click(x, y));
 
-                if (isBomb(x, y)(board)) {
-                    setGameState(State.LOST);
+                    if (isBomb(x, y)(board)) {
+                        setGameState(State.LOST);
+                    }
                 }
             });
 
