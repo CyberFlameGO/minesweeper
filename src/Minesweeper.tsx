@@ -124,9 +124,12 @@ const Minesweeper: React.FC<{}> = () => {
     const createRightClickHandler = (x: number, y: number) => () => {
         const createFlagAction = createActionFactory(actions, ActionType.FLAG);
 
-        match(gameState).on(
-            either<State>(State.NOT_STARTED, State.STARTED),
-            () => {
+        match(gameState)
+            .on(State.NOT_STARTED, () => {
+                const leftClick = createLeftClickHandler(x, y);
+                leftClick();
+            })
+            .on(State.STARTED, () => {
                 if (isFlagged(x, y)) {
                     const removeFlag = createRemove(ActionType.FLAG);
                     setActions(removeFlag(actions, x, y));
@@ -135,8 +138,7 @@ const Minesweeper: React.FC<{}> = () => {
                         addIfNotNull(actions, createFlagAction({ x, y }))
                     );
                 }
-            }
-        );
+            });
     };
 
     const lastOpen = getLast(actions, ActionType.OPEN);
