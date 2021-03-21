@@ -106,9 +106,12 @@ const Minesweeper: React.FC<{}> = () => {
     const createRightClickHandler = (x: number, y: number) => () => {
         const createFlagAction = createActionFactory(actions, ActionType.FLAG);
 
-        match(gameState).on(State.STARTED, () => {
-            setActions(addIfNotNull(actions, createFlagAction({ x, y })));
-        });
+        match(gameState).on(
+            either<State>(State.NOT_STARTED, State.STARTED),
+            () => {
+                setActions(addIfNotNull(actions, createFlagAction({ x, y })));
+            }
+        );
     };
 
     const is = createIsType(actions);
