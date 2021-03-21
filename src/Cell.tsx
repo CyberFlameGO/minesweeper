@@ -24,11 +24,18 @@ const COLORS = {
 const Cell: React.FC<CellProps> = ({ value, onClick, open, red }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
+    const mouseDown = (event: React.MouseEvent) =>
+        event.button === 2 && onClick(event);
+
+    const mouseUp = (event: React.MouseEvent) =>
+        event.button === 0 && onClick(event);
+
     return (
         <td
             className={className({ open, red })}
             style={open ? { color } : {}}
-            onMouseUp={onClick}
+            onMouseDown={mouseDown}
+            onMouseUp={mouseUp}
         >
             {open && value === -1 && <img src={bomb} alt="bomb" />}
             {open && value > 0 && value}
