@@ -64,7 +64,7 @@ const createActionFactory = (actions: Action[], type: ActionType) => ({
 const createIsType = (actions: Action[]) => (type: ActionType) => (
     x: number,
     y: number
-): boolean => !unique(actions, ["x", "y", "type"])({ x, y, type });
+): boolean => !uniqueAction(actions, { x, y, type });
 
 const createRemove = (type: ActionType) => (
     actions: Action[],
