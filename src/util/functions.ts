@@ -30,3 +30,6 @@ export const unique = <T>(arr: T[], keys: string[]) => (it: any) =>
 
 export const preventDefault: React.EventHandler<any> = (event) =>
     event.preventDefault();
+
+export const either = <T>(...values: T[]) => (value: T) =>
+    values.some((it) => it === value);
