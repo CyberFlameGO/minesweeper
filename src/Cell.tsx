@@ -1,5 +1,6 @@
 import React from "react";
 import bomb from "./assets/bomb.png";
+import flag from "./assets/flag.svg";
 import { className } from "./util/functions";
 import { Range } from "./util/types";
 
@@ -46,6 +47,7 @@ const Cell: React.FC<CellProps> = ({
             onMouseDown={mouseDown}
             onMouseUp={mouseUp}
         >
+            {flagged && <img src={flag} alt="flag" />}
             {open && value === -1 && <img src={bomb} alt="bomb" />}
             {open && value > 0 && value}
         </td>
