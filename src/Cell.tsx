@@ -7,6 +7,7 @@ interface CellProps {
     value: number;
     open: boolean;
     red: boolean;
+    flagged: boolean;
     onLeftClick: React.EventHandler<React.MouseEvent>;
     onRightClick: React.EventHandler<React.MouseEvent>;
 }
@@ -27,6 +28,7 @@ const Cell: React.FC<CellProps> = ({
     onLeftClick,
     onRightClick,
     open,
+    flagged,
     red,
 }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
@@ -39,7 +41,7 @@ const Cell: React.FC<CellProps> = ({
 
     return (
         <td
-            className={className({ open, red })}
+            className={className({ open, red, flagged })}
             style={open ? { color } : {}}
             onMouseDown={mouseDown}
             onMouseUp={mouseUp}
