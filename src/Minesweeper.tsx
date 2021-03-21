@@ -82,6 +82,8 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(State.NOT_STARTED);
 
+    const is = createIsType(actions);
+
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
         const click = createClick(board, actions);
@@ -99,7 +101,13 @@ const Minesweeper: React.FC<{}> = () => {
                 }
             });
 
-        setActions([...actions, ...newActions]);
+        setActions([
+            ...actions,
+            ...newActions.filter(
+                ({ x, y, type }) =>
+                    type === ActionType.OPEN && !is(x, y, ActionType.FLAG)
+            ),
+        ]);
     };
 
     const createRightClickHandler = (x: number, y: number) => () => {
@@ -113,7 +121,6 @@ const Minesweeper: React.FC<{}> = () => {
         );
     };
 
-    const is = createIsType(actions);
     const lastOpen = getLast(actions, ActionType.OPEN);
 
     return (
