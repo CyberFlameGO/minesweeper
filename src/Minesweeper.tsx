@@ -6,6 +6,7 @@ import {
     createClearClick,
     Coordinates,
     createOpenNeighbours,
+    isBomb,
 } from "./util/board";
 import {
     className,
@@ -92,7 +93,7 @@ const Minesweeper: React.FC<{}> = () => {
             .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
                 newActions.push(...click(x, y));
 
-                if (board[y][x] === -1) {
+                if (isBomb(x, y)(board)) {
                     setGameState(State.LOST);
                 }
             });
