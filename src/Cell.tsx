@@ -1,6 +1,7 @@
 import React from "react";
-import bomb from "./assets/bomb.png";
+import bombImage from "./assets/bomb.png";
 import flag from "./assets/flag.svg";
+import notBomb from "./assets/not-bomb.png";
 import { className } from "./util/functions";
 import { Range } from "./util/types";
 
@@ -33,6 +34,7 @@ const Cell: React.FC<CellProps> = ({
     red,
 }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
+    const bomb = value === -1;
 
     const mouseDown = (event: React.MouseEvent) =>
         event.button === 2 && onRightClick(event);
@@ -47,8 +49,9 @@ const Cell: React.FC<CellProps> = ({
             onMouseDown={mouseDown}
             onMouseUp={mouseUp}
         >
-            {flagged && <img src={flag} alt="flag" />}
-            {open && value === -1 && <img src={bomb} alt="bomb" />}
+            {!open && flagged && <img src={flag} alt="flag" />}
+            {open && flagged && !bomb && <img src={notBomb} alt="not bomb" />}
+            {open && bomb && <img src={bombImage} alt="bomb" />}
             {open && value > 0 && value}
         </td>
     );
