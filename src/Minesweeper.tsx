@@ -53,10 +53,9 @@ const createActionFactory = (actions: Action[], type: ActionType) => ({
     return uniqueAction(actions, action) ? action : null;
 };
 
-const createIsType = (actions: Action[]) => (
+const createIsType = (actions: Action[]) => (type: ActionType) => (
     x: number,
-    y: number,
-    type: ActionType
+    y: number
 ): boolean => !unique(actions, ["x", "y", "type"])({ x, y, type });
 
 const createClick = (board: number[][], actions: Action[]) => (
@@ -105,7 +104,7 @@ const Minesweeper: React.FC<{}> = () => {
             ...actions,
             ...newActions.filter(
                 ({ x, y, type }) =>
-                    type === ActionType.OPEN && !is(x, y, ActionType.FLAG)
+                    type === ActionType.OPEN && !is(ActionType.FLAG)(x, y)
             ),
         ]);
     };
@@ -133,8 +132,8 @@ const Minesweeper: React.FC<{}> = () => {
                 {board.map((row, y) => (
                     <tr key={y}>
                         {row.map((value, x) => {
-                            const open = is(x, y, ActionType.OPEN);
-                            const flagged = is(x, y, ActionType.FLAG);
+                            const open = is(ActionType.OPEN)(x, y);
+                            const flagged = is(ActionType.FLAG)(x, y);
                             const bomb = value === -1;
                             const lost = gameState === State.LOST;
                             const wasLastOpen =
