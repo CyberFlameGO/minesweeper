@@ -82,6 +82,8 @@ const Minesweeper: React.FC<{}> = () => {
     const [gameState, setGameState] = useState(State.NOT_STARTED);
 
     const is = createIsType(actions);
+    const isFlagged = is(ActionType.FLAG);
+    const isOpen = is(ActionType.OPEN);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
@@ -101,7 +103,7 @@ const Minesweeper: React.FC<{}> = () => {
             });
 
         const dontOpenFlagged = ({ x, y, type }: Action) =>
-            type === ActionType.OPEN && !is(ActionType.FLAG)(x, y);
+            type === ActionType.OPEN && !isFlagged(x, y);
 
         setActions([...actions, ...newActions.filter(dontOpenFlagged)]);
     };
@@ -129,8 +131,8 @@ const Minesweeper: React.FC<{}> = () => {
                 {board.map((row, y) => (
                     <tr key={y}>
                         {row.map((value, x) => {
-                            const open = is(ActionType.OPEN)(x, y);
-                            const flagged = is(ActionType.FLAG)(x, y);
+                            const open = isOpen(x, y);
+                            const flagged = isFlagged(x, y);
                             const bomb = value === -1;
                             const lost = gameState === State.LOST;
                             const wasLastOpen =
