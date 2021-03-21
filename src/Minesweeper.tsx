@@ -18,6 +18,7 @@ import {
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
+import Borders from "./Borders";
 
 enum State {
     NOT_STARTED,
@@ -146,42 +147,50 @@ const Minesweeper: React.FC<{}> = () => {
     const lastOpen = getLast(actions, ActionType.OPEN);
 
     return (
-        <table
-            id="Minesweeper"
-            onContextMenu={preventDefault}
-            className={className({ lost: gameState === State.LOST })}
-        >
-            <tbody>
-                {board.map((row, y) => (
-                    <tr key={y}>
-                        {row.map((value, x) => {
-                            const bomb = value === -1;
-                            const lost = gameState === State.LOST;
-                            const wasLastOpen =
-                                lastOpen &&
-                                lastOpen.y === y &&
-                                lastOpen.x === x;
+        <Borders>
+            <table
+                id="Minesweeper"
+                onContextMenu={preventDefault}
+                className={className({ lost: gameState === State.LOST })}
+            >
+                <tbody>
+                    {board.map((row, y) => (
+                        <tr key={y}>
+                            {row.map((value, x) => {
+                                const bomb = value === -1;
+                                const lost = gameState === State.LOST;
+                                const wasLastOpen =
+                                    lastOpen &&
+                                    lastOpen.y === y &&
+                                    lastOpen.x === x;
 
-                            const flagged = isFlagged(x, y);
-                            const open = isOpen(x, y);
+                                const flagged = isFlagged(x, y);
+                                const open = isOpen(x, y);
 
-                            return (
-                                <Cell
-                                    value={value}
-                                    open={open}
-                                    red={bomb && lost && wasLastOpen}
-                                    flagged={flagged}
-                                    lost={lost}
-                                    onLeftClick={createLeftClickHandler(x, y)}
-                                    onRightClick={createRightClickHandler(x, y)}
-                                    key={x}
-                                />
-                            );
-                        })}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+                                return (
+                                    <Cell
+                                        value={value}
+                                        open={open}
+                                        red={bomb && lost && wasLastOpen}
+                                        flagged={flagged}
+                                        lost={lost}
+                                        onLeftClick={createLeftClickHandler(
+                                            x,
+                                            y
+                                        )}
+                                        onRightClick={createRightClickHandler(
+                                            x,
+                                            y
+                                        )}
+                                        key={x}
+                                    />
+                                );
+                            })}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </Borders>
     );
 };
 
