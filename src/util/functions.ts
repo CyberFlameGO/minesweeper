@@ -1,3 +1,4 @@
+import React from "react";
 import { LastElement } from "./array";
 
 export const pipe = <
@@ -26,3 +27,6 @@ export const className = (classNames: { [key: string]: boolean }) => {
 
 export const unique = <T>(arr: T[], keys: string[]) => (it: any) =>
     !arr.find((x: any) => keys.every((key) => x[key] === it[key]));
+
+export const preventDefault: React.EventHandler<any> = (event) =>
+    event.preventDefault();
