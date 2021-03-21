@@ -7,7 +7,13 @@ import {
     Coordinates,
     createOpenNeighbours,
 } from "./util/board";
-import { className, notNull, pipe, unique } from "./util/functions";
+import {
+    className,
+    notNull,
+    pipe,
+    preventDefault,
+    unique,
+} from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
@@ -104,6 +110,7 @@ const Minesweeper: React.FC<{}> = () => {
     return (
         <table
             id="Minesweeper"
+            onContextMenu={preventDefault}
             className={className({ lost: gameState === GameState.LOST })}
         >
             <tbody>
