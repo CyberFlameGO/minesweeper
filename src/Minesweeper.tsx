@@ -100,13 +100,10 @@ const Minesweeper: React.FC<{}> = () => {
                 }
             });
 
-        setActions([
-            ...actions,
-            ...newActions.filter(
-                ({ x, y, type }) =>
-                    type === ActionType.OPEN && !is(ActionType.FLAG)(x, y)
-            ),
-        ]);
+        const dontOpenFlagged = ({ x, y, type }: Action) =>
+            type === ActionType.OPEN && !is(ActionType.FLAG)(x, y);
+
+        setActions([...actions, ...newActions.filter(dontOpenFlagged)]);
     };
 
     const createRightClickHandler = (x: number, y: number) => () => {
