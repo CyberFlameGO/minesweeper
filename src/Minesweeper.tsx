@@ -133,7 +133,7 @@ const Minesweeper: React.FC<{}> = () => {
                 if (isFlagged(x, y)) {
                     const removeFlag = createRemove(ActionType.FLAG);
                     setActions(removeFlag(actions, x, y));
-                } else {
+                } else if (!isOpen(x, y)) {
                     setActions(
                         addIfNotNull(actions, createFlagAction({ x, y }))
                     );
