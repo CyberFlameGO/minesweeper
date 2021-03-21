@@ -67,7 +67,7 @@ export const createClearClick = (board: number[][]) => (
 export const createOpenNeighbours = (board: number[][]) => (
     sx: number,
     sy: number,
-    opened: Array<{ x: number; y: number }> = []
+    opened: Array<Coordinates> = []
 ) => {
     surroundingSquares(board)(sx, sy).forEach(({ x, y, value }) => {
         if (value !== -1 && !opened.find((it) => it.x === x && it.y === y)) {
