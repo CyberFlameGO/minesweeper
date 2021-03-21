@@ -164,7 +164,9 @@ const Minesweeper: React.FC<{}> = () => {
 
                             const flagged = isFlagged(x, y);
                             const open =
-                                isOpen(x, y) || (!flagged && bomb && lost);
+                                isOpen(x, y) ||
+                                (lost &&
+                                    ((flagged && !bomb) || (!flagged && bomb)));
 
                             return (
                                 <Cell
