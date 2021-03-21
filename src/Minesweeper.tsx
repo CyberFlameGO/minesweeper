@@ -63,14 +63,14 @@ const createIsType = (actions: Action[]) => (
 const createClick = (board: number[][], actions: Action[]) => (
     x: number,
     y: number
-) => {
+): Action[] => {
     const openNeighbours = createOpenNeighbours(board);
     const createOpenAction = createActionFactory(actions, ActionType.OPEN);
 
     return [
-        createOpenAction({ x, y }),
+        ...[createOpenAction({ x, y })].filter(notNull),
         ...(board[y][x] === 0
-            ? openNeighbours(x, y).map(createOpenAction)
+            ? openNeighbours(x, y).map(createOpenAction).filter(notNull)
             : []),
     ];
 };
@@ -84,7 +84,7 @@ const Minesweeper: React.FC<{}> = () => {
     const [gameState, setGameState] = useState(State.NOT_STARTED);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
-        const newActions: Array<Action | null> = [];
+        const newActions: Array<Action> = [];
         const click = createClick(board, actions);
 
         match(gameState)
@@ -100,7 +100,7 @@ const Minesweeper: React.FC<{}> = () => {
                 }
             });
 
-        setActions([...actions, ...newActions.filter(notNull)]);
+        setActions([...actions, ...newActions]);
     };
 
     const createRightClickHandler = (x: number, y: number) => () => {
