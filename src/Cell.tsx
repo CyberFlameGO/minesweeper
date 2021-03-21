@@ -3,7 +3,7 @@ import bomb from "./assets/bomb.png";
 import { className } from "./util/functions";
 import { Range } from "./util/types";
 
-interface Props {
+interface CellProps {
     value: number;
     open: boolean;
     red: boolean;
@@ -21,7 +21,7 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const Cell: React.FC<Props> = ({ value, onClick, open, red }) => {
+const Cell: React.FC<CellProps> = ({ value, onClick, open, red }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
     return (
