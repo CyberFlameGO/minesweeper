@@ -9,6 +9,7 @@ import {
 } from "./util/board";
 import {
     className,
+    either,
     notNull,
     pipe,
     preventDefault,
@@ -89,9 +90,7 @@ const Minesweeper: React.FC<{}> = () => {
                 setGameState(GameState.STARTED);
             })
             .on(
-                (state) =>
-                    state === GameState.STARTED ||
-                    state === GameState.NOT_STARTED,
+                either<GameState>(GameState.STARTED, GameState.NOT_STARTED),
                 () => {
                     newActions.push(...click(x, y));
 
