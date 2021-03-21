@@ -38,6 +38,14 @@ interface Action {
     y: number;
 }
 
+const actionEquals = (action1: Action) => (action2: Action) =>
+    action1.type === action2.type &&
+    action1.x === action2.x &&
+    action1.y === action2.y;
+
+const actionNotEquals = (action1: Action) => (action2: Action) =>
+    !actionEquals(action1)(action2);
+
 const getLast = (actions: Action[], actionType: ActionType) =>
     actions.filter(({ type }) => type === actionType).slice(-1)[0];
 
@@ -62,7 +70,7 @@ const createRemove = (type: ActionType) => (
     actions: Action[],
     x: number,
     y: number
-) => actions.filter((it) => !(it.x === x && it.y === y && it.type === type));
+) => actions.filter(actionNotEquals({ x, y, type }));
 
 const createClick = (board: number[][], actions: Action[]) => (
     x: number,
