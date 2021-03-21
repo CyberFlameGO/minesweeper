@@ -38,9 +38,8 @@ interface Action {
     y: number;
 }
 
-const isOpen = (action: Action) => action.type === ActionType.OPEN;
-const getOpened = (actions: Action[]) => actions.filter(isOpen);
-const getLastOpen = (actions: Action[]) => getOpened(actions).slice(-1)[0];
+const getLast = (actions: Action[], actionType: ActionType) =>
+    actions.filter(({ type }) => type === actionType).slice(-1)[0];
 
 const uniqueAction = (actions: Action[], action: Action) =>
     unique(actions, ["x", "y", "type"])(action);
@@ -115,7 +114,7 @@ const Minesweeper: React.FC<{}> = () => {
     };
 
     const is = createIsType(actions);
-    const lastOpen = getLastOpen(actions);
+    const lastOpen = getLast(actions, ActionType.OPEN);
 
     return (
         <table
