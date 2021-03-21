@@ -6,6 +6,9 @@ export interface Coordinates {
     y: number;
 }
 
+export const isBomb = (x: number, y: number) => (board: number[][]) =>
+    board[y][x] === -1;
+
 export const validCoordinates = (board: number[][]) => ({
     x,
     y,
