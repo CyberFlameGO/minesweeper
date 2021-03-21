@@ -10,6 +10,7 @@ interface CellProps {
     open: boolean;
     red: boolean;
     flagged: boolean;
+    lost: boolean;
     onLeftClick: React.EventHandler<React.MouseEvent>;
     onRightClick: React.EventHandler<React.MouseEvent>;
 }
@@ -32,9 +33,12 @@ const Cell: React.FC<CellProps> = ({
     open,
     flagged,
     red,
+    lost,
 }) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
     const bomb = value === -1;
+
+    const isOpen = open || (lost && ((flagged && !bomb) || (!flagged && bomb)));
 
     const mouseDown = (event: React.MouseEvent) =>
         event.button === 2 && onRightClick(event);
@@ -44,15 +48,18 @@ const Cell: React.FC<CellProps> = ({
 
     return (
         <td
-            className={className({ open, red, flagged })}
+            className={className({ open: isOpen, red, flagged })}
             style={open ? { color } : {}}
             onMouseDown={mouseDown}
             onMouseUp={mouseUp}
         >
-            {!open && flagged && <img src={flag} alt="flag" />}
-            {open && flagged && !bomb && <img src={notBomb} alt="not bomb" />}
-            {open && bomb && <img src={bombImage} alt="bomb" />}
+            {!(lost && !bomb) && !open && flagged && (
+                <img src={flag} alt="flag" />
+            )}
             {open && value > 0 && value}
+
+            {lost && flagged && !bomb && <img src={notBomb} alt="not bomb" />}
+            {lost && !flagged && bomb && <img src={bombImage} alt="bomb" />}
         </td>
     );
 };
