@@ -1,5 +1,4 @@
 import { area, flatten, isIndex } from "./array";
-import { unique } from "./functions";
 
 export interface Coordinates {
     x: number;
@@ -13,6 +12,12 @@ export const validCoordinates = (board: number[][]) => ({
     x,
     y,
 }: Coordinates) => isIndex(board)(y) && isIndex(board[0])(x);
+
+export const sameCoordinates = <T extends Coordinates>(c1: T) => (c2: T) =>
+    c1.x === c2.x && c1.y === c2.y;
+
+export const uniqueCoordinates = <T extends Coordinates>(arr: T[]) => (c: T) =>
+    !arr.find(sameCoordinates<T>(c));
 
 export const surroundingSquares = (board: number[][]) => (
     squareX: number,
@@ -73,7 +78,7 @@ export const createOpenNeighbours = (board: number[][]) => (
                     x,
                     y,
                     opened
-                ).filter(unique(opened, ["x", "y"]));
+                ).filter(uniqueCoordinates(opened));
 
                 opened.push(...surrounding);
             }
