@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { array2d } from "./util/array";
+import { addIfNotNull, array2d } from "./util/array";
 import {
     addBombs,
     calculateValues,
@@ -45,11 +45,11 @@ const getLastOpen = (actions: Action[]) => getOpened(actions).slice(-1)[0];
 const uniqueAction = (actions: Action[], action: Action) =>
     unique(actions, ["x", "y", "type"])(action);
 
-const createOpenActionFactory = (actions: Action[]) => ({
+const createActionFactory = (actions: Action[], type: ActionType) => ({
     x,
     y,
 }: Coordinates): Action | null => {
-    const action = { x, y, type: ActionType.OPEN };
+    const action = { x, y, type };
 
     return uniqueAction(actions, action) ? action : null;
 };
@@ -62,7 +62,7 @@ const createClick = (board: number[][], actions: Action[]) => (
     y: number
 ) => {
     const openNeighbours = createOpenNeighbours(board);
-    const createOpenAction = createOpenActionFactory(actions);
+    const createOpenAction = createActionFactory(actions, ActionType.OPEN);
 
     return [
         createOpenAction({ x, y }),
@@ -80,9 +80,8 @@ const Minesweeper: React.FC<{}> = () => {
     const [actions, setActions] = useState<Action[]>([]);
     const [gameState, setGameState] = useState(State.NOT_STARTED);
 
-    const createClickHandler = (x: number, y: number) => () => {
+    const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action | null> = [];
-
         const click = createClick(board, actions);
 
         match(gameState)
@@ -99,6 +98,14 @@ const Minesweeper: React.FC<{}> = () => {
             });
 
         setActions([...actions, ...newActions.filter(notNull)]);
+    };
+
+    const createRightClickHandler = (x: number, y: number) => () => {
+        const createFlagAction = createActionFactory(actions, ActionType.FLAG);
+
+        match(gameState).on(State.STARTED, () => {
+            setActions(addIfNotNull(actions, createFlagAction({ x, y })));
+        });
     };
 
     const isOpen = createIsOpen(actions);
@@ -127,7 +134,8 @@ const Minesweeper: React.FC<{}> = () => {
                                     value={value}
                                     open={open || (bomb && lost)}
                                     red={bomb && lost && wasLastOpen}
-                                    onClick={createClickHandler(x, y)}
+                                    onLeftClick={createLeftClickHandler(x, y)}
+                                    onRightClick={createRightClickHandler(x, y)}
                                     key={x}
                                 />
                             );

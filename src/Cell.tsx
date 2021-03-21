@@ -7,7 +7,8 @@ interface CellProps {
     value: number;
     open: boolean;
     red: boolean;
-    onClick: React.EventHandler<React.MouseEvent>;
+    onLeftClick: React.EventHandler<React.MouseEvent>;
+    onRightClick: React.EventHandler<React.MouseEvent>;
 }
 
 const COLORS = {
@@ -21,14 +22,20 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const Cell: React.FC<CellProps> = ({ value, onClick, open, red }) => {
+const Cell: React.FC<CellProps> = ({
+    value,
+    onLeftClick,
+    onRightClick,
+    open,
+    red,
+}) => {
     const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
 
     const mouseDown = (event: React.MouseEvent) =>
-        event.button === 2 && onClick(event);
+        event.button === 2 && onRightClick(event);
 
     const mouseUp = (event: React.MouseEvent) =>
-        event.button === 0 && onClick(event);
+        event.button === 0 && onLeftClick(event);
 
     return (
         <td

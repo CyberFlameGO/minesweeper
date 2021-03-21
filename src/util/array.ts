@@ -24,6 +24,9 @@ export const flatten = (arr2d: any[][]) =>
 
 export const isIndex = (arr: any[]) => (i: number) => i >= 0 && i < arr.length;
 
+export const addIfNotNull = <T>(arr: T[], value: T | null) =>
+    value === null ? arr : [...arr, value];
+
 export const area = (arr: number[][]) => (
     x1: number,
     y1: number,
