@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 const encode = (data: string) => btoa(data);
 const decode = (data: string) => atob(data);
 
-const stringify = (obj: any) => encode(JSON.stringify(obj));
-const parse = (json: string) => JSON.parse(decode(json));
+const { parse, stringify } = JSON;
 
 export const useStoredState = <T>(
     name: string,
@@ -14,11 +13,11 @@ export const useStoredState = <T>(
     const stored = localStorage.getItem(storedName);
 
     const [state, setState] = useState<T>(
-        stored ? parse(stored) : initialValue
+        stored ? parse(decode(stored)) : initialValue
     );
 
     useEffect(() => {
-        localStorage.setItem(storedName, stringify(state));
+        localStorage.setItem(storedName, encode(stringify(state)));
     }, [storedName, state]);
 
     const clearState = () => {
