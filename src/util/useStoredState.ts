@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { pipe } from "./functions";
 
-const encode = (data: string) => btoa(data);
-const decode = (data: string) => atob(data);
+const process = (
+    data: string,
+    callback: (x: string) => string,
+    iterations: number
+) => pipe(data, ...Array(iterations).fill(callback));
+
+const encode = (data: string, i = 5) => process(data, btoa, i);
+const decode = (data: string, i = 5) => process(data, atob, i);
 
 const { parse, stringify } = JSON;
 
