@@ -7,8 +7,8 @@ const process = (
     iterations: number
 ) => pipe(data, ...Array(iterations).fill(callback));
 
-const encode = (data: string, i = 5) => process(data, btoa, i);
-const decode = (data: string, i = 5) => process(data, atob, i);
+const encode = (data: string, i = 3) => process(data, btoa, i);
+const decode = (data: string, i = 3) => process(data, atob, i);
 
 const { parse, stringify } = JSON;
 
