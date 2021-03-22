@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+const stringify = (obj: any) => btoa(JSON.stringify(obj));
+const parse = (json: string) => JSON.parse(atob(json));
+
 export const useLocalStorageState = <T>(
     name: string,
     initialValue: T | (() => T)
@@ -7,11 +10,11 @@ export const useLocalStorageState = <T>(
     const stored = localStorage.getItem(name);
 
     const [state, setState] = useState<T>(
-        stored ? JSON.parse(stored) : initialValue
+        stored ? parse(stored) : initialValue
     );
 
     useEffect(() => {
-        localStorage.setItem(name, JSON.stringify(state));
+        localStorage.setItem(name, stringify(state));
     }, [name, state]);
 
     const clearState = () => {
