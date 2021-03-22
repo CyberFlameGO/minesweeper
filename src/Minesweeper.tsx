@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { addIfNotNull, array2d } from "./util/array";
 import {
     addBombs,
@@ -89,15 +89,29 @@ const createClick = (board: number[][], actions: Action[]) => (
 };
 
 const Minesweeper: React.FC<{}> = () => {
-    const [board, setBoard] = useLocalStorageState<number[][]>("board", () =>
-        pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
-    );
+    const [board, setBoard, clearBoardStorage] = useLocalStorageState<
+        number[][]
+    >("board", () => pipe(array2d(16)(16)(0), addBombs(20), calculateValues));
 
-    const [actions, setActions] = useLocalStorageState<Action[]>("actions", []);
-    const [gameState, setGameState] = useLocalStorageState<State>(
-        "state",
-        State.NOT_STARTED
-    );
+    const [actions, setActions, clearActionsStorage] = useLocalStorageState<
+        Action[]
+    >("actions", []);
+
+    const [
+        gameState,
+        setGameState,
+        clearGameStateStorage,
+    ] = useLocalStorageState<State>("state", State.NOT_STARTED);
+
+    const clearStorage = useCallback(() => {
+        clearBoardStorage();
+        clearActionsStorage();
+        clearGameStateStorage();
+    }, [clearActionsStorage, clearBoardStorage, clearGameStateStorage]);
+
+    useEffect(() => {
+        match(gameState).on(either<State>(State.LOST, State.WON), clearStorage);
+    }, [gameState, clearStorage]);
 
     const is = createIsType(actions);
     const isFlagged = is(ActionType.FLAG);
