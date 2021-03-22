@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { addIfNotNull, array2d } from "./util/array";
 import {
     addBombs,
