@@ -19,7 +19,7 @@ import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
-import { useLocalStorageState } from "./util/useLocalStorageState";
+import { useStoredState } from "./util/useStoredState";
 
 enum State {
     NOT_STARTED,
@@ -89,19 +89,21 @@ const createClick = (board: number[][], actions: Action[]) => (
 };
 
 const Minesweeper: React.FC<{}> = () => {
-    const [board, setBoard, clearBoardStorage] = useLocalStorageState<
-        number[][]
-    >("board", () => pipe(array2d(16)(16)(0), addBombs(20), calculateValues));
+    const [board, setBoard, clearBoardStorage] = useStoredState<number[][]>(
+        "board",
+        () => pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
+    );
 
-    const [actions, setActions, clearActionsStorage] = useLocalStorageState<
-        Action[]
-    >("actions", []);
+    const [actions, setActions, clearActionsStorage] = useStoredState<Action[]>(
+        "actions",
+        []
+    );
 
     const [
         gameState,
         setGameState,
         clearGameStateStorage,
-    ] = useLocalStorageState<State>("state", State.NOT_STARTED);
+    ] = useStoredState<State>("state", State.NOT_STARTED);
 
     const clearStorage = useCallback(() => {
         clearBoardStorage();

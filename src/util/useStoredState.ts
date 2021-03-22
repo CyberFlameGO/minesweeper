@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const stringify = (obj: any) => btoa(JSON.stringify(obj));
 const parse = (json: string) => JSON.parse(atob(json));
 
-export const useLocalStorageState = <T>(
+export const useStoredState = <T>(
     name: string,
     initialValue: T | (() => T)
 ): [T, React.Dispatch<React.SetStateAction<T>>, () => void] => {
