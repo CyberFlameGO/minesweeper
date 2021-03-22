@@ -19,6 +19,7 @@ import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
+import { useLocalStorageState } from "./util/useLocalStorageState";
 
 enum State {
     NOT_STARTED,
@@ -88,12 +89,15 @@ const createClick = (board: number[][], actions: Action[]) => (
 };
 
 const Minesweeper: React.FC<{}> = () => {
-    const [board, setBoard] = useState(() =>
+    const [board, setBoard] = useLocalStorageState<number[][]>("board", () =>
         pipe(array2d(16)(16)(0), addBombs(20), calculateValues)
     );
 
-    const [actions, setActions] = useState<Action[]>([]);
-    const [gameState, setGameState] = useState(State.NOT_STARTED);
+    const [actions, setActions] = useLocalStorageState<Action[]>("actions", []);
+    const [gameState, setGameState] = useLocalStorageState<State>(
+        "state",
+        State.NOT_STARTED
+    );
 
     const is = createIsType(actions);
     const isFlagged = is(ActionType.FLAG);
