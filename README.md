@@ -1,9 +1,1 @@
-# Todo
-
--   [ ] Overlay
-
-    -   [ ] Settings
-
--   [ ] Make chrome extension
-
--   [ ] Make openSurroundingZeros pure if possible
+Currently working on the `pure` branch
