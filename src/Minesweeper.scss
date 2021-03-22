@@ -12,8 +12,10 @@
     border-bottom: $width solid $shadow;
 }
 
+$size-cell: 32px;
+
 :root {
-    font-size: 15px;
+    font-size: $size-cell * 17 / 32;
 }
 
 html,
@@ -33,7 +35,6 @@ body {
 }
 
 table#Minesweeper {
-    $size-cell: 28px;
     $size-borders: 4px;
 
     font-family: "MineSweeper";
