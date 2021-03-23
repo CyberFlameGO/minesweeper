@@ -115,6 +115,23 @@ const Minesweeper: React.FC<{}> = () => {
         match(gameState).on(either<State>(State.LOST, State.WON), clearStorage);
     }, [gameState, clearStorage]);
 
+    useEffect(() => {
+        const is = createIsType(actions);
+        const isFlagged = is(ActionType.FLAG);
+        const isOpen = is(ActionType.OPEN);
+
+        const allBombsFlagged = board.every((row, y) => {
+            return row.every((value, x) => {
+                return (
+                    (value === -1 && isFlagged(x, y)) ||
+                    (value > -1 && isOpen(x, y))
+                );
+            });
+        });
+
+        if (allBombsFlagged) setGameState(State.WON);
+    }, [actions, board, setGameState]);
+
     const is = createIsType(actions);
     const isFlagged = is(ActionType.FLAG);
     const isOpen = is(ActionType.OPEN);
