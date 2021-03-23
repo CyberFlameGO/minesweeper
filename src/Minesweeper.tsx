@@ -120,14 +120,13 @@ const Minesweeper: React.FC<{}> = () => {
         const isFlagged = is(ActionType.FLAG);
         const isOpen = is(ActionType.OPEN);
 
-        const allBombsFlagged = board.every((row, y) => {
-            return row.every((value, x) => {
-                return (
+        const allBombsFlagged = board.every((row, y) =>
+            row.every(
+                (value, x) =>
                     (value === -1 && isFlagged(x, y)) ||
                     (value > -1 && isOpen(x, y))
-                );
-            });
-        });
+            )
+        );
 
         if (allBombsFlagged) setGameState(State.WON);
     }, [actions, board, setGameState]);
