@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { addIfNotNull, array2d } from "./util/array";
 import {
     addBombsPercent,
@@ -115,11 +115,11 @@ const Minesweeper: React.FC<{}> = () => {
         match(gameState).on(either<State>(State.LOST, State.WON), clearStorage);
     }, [gameState, clearStorage]);
 
-    useEffect(() => {
-        const is = createIsType(actions);
-        const isFlagged = is(ActionType.FLAG);
-        const isOpen = is(ActionType.OPEN);
+    const is = useMemo(() => createIsType(actions), [actions]);
+    const isFlagged = is(ActionType.FLAG);
+    const isOpen = is(ActionType.OPEN);
 
+    useEffect(() => {
         const allBombsFlagged = board.every((row, y) =>
             row.every(
                 (value, x) =>
@@ -129,11 +129,7 @@ const Minesweeper: React.FC<{}> = () => {
         );
 
         if (allBombsFlagged) setGameState(State.WON);
-    }, [actions, board, setGameState]);
-
-    const is = createIsType(actions);
-    const isFlagged = is(ActionType.FLAG);
-    const isOpen = is(ActionType.OPEN);
+    }, [actions, board, isFlagged, isOpen, setGameState]);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
