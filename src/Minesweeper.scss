@@ -73,7 +73,7 @@ table#Minesweeper {
             }
 
             @at-root {
-                table#Minesweeper:not(.lost):active td:hover {
+                table#Minesweeper:not(.lost):active td:not(.flagged):hover {
                     border: $open-border !important;
                     padding: $open-border / 2 !important;
                 }
