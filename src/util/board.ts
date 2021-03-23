@@ -40,7 +40,7 @@ export const calculateValue = (board: number[][]) => (x: number, y: number) =>
 export const calculateValues = (board: number[][]) =>
     board.map((row, y) => row.map((_, x) => calculateValue(board)(x, y)));
 
-export const addBombs = (percent: number) => (board: number[][]) =>
+export const addBombsPercent = (percent: number) => (board: number[][]) =>
     board.map((row) =>
         row.map((val) => (Math.random() > (100 - percent) / 100 ? -1 : val))
     );

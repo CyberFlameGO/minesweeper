@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { addIfNotNull, array2d } from "./util/array";
 import {
-    addBombs,
+    addBombsPercent,
     calculateValues,
     createClearClick,
     Coordinates,
@@ -91,7 +91,7 @@ const createClick = (board: number[][], actions: Action[]) => (
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard, clearBoardStorage] = useStoredState<number[][]>(
         "board",
-        () => pipe(array2d(14)(14)(0), addBombs(20), calculateValues)
+        () => pipe(array2d(14)(14)(0), addBombsPercent(20), calculateValues)
     );
 
     const [actions, setActions, clearActionsStorage] = useStoredState<Action[]>(
