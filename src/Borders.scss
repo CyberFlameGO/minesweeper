@@ -17,9 +17,10 @@ div.Borders {
         $ribbon-width: $size + $border-width / 2;
         $ribbon-height: 48px;
         $ribbon-expanded-width: $ribbon-height;
+        $ribbon-padding: $border-width * 3 / 2;
+
         --ribbon-width: #{$ribbon-width};
 
-        background-color: black;
         opacity: 0.5;
 
         position: absolute;
@@ -27,16 +28,14 @@ div.Borders {
         top: 20px;
         right: -$border-width;
 
-        width: var(--ribbon-width);
+        width: calc(var(--ribbon-width) + #{$ribbon-padding});
         height: $ribbon-height;
-
-        border-top-left-radius: $size;
-        border-bottom-left-radius: $size;
 
         cursor: pointer;
 
         &,
-        & img {
+        & img,
+        &::after {
             transition: all 0.15s ease-out;
         }
 
@@ -51,7 +50,9 @@ div.Borders {
             height: $ribbon-expanded-width;
 
             position: absolute;
-            left: $ribbon-width;
+            left: $ribbon-width + $ribbon-padding;
+
+            z-index: 1;
         }
 
         &:hover {
@@ -59,7 +60,7 @@ div.Borders {
             opacity: 0.7;
 
             img {
-                left: 0;
+                left: $ribbon-padding * 1.1;
             }
         }
 
@@ -67,12 +68,16 @@ div.Borders {
             display: block;
             content: "";
 
+            border-top-left-radius: $size;
+            border-bottom-left-radius: $size;
+
             position: absolute;
             top: 0;
             right: 0;
 
             height: $ribbon-height;
-            width: $ribbon-width + $border-width;
+            width: var(--ribbon-width);
+            background-color: black;
         }
     }
 
