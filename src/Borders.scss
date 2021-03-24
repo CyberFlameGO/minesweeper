@@ -13,6 +13,69 @@ div.Borders {
     border-right: solid $border-width $color-shadows;
     border-bottom: solid $border-width $color-shadows;
 
+    div.ribbon {
+        $ribbon-width: $size + $border-width / 2;
+        $ribbon-height: 48px;
+        $ribbon-expanded-width: $ribbon-height;
+        --ribbon-width: #{$ribbon-width};
+
+        background-color: black;
+        opacity: 0.5;
+
+        position: absolute;
+
+        top: 20px;
+        right: -$border-width;
+
+        width: var(--ribbon-width);
+        height: $ribbon-height;
+
+        border-top-left-radius: $size;
+        border-bottom-left-radius: $size;
+
+        cursor: pointer;
+
+        &,
+        & img {
+            transition: all 0.15s ease-out;
+        }
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        overflow-x: hidden;
+
+        img {
+            width: $ribbon-expanded-width;
+            height: $ribbon-expanded-width;
+
+            position: absolute;
+            left: $ribbon-width;
+        }
+
+        &:hover {
+            --ribbon-width: #{$ribbon-expanded-width};
+            opacity: 0.7;
+
+            img {
+                left: 0;
+            }
+        }
+
+        &::after {
+            display: block;
+            content: "";
+
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            height: $ribbon-height;
+            width: $ribbon-width + $border-width;
+        }
+    }
+
     div.content {
         border-top: solid $border-width $color-shadows;
         border-left: solid $border-width $color-shadows;
