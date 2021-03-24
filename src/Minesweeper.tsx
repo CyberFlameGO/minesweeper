@@ -137,7 +137,7 @@ const Minesweeper: React.FC<{}> = () => {
 
         match(gameState)
             .on(State.NOT_STARTED, () => {
-                setBoard(createClearClick(board, 0)(x, y));
+                setBoard(createClearClick(board, 1)(x, y));
                 setGameState(State.STARTED);
             })
             .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
