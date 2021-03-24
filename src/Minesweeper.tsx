@@ -99,21 +99,20 @@ const Minesweeper: React.FC<{}> = () => {
         []
     );
 
-    const [
-        gameState,
-        setGameState,
-        clearGameStateStorage,
-    ] = useStoredState<State>("state", State.NOT_STARTED);
+    const [state, setState, clearStateStorage] = useStoredState<State>(
+        "state",
+        State.NOT_STARTED
+    );
 
     const clearStorage = useCallback(() => {
         clearBoardStorage();
         clearActionsStorage();
-        clearGameStateStorage();
-    }, [clearActionsStorage, clearBoardStorage, clearGameStateStorage]);
+        clearStateStorage();
+    }, [clearActionsStorage, clearBoardStorage, clearStateStorage]);
 
     useEffect(() => {
-        match(gameState).on(either<State>(State.LOST, State.WON), clearStorage);
-    }, [gameState, clearStorage]);
+        match(state).on(either<State>(State.LOST, State.WON), clearStorage);
+    }, [state, clearStorage]);
 
     const is = useMemo(() => createIsType(actions), [actions]);
     const isFlagged = is(ActionType.FLAG);
@@ -128,24 +127,24 @@ const Minesweeper: React.FC<{}> = () => {
             )
         );
 
-        if (allBombsFlagged) setGameState(State.WON);
-    }, [actions, board, isFlagged, isOpen, setGameState]);
+        if (allBombsFlagged) setState(State.WON);
+    }, [actions, board, isFlagged, isOpen, setState]);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
         const click = createClick(board, actions);
 
-        match(gameState)
+        match(state)
             .on(State.NOT_STARTED, () => {
                 setBoard(createClearClick(board, 1)(x, y));
-                setGameState(State.STARTED);
+                setState(State.STARTED);
             })
             .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
                 if (!isFlagged(x, y)) {
                     newActions.push(...click(x, y));
 
                     if (isBomb(x, y)(board)) {
-                        setGameState(State.LOST);
+                        setState(State.LOST);
                     }
                 }
             });
@@ -159,7 +158,7 @@ const Minesweeper: React.FC<{}> = () => {
     const createRightClickHandler = (x: number, y: number) => () => {
         const createFlagAction = createActionFactory(actions, ActionType.FLAG);
 
-        match(gameState)
+        match(state)
             .on(State.NOT_STARTED, () => {
                 const leftClick = createLeftClickHandler(x, y);
                 leftClick();
@@ -183,14 +182,14 @@ const Minesweeper: React.FC<{}> = () => {
             <table
                 id="Minesweeper"
                 onContextMenu={preventDefault}
-                className={className({ lost: gameState === State.LOST })}
+                className={className({ lost: state === State.LOST })}
             >
                 <tbody>
                     {board.map((row, y) => (
                         <tr key={y}>
                             {row.map((value, x) => {
                                 const bomb = value === -1;
-                                const lost = gameState === State.LOST;
+                                const lost = state === State.LOST;
                                 const wasLastOpen =
                                     lastOpen &&
                                     lastOpen.y === y &&
