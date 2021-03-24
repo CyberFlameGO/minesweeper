@@ -45,7 +45,7 @@ export const addBombsPercent = (percent: number) => (board: number[][]) =>
         row.map((val) => (Math.random() > (100 - percent) / 100 ? -1 : val))
     );
 
-export const createClearClick = (board: number[][]) => (
+export const createClearClick = (board: number[][], radius: number) => (
     clickX: number,
     clickY: number
 ) => {
@@ -53,11 +53,25 @@ export const createClearClick = (board: number[][]) => (
 
     const newBoard = board.slice();
 
-    flatten(area(newBoard)(clickX - 1, clickY - 1, clickX + 1, clickY + 1))
+    flatten(
+        area(newBoard)(
+            clickX - radius,
+            clickY - radius,
+            clickX + radius,
+            clickY + radius
+        )
+    )
         .filter(validCoordinates(newBoard))
         .forEach(({ x, y }) => (newBoard[y][x] = 0));
 
-    flatten(area(newBoard)(clickX - 2, clickY - 2, clickX + 2, clickY + 2))
+    flatten(
+        area(newBoard)(
+            clickX - (radius + 1),
+            clickY - (radius + 1),
+            clickX + (radius + 1),
+            clickY + (radius + 1)
+        )
+    )
         .filter(validCoordinates(newBoard))
         .forEach(({ x, y }) => (newBoard[y][x] = calc(x, y)));
 
