@@ -5,5 +5,8 @@ Intended to become a chrome extension where you can play minesweeper. Join me on
 ## Todo
 
 -   [ ] Settings
-    -   [ ] Board size, number/percentage of mines
-    -   [ ] ClearClickRadius?
+    -   [ ] Basic beginner/intermediate/hard settings
+        -   Advanced settings:
+            -   [ ] Board size, number/percentage of mines
+            -   [ ] ClearClickRadius?
+            -   [ ] Turn on/off borders
