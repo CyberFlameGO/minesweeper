@@ -1,22 +1,19 @@
 @import "./variables";
 
-$border-width: 4px;
-$size: 16px - $border-width * 2;
-
 div.Borders {
-    padding: $size;
+    padding: $border-size;
     background: $color-background;
     position: relative;
 
-    border-top: solid $border-width $color-highlight;
-    border-left: solid $border-width $color-highlight;
-    border-right: solid $border-width $color-shadows;
-    border-bottom: solid $border-width $color-shadows;
+    border-top: solid $border-highlight-width $color-highlight;
+    border-left: solid $border-highlight-width $color-highlight;
+    border-right: solid $border-highlight-width $color-shadows;
+    border-bottom: solid $border-highlight-width $color-shadows;
 
     div.content {
-        border-top: solid $border-width $color-shadows;
-        border-left: solid $border-width $color-shadows;
-        border-right: solid $border-width $color-highlight;
-        border-bottom: solid $border-width $color-highlight;
+        border-top: solid $border-highlight-width $color-shadows;
+        border-left: solid $border-highlight-width $color-shadows;
+        border-right: solid $border-highlight-width $color-highlight;
+        border-bottom: solid $border-highlight-width $color-highlight;
     }
 }
