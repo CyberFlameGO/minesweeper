@@ -1,15 +1,17 @@
+@import "./variables";
+
 div.ribbon {
-    $ribbon-width: $size + $border-width / 2;
+    $ribbon-width: $border-size + $border-highlight-width / 2;
     $ribbon-height: 48px;
     $ribbon-expanded-width: $ribbon-height;
-    $ribbon-padding: $border-width * 3 / 2;
+    $ribbon-padding: $border-highlight-width * 3 / 2;
 
     --ribbon-width: #{$ribbon-width};
 
     position: absolute;
 
     top: 20px;
-    right: -$border-width;
+    right: -$border-highlight-width;
 
     width: calc(var(--ribbon-width) + #{$ribbon-padding});
     height: $ribbon-height;
@@ -41,8 +43,8 @@ div.ribbon {
         display: block;
         content: "";
 
-        border-top-left-radius: $size;
-        border-bottom-left-radius: $size;
+        border-top-left-radius: $border-size;
+        border-bottom-left-radius: $border-size;
 
         position: absolute;
         top: 0;
