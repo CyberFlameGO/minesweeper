@@ -23,3 +23,5 @@ export const preventDefault: React.EventHandler<any> = (event) =>
 
 export const either = <T>(...values: T[]) => (value: T) =>
     values.some((it) => it === value);
+
+export const toggle = (bool: boolean) => !bool;
