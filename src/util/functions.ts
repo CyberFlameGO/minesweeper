@@ -1,3 +1,5 @@
+import { FixedLengthArray } from "./array";
+
 export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
     x !== null;
 
@@ -13,3 +15,6 @@ export const either = <T>(...values: T[]) => (value: T) =>
     values.some((it) => it === value);
 
 export const toggle = (bool: boolean) => !bool;
+
+export const repeat = <I extends number>(i: I) => <T>(x: T) =>
+    (Array(i).fill(x) as any) as FixedLengthArray<I, T>;
