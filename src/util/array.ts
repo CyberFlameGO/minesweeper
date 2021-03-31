@@ -10,9 +10,20 @@ export type DropFirst<T extends any[]> = ((...args: T) => any) extends (
 
 export type LastElement<T extends any[]> = T[Length<DropFirst<T>>];
 
-export interface FixedLengthArray<L extends number, T> extends ArrayLike<T> {
-    length: L;
-}
+// https://stackoverflow.com/a/59906630
+
+export type FixedLengthArray<
+    L extends number,
+    T,
+    TObj = [T, ...Array<T>]
+> = Pick<
+    TObj,
+    Exclude<keyof TObj, "splice" | "push" | "pop" | "shift" | "unshift">
+> & {
+    readonly length: L;
+    [I: number]: T;
+    [Symbol.iterator]: () => IterableIterator<T>;
+};
 
 export const array = (length: number) => Array<null>(length).fill(null);
 
