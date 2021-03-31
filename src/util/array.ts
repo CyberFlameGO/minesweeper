@@ -10,6 +10,10 @@ export type DropFirst<T extends any[]> = ((...args: T) => any) extends (
 
 export type LastElement<T extends any[]> = T[Length<DropFirst<T>>];
 
+export interface FixedLengthArray<L extends number, T> extends ArrayLike<T> {
+    length: L;
+}
+
 export const array = (length: number) => Array<null>(length).fill(null);
 
 export const array2d = (width: number) => (height: number) => <T>(
