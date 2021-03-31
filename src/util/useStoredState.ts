@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import { repeat } from "./functions";
 import { pipe } from "./functions/pipe";
 
-const process = (
-    data: string,
-    callback: (x: string) => string,
-    iterations: number
-) => pipe(...repeat(iterations)(callback))(data);
+const process = (data: string, callback: (x: string) => string, n: number) =>
+    pipe(...repeat(n)(callback))(data);
 
 const createEncode = (i: number) => (data: string) => process(data, btoa, i);
 const createDecode = (i: number) => (data: string) => process(data, atob, i);
