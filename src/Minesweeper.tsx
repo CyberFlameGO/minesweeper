@@ -84,26 +84,26 @@ const createClick = (board: number[][], actions: Action[]) => (
 };
 
 const Minesweeper: React.FC<{}> = () => {
-    const [board, setBoard, clearBoardStorage] = useStoredState<number[][]>(
+    const [board, setBoard, clearStoredBoard] = useStoredState<number[][]>(
         "board",
         () => pipe(addBombsPercent(20), calculateValues)(array2d(14)(14)(0))
     );
 
-    const [actions, setActions, clearActionsStorage] = useStoredState<Action[]>(
+    const [actions, setActions, clearStoredActions] = useStoredState<Action[]>(
         "actions",
         []
     );
 
-    const [state, setState, clearStateStorage] = useStoredState<State>(
+    const [state, setState, clearStoredState] = useStoredState<State>(
         "state",
         State.NOT_STARTED
     );
 
     const clearStorage = useCallback(() => {
-        clearBoardStorage();
-        clearActionsStorage();
-        clearStateStorage();
-    }, [clearActionsStorage, clearBoardStorage, clearStateStorage]);
+        clearStoredBoard();
+        clearStoredActions();
+        clearStoredState();
+    }, [clearStoredActions, clearStoredBoard, clearStoredState]);
 
     useEffect(() => {
         match(state).on(either<State>(State.LOST, State.WON), clearStorage);
