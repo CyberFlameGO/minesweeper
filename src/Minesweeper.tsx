@@ -48,7 +48,7 @@ const getLast = (actions: Action[], actionType: ActionType) =>
 const uniqueAction = (actions: Action[], action: Action) =>
     !actions.find(actionEquals(action));
 
-const createActionFactory = (actions: Action[], type: ActionType) => ({
+const actionFactory = (actions: Action[], type: ActionType) => ({
     x,
     y,
 }: Coordinates): Action | null => {
@@ -73,7 +73,7 @@ const createClick = (board: number[][], actions: Action[]) => (
     y: number
 ): Action[] => {
     const openNeighbours = createOpenNeighbours(board);
-    const createOpenAction = createActionFactory(actions, ActionType.OPEN);
+    const createOpenAction = actionFactory(actions, ActionType.OPEN);
 
     return [
         ...[createOpenAction({ x, y })].filter(notNull),
@@ -151,7 +151,7 @@ const Minesweeper: React.FC<{}> = () => {
     };
 
     const createRightClickHandler = (x: number, y: number) => () => {
-        const createFlagAction = createActionFactory(actions, ActionType.FLAG);
+        const createFlagAction = actionFactory(actions, ActionType.FLAG);
 
         match(state)
             .on(State.NOT_STARTED, () => {
