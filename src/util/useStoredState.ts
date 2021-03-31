@@ -8,8 +8,6 @@ const process = (data: string, callback: (x: string) => string, n: number) =>
 const createEncode = (i: number) => (data: string) => process(data, btoa, i);
 const createDecode = (i: number) => (data: string) => process(data, atob, i);
 
-const { parse, stringify } = JSON;
-
 export const useStoredState = <T>(
     name: string,
     initialValue: T | (() => T)
@@ -23,11 +21,11 @@ export const useStoredState = <T>(
     const stored = localStorage.getItem(storedName);
 
     const [state, setState] = useState<T>(
-        stored ? parse(decode(stored)) : initialValue
+        stored ? JSON.parse(decode(stored)) : initialValue
     );
 
     useEffect(() => {
-        localStorage.setItem(storedName, encode(stringify(state)));
+        localStorage.setItem(storedName, encode(JSON.stringify(state)));
     }, [storedName, state, encode]);
 
     const clearState = () => {
