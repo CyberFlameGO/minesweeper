@@ -5,7 +5,7 @@ const process = (
     data: string,
     callback: (x: string) => string,
     iterations: number
-) => pipe(data, ...Array(iterations).fill(callback));
+) => pipe(...Array(iterations).fill(callback))(data);
 
 const createEncode = (i: number) => (data: string) => process(data, btoa, i);
 const createDecode = (i: number) => (data: string) => process(data, atob, i);

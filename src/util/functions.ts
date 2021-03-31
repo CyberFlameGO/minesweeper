@@ -1,14 +1,12 @@
 import React from "react";
 import { LastElement } from "./array";
 
-export const pipe = <
-    Argument,
-    Functions extends Array<(arg: Argument, ...args: any[]) => any>,
-    Return extends ReturnType<LastElement<Functions>>
->(
-    arg: Argument,
-    ...functions: Functions
-): Return => functions.reduce((prev, cur) => cur(prev), arg) as Return;
+type F<T> = (arg: T, ...args: any) => any;
+
+export const pipe = <T>(...functions: Array<F<T>>) => (
+    arg: T
+): ReturnType<LastElement<typeof functions>> =>
+    functions.reduce((prev, cur) => cur(prev), arg);
 
 export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
     x !== null;
