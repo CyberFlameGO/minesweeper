@@ -20,7 +20,6 @@ import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
 import { useStoredState } from "./util/useStoredState";
-import SettingsOverlay from "./SettingsOverlay";
 
 enum State {
     NOT_STARTED,
@@ -180,8 +179,6 @@ const Minesweeper: React.FC<{}> = () => {
 
     return (
         <Borders>
-            <SettingsOverlay />
-
             <table
                 id="Minesweeper"
                 onContextMenu={preventDefault}
