@@ -8,18 +8,13 @@ import {
     createOpenNeighbours,
     isBomb,
 } from "./util/board";
-import {
-    className,
-    either,
-    notNull,
-    pipe,
-    preventDefault,
-} from "./util/functions";
+import { className, either, notNull, preventDefault } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
 import { useStoredState } from "./util/useStoredState";
+import { pipe } from "./util/functions/pipe";
 
 enum State {
     NOT_STARTED,

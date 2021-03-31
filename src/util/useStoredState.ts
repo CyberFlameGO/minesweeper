@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { pipe } from "./functions";
+import { pipe } from "./functions/pipe";
 
 const process = (
     data: string,
