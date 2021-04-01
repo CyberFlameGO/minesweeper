@@ -173,50 +173,52 @@ const Minesweeper: React.FC<{}> = () => {
     const lastOpen = getLast(actions, ActionType.OPEN);
 
     return (
-        <Borders>
-            <table
-                id="Minesweeper"
-                onContextMenu={preventDefault}
-                className={className({ lost: state === State.LOST })}
-            >
-                <tbody>
-                    {board.map((row, y) => (
-                        <tr key={y}>
-                            {row.map((value, x) => {
-                                const bomb = value === -1;
-                                const lost = state === State.LOST;
-                                const wasLastOpen =
-                                    lastOpen &&
-                                    lastOpen.y === y &&
-                                    lastOpen.x === x;
+        <>
+            <Borders>
+                <table
+                    id="Minesweeper"
+                    onContextMenu={preventDefault}
+                    className={className({ lost: state === State.LOST })}
+                >
+                    <tbody>
+                        {board.map((row, y) => (
+                            <tr key={y}>
+                                {row.map((value, x) => {
+                                    const bomb = value === -1;
+                                    const lost = state === State.LOST;
+                                    const wasLastOpen =
+                                        lastOpen &&
+                                        lastOpen.y === y &&
+                                        lastOpen.x === x;
 
-                                const flagged = isFlagged(x, y);
-                                const open = isOpen(x, y);
+                                    const flagged = isFlagged(x, y);
+                                    const open = isOpen(x, y);
 
-                                return (
-                                    <Cell
-                                        value={value}
-                                        open={open}
-                                        red={bomb && lost && wasLastOpen}
-                                        flagged={flagged}
-                                        lost={lost}
-                                        onLeftClick={createLeftClickHandler(
-                                            x,
-                                            y
-                                        )}
-                                        onRightClick={createRightClickHandler(
-                                            x,
-                                            y
-                                        )}
-                                        key={x}
-                                    />
-                                );
-                            })}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </Borders>
+                                    return (
+                                        <Cell
+                                            value={value}
+                                            open={open}
+                                            red={bomb && lost && wasLastOpen}
+                                            flagged={flagged}
+                                            lost={lost}
+                                            onLeftClick={createLeftClickHandler(
+                                                x,
+                                                y
+                                            )}
+                                            onRightClick={createRightClickHandler(
+                                                x,
+                                                y
+                                            )}
+                                            key={x}
+                                        />
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Borders>
+        </>
     );
 };
 
