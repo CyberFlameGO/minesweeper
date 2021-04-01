@@ -85,9 +85,8 @@ const createClick = (board: number[][], actions: Action[]) => (
 };
 
 const Minesweeper: React.FC<{}> = () => {
-    const [board, setBoard, clearStoredBoard] = useStoredState<number[][]>(
-        "board",
-        () => pipe(addBombsPercent(20), calculateValues)(array2d(14)(14)(0))
+    const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
+        pipe(addBombsPercent(20), calculateValues)(array2d(14)(14)(0))
     );
 
     const [actions, setActions, clearStoredActions] = useStoredState<Action[]>(
@@ -95,7 +94,7 @@ const Minesweeper: React.FC<{}> = () => {
         []
     );
 
-    const [state, setState, clearStoredState] = useStoredState<State>(
+    const [state, setState, clearStoredState] = useStoredState(
         "state",
         State.NOT_STARTED
     );
