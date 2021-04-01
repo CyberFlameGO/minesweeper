@@ -1,76 +1,81 @@
-div.overlay div.play {
-    height: 100%;
-    width: 100%;
+div.overlay {
+    div.play {
+        height: 100%;
+        width: 100%;
 
-    font-size: 1.1rem;
+        font-size: 1.1rem;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    h1 {
-        font-family: "Minesweeper";
-    }
-
-    div.buttons {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-        $color-background-button-main: #2a75f3;
-        $color-shade-button-main: darken($color-background-button-main, 10%);
+        h1 {
+            font-family: "Minesweeper";
+        }
 
-        $color-background-button-settings: #e7bd00;
-        $color-shade-button-settings: darken(
-            $color-background-button-settings,
-            10%
-        );
+        div.buttons {
+            display: flex;
+            flex-direction: row;
 
-        button {
-            &.play {
-                --color-button-background: #{$color-background-button-main};
-                --color-button-shade: #{$color-shade-button-main};
-            }
-            &.settings {
-                --color-button-background: #{$color-background-button-settings};
-                --color-button-shade: #{$color-shade-button-settings};
-            }
+            $color-background-button-main: #2a75f3;
+            $color-shade-button-main: darken(
+                $color-background-button-main,
+                10%
+            );
 
-            cursor: pointer;
+            $color-background-button-settings: #e7bd00;
+            $color-shade-button-settings: darken(
+                $color-background-button-settings,
+                10%
+            );
 
-            font-size: 1.25em;
+            button {
+                &.play {
+                    --color-button-background: #{$color-background-button-main};
+                    --color-button-shade: #{$color-shade-button-main};
+                }
+                &.settings {
+                    --color-button-background: #{$color-background-button-settings};
+                    --color-button-shade: #{$color-shade-button-settings};
+                }
 
-            border: 0.2em solid var(--color-button-shade);
-            border-radius: 10px;
+                cursor: pointer;
 
-            background-color: var(--color-button-background);
+                font-size: 1.25em;
 
-            font-weight: bold;
-            color: white;
+                border: 0.2em solid var(--color-button-shade);
+                border-radius: 10px;
 
-            padding: 0.2em 0.5em;
+                background-color: var(--color-button-background);
 
-            outline: none;
+                font-weight: bold;
+                color: white;
 
-            text-transform: uppercase;
+                padding: 0.2em 0.5em;
 
-            margin: 0 0.25em;
+                outline: none;
 
-            &:active {
-                background-color: var(--color-button-shade);
+                text-transform: uppercase;
+
+                margin: 0 0.25em;
+
+                &:active {
+                    background-color: var(--color-button-shade);
+                }
             }
         }
-    }
 
-    p.attribution {
-        font-size: 0.85em;
+        p.attribution {
+            font-size: 0.85em;
 
-        text-align: center;
+            text-align: center;
 
-        position: absolute;
-        bottom: 0;
-        left: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
 
-        width: 100%;
+            width: 100%;
+        }
     }
 }
