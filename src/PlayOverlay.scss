@@ -1,0 +1,54 @@
+div.overlay.play {
+    font-size: 1.1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    $color-button: #2a75f3;
+    $color-button-shade: darken(
+        $color: $color-button,
+        $amount: 10%,
+    );
+
+    h1 {
+        font-family: "Minesweeper";
+    }
+
+    button {
+        cursor: pointer;
+
+        font-size: 1.25em;
+
+        border: 0.2em solid $color-button-shade;
+        border-radius: 10px;
+
+        background-color: $color-button;
+
+        font-weight: bold;
+        color: white;
+
+        padding: 0.2em 0.5em;
+
+        outline: none;
+
+        text-transform: uppercase;
+
+        &:active {
+            background-color: $color-button-shade;
+        }
+    }
+
+    p.attribution {
+        font-size: 0.85em;
+
+        text-align: center;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+    }
+}
