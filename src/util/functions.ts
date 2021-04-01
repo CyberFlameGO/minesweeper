@@ -5,8 +5,14 @@ export const notNull = <T extends unknown>(x: T): x is Exclude<T, null> =>
 
 export const element = (n: number) => <T>(array: Array<T>) => array[n];
 
-export const className = (classNames: { [key: string]: boolean }) =>
-    Object.entries(classNames).filter(element(1)).map(element(0)).join(" ");
+export const className = (
+    classNames: { [key: string]: boolean },
+    ...staticClassNames: string[]
+) =>
+    [
+        ...Object.entries(classNames).filter(element(1)).map(element(0)),
+        ...staticClassNames,
+    ].join(" ");
 
 export const preventDefault: React.EventHandler<any> = (event) =>
     event.preventDefault();
