@@ -15,7 +15,13 @@ const PlayOverlay: React.FC<PlayOverlayProps> = ({ show: _show }) => {
     return (
         <div className={className({ show }, "overlay", "play")}>
             <h1>Minesweeper</h1>
-            <button onMouseUp={hide}>Play</button>
+
+            <div className="buttons">
+                <button className="play" onMouseUp={hide}>
+                    Play
+                </button>
+                <button className="settings">Settings</button>
+            </div>
 
             <p className="attribution">
                 Minesweeper font provided by Gangetsha Lyx at{" "}
