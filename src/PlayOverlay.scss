@@ -6,37 +6,56 @@ div.overlay.play {
     justify-content: center;
     align-items: center;
 
-    $color-button: #2a75f3;
-    $color-button-shade: darken(
-        $color: $color-button,
-        $amount: 10%,
-    );
-
     h1 {
         font-family: "Minesweeper";
     }
 
-    button {
-        cursor: pointer;
+    div.buttons {
+        display: flex;
+        flex-direction: row;
 
-        font-size: 1.25em;
+        $color-background-button-main: #2a75f3;
+        $color-shade-button-main: darken($color-background-button-main, 10%);
 
-        border: 0.2em solid $color-button-shade;
-        border-radius: 10px;
+        $color-background-button-settings: #e7bd00;
+        $color-shade-button-settings: darken(
+            $color-background-button-settings,
+            10%
+        );
 
-        background-color: $color-button;
+        button {
+            &.play {
+                --color-button-background: #{$color-background-button-main};
+                --color-button-shade: #{$color-shade-button-main};
+            }
+            &.settings {
+                --color-button-background: #{$color-background-button-settings};
+                --color-button-shade: #{$color-shade-button-settings};
+            }
 
-        font-weight: bold;
-        color: white;
+            cursor: pointer;
 
-        padding: 0.2em 0.5em;
+            font-size: 1.25em;
 
-        outline: none;
+            border: 0.2em solid var(--color-button-shade);
+            border-radius: 10px;
 
-        text-transform: uppercase;
+            background-color: var(--color-button-background);
 
-        &:active {
-            background-color: $color-button-shade;
+            font-weight: bold;
+            color: white;
+
+            padding: 0.2em 0.5em;
+
+            outline: none;
+
+            text-transform: uppercase;
+
+            margin: 0 0.25em;
+
+            &:active {
+                background-color: var(--color-button-shade);
+            }
         }
     }
 
