@@ -15,7 +15,6 @@ import match from "./util/functions/match";
 import Borders from "./Borders";
 import { useStoredState } from "./util/useStoredState";
 import { pipe } from "./util/functions/pipe";
-import PlayOverlay from "./PlayOverlay";
 
 enum State {
     NOT_STARTED,

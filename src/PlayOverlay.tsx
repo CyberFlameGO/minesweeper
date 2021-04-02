@@ -1,40 +1,34 @@
-import React, { useState, useCallback } from "react";
-import "./overlay.scss";
+import React from "react";
+import { Link } from "react-router-dom";
 import "./PlayOverlay.scss";
-import { className } from "./util/functions";
 
-interface PlayOverlayProps {
-    show: boolean;
-}
+interface PlayOverlayProps {}
 
-const PlayOverlay: React.FC<PlayOverlayProps> = ({ show: _show }) => {
-    const [show, setShow] = useState(_show);
-
-    const hide = useCallback(() => setShow(false), [setShow]);
-
+const PlayOverlay: React.FC<PlayOverlayProps> = () => {
     return (
-        <div className={className({ show }, "overlay")}>
-            <div className="play">
-                <h1>Minesweeper</h1>
+        <div className="PlayOverlay">
+            <h1>Minesweeper</h1>
 
-                <div className="buttons">
-                    <button className="play" onMouseUp={hide}>
-                        Play
-                    </button>
+            <div className="buttons">
+                <Link to="/game">
+                    <button className="play">Play</button>
+                </Link>
+
+                <Link to="/settings">
                     <button className="settings">Settings</button>
-                </div>
-
-                <p className="attribution">
-                    Minesweeper font provided by Gangetsha Lyx at{" "}
-                    <a
-                        href="https://fontstruct.com/fontstructions/show/1501665/mine-sweeper"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        fontconstruct.com
-                    </a>
-                </p>
+                </Link>
             </div>
+
+            <p className="attribution">
+                Minesweeper font provided by Gangetsha Lyx at{" "}
+                <a
+                    href="https://fontstruct.com/fontstructions/show/1501665/mine-sweeper"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    fontconstruct.com
+                </a>
+            </p>
         </div>
     );
 };
