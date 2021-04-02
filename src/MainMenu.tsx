@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./PlayOverlay.scss";
+import "./MainMenu.scss";
 
 interface MainMenuProps {}
 
