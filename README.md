@@ -10,3 +10,4 @@ Intended to become a chrome extension where you can play minesweeper. Join me on
         -   [ ] Board size, number/percentage of mines
         -   [ ] ClearClickRadius?
         -   [ ] Turn on/off borders
+-   [ ] Improve file structure
