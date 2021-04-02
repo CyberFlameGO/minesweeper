@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./PlayOverlay.scss";
 
-interface PlayOverlayProps {}
+interface MainMenuProps {}
 
-const PlayOverlay: React.FC<PlayOverlayProps> = () => {
+const MainMenu: React.FC<MainMenuProps> = () => {
     return (
-        <div className="PlayOverlay">
+        <div className="MainMenu">
             <h1>Minesweeper</h1>
 
             <div className="buttons">
@@ -33,4 +33,4 @@ const PlayOverlay: React.FC<PlayOverlayProps> = () => {
     );
 };
 
-export default PlayOverlay;
+export default MainMenu;

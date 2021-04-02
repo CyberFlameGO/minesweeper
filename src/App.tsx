@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Minesweeper from "./Minesweeper";
-import PlayOverlay from "./PlayOverlay";
+import MainMenu from "./MainMenu";
 import "./App.scss";
 
 const App: React.FC = () => {
@@ -12,7 +12,7 @@ const App: React.FC = () => {
                     <Minesweeper />
                 </Route>
                 <Route path="/">
-                    <PlayOverlay />
+                    <MainMenu />
                 </Route>
             </Switch>
         </Router>
