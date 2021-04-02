@@ -1,10 +1,18 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import "./Settings.scss";
+import { call } from "./util/functions";
 
 interface SettingsProps {}
 
 const Settings: React.FC<SettingsProps> = () => {
-    return <div className="Settings"></div>;
+    const history = useHistory();
+
+    return (
+        <div className="Settings">
+            <div className="close" onClick={call(history.goBack)}></div>
+        </div>
+    );
 };
 
 export default Settings;
