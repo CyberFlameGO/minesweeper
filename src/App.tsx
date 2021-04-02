@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Minesweeper from "./Minesweeper";
 import MainMenu from "./MainMenu";
 import Settings from "./Settings";
-import "./App.scss";
 
 const App: React.FC = () => {
     return (
