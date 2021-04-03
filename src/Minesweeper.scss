@@ -34,57 +34,53 @@ body {
     box-sizing: border-box;
 }
 
-div#root {
-    overflow: hidden;
+table#Minesweeper {
+    $size-borders: 4px;
 
-    table#Minesweeper {
-        $size-borders: 4px;
+    font-family: "MineSweeper";
+    font-weight: 900;
 
-        font-family: "MineSweeper";
-        font-weight: 900;
+    tr {
+        display: flex;
+        flex-direction: row;
 
-        tr {
+        td {
+            @include size($size-cell);
+            @include highlight-and-shadows(
+                $size-borders,
+                $color-highlight,
+                $color-shadows
+            );
+
+            font-size: 1rem;
+
+            background-color: $color-background;
+
             display: flex;
-            flex-direction: row;
+            align-items: center;
+            justify-content: center;
 
-            td {
-                @include size($size-cell);
-                @include highlight-and-shadows(
-                    $size-borders,
-                    $color-highlight,
-                    $color-shadows
-                );
+            img {
+                @include size($size-cell - 7px);
+            }
 
-                font-size: 1rem;
+            $open-border: ($size-borders/2) solid $color-shadows;
+            $open-padding: $size-borders / 2;
 
-                background-color: $color-background;
+            &.open {
+                border: $open-border;
+                padding: $open-padding;
+            }
 
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                img {
-                    @include size($size-cell - 7px);
+            @at-root {
+                table#Minesweeper:not(.lost):active td:not(.flagged):hover {
+                    border: $open-border !important;
+                    padding: $open-border / 2 !important;
                 }
+            }
 
-                $open-border: ($size-borders/2) solid $color-shadows;
-                $open-padding: $size-borders / 2;
-
-                &.open {
-                    border: $open-border;
-                    padding: $open-padding;
-                }
-
-                @at-root {
-                    table#Minesweeper:not(.lost):active td:not(.flagged):hover {
-                        border: $open-border !important;
-                        padding: $open-border / 2 !important;
-                    }
-                }
-
-                &.red {
-                    background-color: red;
-                }
+            &.red {
+                background-color: red;
             }
         }
     }
