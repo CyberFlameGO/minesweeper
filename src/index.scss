@@ -1,3 +1,9 @@
+@import "./variables";
+
+:root {
+    font-size: $size-cell * 17 / 32;
+}
+
 html,
 body,
 div#root {
@@ -6,4 +12,6 @@ div#root {
 
     min-width: 456px;
     min-height: 456px;
+
+    background-color: $color-background;
 }

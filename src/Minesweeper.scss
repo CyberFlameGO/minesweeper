@@ -12,23 +12,6 @@
     border-bottom: $width solid $shadow;
 }
 
-$size-cell: 30px;
-
-:root {
-    font-size: $size-cell * 17 / 32;
-}
-
-html,
-body {
-    padding: 0;
-    margin: 0;
-
-    height: fit-content;
-    width: fit-content;
-
-    background-color: #1b1b1b;
-}
-
 * {
     user-select: none;
     box-sizing: border-box;
