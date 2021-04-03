@@ -33,7 +33,7 @@ enum State {
 
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
-        pipe(addBombsPercent(20), calculateValues)(array2d(14)(14)(0))
+        pipe(addBombsPercent(20), calculateValues)(array2d(15)(15)(0))
     );
 
     const [actions, setActions, clearStoredActions] = useStoredState<Action[]>(
