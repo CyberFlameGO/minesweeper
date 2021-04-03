@@ -1,0 +1,6 @@
+@mixin highlight-and-shadows($width, $highlight, $shadow) {
+    border-top: $width solid $highlight;
+    border-left: $width solid $highlight;
+    border-right: $width solid $shadow;
+    border-bottom: $width solid $shadow;
+}

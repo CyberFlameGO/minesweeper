@@ -6,10 +6,29 @@ div.Settings {
 
     background-color: $color-background;
 
+    h1,
+    button {
+        font-family: "Minesweeper";
+    }
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    div.buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        button {
+            margin: 0 3px;
+            font-size: 0.7em;
+            padding: 10px;
+        }
+    }
 
     div.close {
         $btn-padding: 10px;
