@@ -4,7 +4,6 @@ import {
     addBombsPercent,
     calculateValues,
     createClearClick,
-    Coordinates,
     createOpenNeighbours,
     isBomb,
 } from "./util/board";
@@ -15,6 +14,14 @@ import match from "./util/functions/match";
 import Borders from "./Borders";
 import { useStoredState } from "./util/useStoredState";
 import { pipe } from "./util/functions/pipe";
+import {
+    Action,
+    actionFactory,
+    ActionType,
+    createIsActionType,
+    createRemoveAction,
+    getLastAction,
+} from "./util/Action";
 
 enum State {
     NOT_STARTED,
@@ -22,51 +29,6 @@ enum State {
     WON,
     LOST,
 }
-
-enum ActionType {
-    FLAG,
-    OPEN,
-}
-
-interface Action {
-    type: ActionType;
-    x: number;
-    y: number;
-}
-
-const actionEquals = (action1: Action) => (action2: Action) =>
-    action1.type === action2.type &&
-    action1.x === action2.x &&
-    action1.y === action2.y;
-
-const actionNotEquals = (action1: Action) => (action2: Action) =>
-    !actionEquals(action1)(action2);
-
-const getLast = (actions: Action[], actionType: ActionType) =>
-    actions.filter(({ type }) => type === actionType).slice(-1)[0];
-
-const uniqueAction = (actions: Action[], action: Action) =>
-    !actions.find(actionEquals(action));
-
-const actionFactory = (actions: Action[], type: ActionType) => ({
-    x,
-    y,
-}: Coordinates): Action | null => {
-    const action = { x, y, type };
-
-    return uniqueAction(actions, action) ? action : null;
-};
-
-const createIsType = (actions: Action[]) => (type: ActionType) => (
-    x: number,
-    y: number
-): boolean => !uniqueAction(actions, { x, y, type });
-
-const createRemove = (type: ActionType) => (
-    actions: Action[],
-    x: number,
-    y: number
-) => actions.filter(actionNotEquals({ x, y, type }));
 
 const createClick = (board: number[][], actions: Action[]) => (
     x: number,
@@ -116,7 +78,7 @@ const Minesweeper: React.FC<{}> = () => {
         match(state).on(either<State>(State.LOST, State.WON), clearStorage);
     }, [state, clearStorage]);
 
-    const is = useMemo(() => createIsType(actions), [actions]);
+    const is = useMemo(() => createIsActionType(actions), [actions]);
     const isFlagged = is(ActionType.FLAG);
     const isOpen = is(ActionType.OPEN);
 
@@ -167,7 +129,7 @@ const Minesweeper: React.FC<{}> = () => {
             })
             .on(State.STARTED, () => {
                 if (isFlagged(x, y)) {
-                    const removeFlag = createRemove(ActionType.FLAG);
+                    const removeFlag = createRemoveAction(ActionType.FLAG);
                     setActions(removeFlag(actions, x, y));
                 } else if (!isOpen(x, y)) {
                     setActions(
@@ -177,7 +139,7 @@ const Minesweeper: React.FC<{}> = () => {
             });
     };
 
-    const lastOpen = getLast(actions, ActionType.OPEN);
+    const lastOpen = getLastAction(actions, ActionType.OPEN);
 
     return (
         <Borders>
