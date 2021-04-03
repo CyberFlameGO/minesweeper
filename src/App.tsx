@@ -41,7 +41,7 @@ const App: React.FC = () => {
                 <Route path="/settings">
                     <Settings />
                 </Route>
-                <Route path="/">
+                <Route exact path="/">
                     <MainMenu />
                 </Route>
             </Switch>
