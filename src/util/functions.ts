@@ -25,4 +25,4 @@ export const toggle = (bool: boolean) => !bool;
 export const repeat = <I extends number>(i: I) => <T>(x: T) =>
     (Array(i).fill(x) as any) as FixedLengthArray<I, T>;
 
-export const call = (f: Function) => () => f();
+export const call = (f: Function, ...args: any[]) => () => f(...args);
