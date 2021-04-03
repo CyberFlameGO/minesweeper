@@ -1,6 +1,9 @@
 @import "./variables";
 
 div.Borders {
+    width: fit-content;
+    height: fit-content;
+
     padding: $border-size;
     background: $color-background;
     position: relative;
