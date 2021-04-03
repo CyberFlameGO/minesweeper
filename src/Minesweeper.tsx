@@ -18,7 +18,7 @@ import {
     Action,
     actionFactory,
     ActionType,
-    createIsActionType,
+    allBombsFlagged,
     createRemoveAction,
     getLastAction,
 } from "./util/Action";
@@ -43,21 +43,6 @@ const createClick = (board: number[][], actions: Action[]) => (
             ? openNeighbours(x, y).map(createOpenAction).filter(notNull)
             : []),
     ];
-};
-
-const allBombsFlagged = (board: number[][], actions: Action[]) => {
-    const is = createIsActionType(actions);
-
-    const isFlagged = is(ActionType.FLAG);
-    const isOpen = is(ActionType.OPEN);
-
-    return board.every((row, y) =>
-        row.every(
-            (value, x) =>
-                (value === -1 && isFlagged(x, y)) ||
-                (value > -1 && isOpen(x, y))
-        )
-    );
 };
 
 const Minesweeper: React.FC<{}> = () => {
