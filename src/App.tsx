@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import {
     BrowserRouter as Router,
     Switch,
@@ -24,7 +24,7 @@ const StoreLocation: React.FC = () => {
         setStoredLocation,
     ]);
 
-    useEffect(onMount, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useLayoutEffect(onMount, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return <></>;
 };
