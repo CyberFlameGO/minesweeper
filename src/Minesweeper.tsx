@@ -152,15 +152,12 @@ const Minesweeper: React.FC<{}> = () => {
                                     lastOpen.y === y &&
                                     lastOpen.x === x;
 
-                                const flagged = isFlagged(x, y);
-                                const open = isOpen(x, y);
-
                                 return (
                                     <Cell
                                         value={value}
-                                        open={open}
+                                        open={isOpen(x, y)}
                                         red={bomb && lost && wasLastOpen}
-                                        flagged={flagged}
+                                        flagged={isFlagged(x, y)}
                                         lost={lost}
                                         onLeftClick={createLeftClickHandler(
                                             x,
