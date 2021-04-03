@@ -21,7 +21,7 @@ import {
     allBombsFlagged,
     createRemoveAction,
     getLastAction,
-} from "./util/Action";
+} from "./util/action";
 
 enum State {
     NOT_STARTED,
