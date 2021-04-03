@@ -45,6 +45,21 @@ const createClick = (board: number[][], actions: Action[]) => (
     ];
 };
 
+const allBombsFlagged = (board: number[][], actions: Action[]) => {
+    const is = createIsActionType(actions);
+
+    const isFlagged = is(ActionType.FLAG);
+    const isOpen = is(ActionType.OPEN);
+
+    return board.every((row, y) =>
+        row.every(
+            (value, x) =>
+                (value === -1 && isFlagged(x, y)) ||
+                (value > -1 && isOpen(x, y))
+        )
+    );
+};
+
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
         pipe(addBombsPercent(20), calculateValues)(array2d(14)(14)(0))
@@ -78,21 +93,9 @@ const Minesweeper: React.FC<{}> = () => {
         match(state).on(either<State>(State.LOST, State.WON), clearStorage);
     }, [state, clearStorage]);
 
-    const is = useMemo(() => createIsActionType(actions), [actions]);
-    const isFlagged = is(ActionType.FLAG);
-    const isOpen = is(ActionType.OPEN);
-
     useEffect(() => {
-        const allBombsFlagged = board.every((row, y) =>
-            row.every(
-                (value, x) =>
-                    (value === -1 && isFlagged(x, y)) ||
-                    (value > -1 && isOpen(x, y))
-            )
-        );
-
-        if (allBombsFlagged) setState(State.WON);
-    }, [actions, board, isFlagged, isOpen, setState]);
+        if (allBombsFlagged(board, actions)) setState(State.WON);
+    }, [actions, board, setState]);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
