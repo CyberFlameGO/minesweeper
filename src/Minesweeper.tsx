@@ -19,6 +19,7 @@ import {
     actionFactory,
     ActionType,
     allBombsFlagged,
+    createIsActionType,
     createRemoveAction,
     getLastAction,
 } from "./util/action";
@@ -81,6 +82,10 @@ const Minesweeper: React.FC<{}> = () => {
     useEffect(() => {
         if (allBombsFlagged(board, actions)) setState(State.WON);
     }, [actions, board, setState]);
+
+    const is = createIsActionType(actions);
+    const isFlagged = is(ActionType.FLAG);
+    const isOpen = is(ActionType.OPEN);
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
