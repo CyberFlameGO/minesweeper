@@ -4,10 +4,10 @@ import {
     addBombsPercent,
     calculateValues,
     createClearClick,
-    createOpenNeighbours,
+    createOpen,
     isBomb,
 } from "./util/board";
-import { className, either, notNull, preventDefault } from "./util/functions";
+import { className, either, preventDefault } from "./util/functions";
 import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
@@ -30,21 +30,6 @@ enum State {
     WON,
     LOST,
 }
-
-const createOpen = (board: number[][], actions: Action[]) => (
-    x: number,
-    y: number
-): Action[] => {
-    const openNeighbours = createOpenNeighbours(board);
-    const createOpenAction = actionFactory(actions, ActionType.OPEN);
-
-    return [
-        ...[createOpenAction({ x, y })].filter(notNull),
-        ...(board[y][x] === 0
-            ? openNeighbours(x, y).map(createOpenAction).filter(notNull)
-            : []),
-    ];
-};
 
 const Minesweeper: React.FC<{}> = () => {
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>

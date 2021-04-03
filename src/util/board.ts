@@ -1,4 +1,6 @@
+import { Action, actionFactory, ActionType } from "./action";
 import { area, flatten, isIndex } from "./array";
+import { notNull } from "./functions";
 
 export interface Coordinates {
     x: number;
@@ -100,4 +102,19 @@ export const createOpenNeighbours = (board: number[][]) => (
     });
 
     return opened;
+};
+
+export const createOpen = (board: number[][], actions: Action[]) => (
+    x: number,
+    y: number
+): Action[] => {
+    const openNeighbours = createOpenNeighbours(board);
+    const createOpenAction = actionFactory(actions, ActionType.OPEN);
+
+    return [
+        ...[createOpenAction({ x, y })].filter(notNull),
+        ...(board[y][x] === 0
+            ? openNeighbours(x, y).map(createOpenAction).filter(notNull)
+            : []),
+    ];
 };
