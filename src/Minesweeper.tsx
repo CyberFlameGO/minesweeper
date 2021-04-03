@@ -4,7 +4,7 @@ import {
     addBombsPercent,
     calculateValues,
     createClearClick,
-    createOpen,
+    openFactory,
     isBomb,
 } from "./util/board";
 import { className, either, preventDefault } from "./util/functions";
@@ -74,7 +74,7 @@ const Minesweeper: React.FC<{}> = () => {
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
-        const open = createOpen(board, actions);
+        const open = openFactory(board, actions);
 
         match(state)
             .on(State.NOT_STARTED, () => {

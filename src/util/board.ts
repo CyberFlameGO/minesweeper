@@ -104,7 +104,7 @@ export const createOpenNeighbours = (board: number[][]) => (
     return opened;
 };
 
-export const createOpen = (board: number[][], actions: Action[]) => (
+export const openFactory = (board: number[][], actions: Action[]) => (
     x: number,
     y: number
 ): Action[] => {
