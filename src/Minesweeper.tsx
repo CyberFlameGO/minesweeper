@@ -31,7 +31,7 @@ enum State {
     LOST,
 }
 
-const createClick = (board: number[][], actions: Action[]) => (
+const createOpen = (board: number[][], actions: Action[]) => (
     x: number,
     y: number
 ): Action[] => {
@@ -89,7 +89,7 @@ const Minesweeper: React.FC<{}> = () => {
 
     const createLeftClickHandler = (x: number, y: number) => () => {
         const newActions: Array<Action> = [];
-        const click = createClick(board, actions);
+        const open = createOpen(board, actions);
 
         match(state)
             .on(State.NOT_STARTED, () => {
@@ -98,7 +98,7 @@ const Minesweeper: React.FC<{}> = () => {
             })
             .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
                 if (!isFlagged(x, y)) {
-                    newActions.push(...click(x, y));
+                    newActions.push(...open(x, y));
 
                     if (isBomb(x, y)(board)) {
                         setState(State.LOST);
