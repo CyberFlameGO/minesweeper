@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Switch,
@@ -11,13 +11,16 @@ import MainMenu from "./MainMenu";
 import Settings from "./Settings";
 import { useStoredState } from "./util/useStoredState";
 
-const StoreLocation: React.FC = () => {
+const StoreLocation: React.FC<{ callback: Function }> = ({ callback }) => {
     const [storedLocation, setStoredLocation] = useStoredState("location", "/");
 
     const location = useLocation();
     const history = useHistory();
 
-    const onMount = () => history.push(storedLocation);
+    const onMount = () => {
+        history.push(storedLocation);
+        callback();
+    };
 
     useEffect(() => setStoredLocation(location.pathname), [
         location,
@@ -30,21 +33,24 @@ const StoreLocation: React.FC = () => {
 };
 
 const App: React.FC = () => {
+    const [loaded, setLoaded] = useState(false);
     return (
         <Router>
-            <StoreLocation />
+            <StoreLocation callback={() => setLoaded(true)} />
 
-            <Switch>
-                <Route path="/game">
-                    <Minesweeper />
-                </Route>
-                <Route path="/settings">
-                    <Settings />
-                </Route>
-                <Route exact path="/">
-                    <MainMenu />
-                </Route>
-            </Switch>
+            {loaded && (
+                <Switch>
+                    <Route path="/game">
+                        <Minesweeper />
+                    </Route>
+                    <Route path="/settings">
+                        <Settings />
+                    </Route>
+                    <Route exact path="/">
+                        <MainMenu />
+                    </Route>
+                </Switch>
+            )}
         </Router>
     );
 };

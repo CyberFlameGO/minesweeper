@@ -14,21 +14,22 @@ enum Difficulty {
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
-const handleChange = (setValue: SetState<any>) => (
+const handleChange = (setValue: SetState<any>, process = (x: any) => x) => (
     event: React.ChangeEvent<any>
-) => setValue(event.target.value);
+) => setValue(process(event.target.value));
 
-const NumberInput = (
-    name: string,
-    min: number,
-    max: number,
+const createSizeInput = (
     value: number,
-    setValue: SetState<number>
+    setValue: SetState<number>,
+    max = 30
 ) => (
     <input
         type="number"
-        onChange={handleChange(setValue)}
-        {...{ min, max, name, value }}
+        min={1}
+        max={30}
+        autoComplete="off"
+        value={value}
+        onChange={handleChange(setValue, Number)}
     />
 );
 
@@ -41,8 +42,8 @@ const Settings: React.FC = () => {
 
     const difficulties = ["Beginner", "Intermediate", "Expert", "Custom"];
 
-    const [width, setWidth] = useStoredState("width", 15);
-    const [height, setHeight] = useStoredState("height", 15);
+    const [width, setWidth] = useStoredState("width", 16);
+    const [height, setHeight] = useStoredState("heigth", 16);
     const [mines, setMines] = useStoredState("mines", 20);
 
     return (
@@ -64,49 +65,31 @@ const Settings: React.FC = () => {
             </div>
 
             {difficulty === Difficulty.Custom && (
-                <div className="custom-options">
-                    <p>Custom options:</p>
+                <div className="container">
+                    <input
+                        type="range"
+                        min={1}
+                        max={99}
+                        value={mines}
+                        onChange={handleChange(setMines, Number)}
+                    />
 
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Width</td>
-                                <td>Height</td>
-                                <td>Mines (%)</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {NumberInput(
-                                        "width",
-                                        2,
-                                        30,
-                                        width,
-                                        setWidth
-                                    )}
-                                </td>
-                                <td>
-                                    {NumberInput(
-                                        "height",
-                                        2,
-                                        30,
-                                        height,
-                                        setHeight
-                                    )}
-                                </td>
-                                <td>
-                                    {NumberInput(
-                                        "mines",
-                                        1,
-                                        100,
-                                        mines,
-                                        setMines
-                                    )}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>{mines}% mines</p>
                 </div>
             )}
+
+            <h1>Size</h1>
+
+            <div className="container m0">
+                <div className="col">
+                    <p>Width</p>
+                    {createSizeInput(width, setWidth, 25)}
+                </div>
+                <div className="col">
+                    <p>Height</p>
+                    {createSizeInput(height, setHeight, 19)}
+                </div>
+            </div>
         </div>
     );
 };
