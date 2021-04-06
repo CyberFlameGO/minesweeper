@@ -12,6 +12,19 @@ enum Difficulty {
     Custom = 3,
 }
 
+enum BoardSize {
+    Small = "small",
+    Medium = "medium",
+    Large = "large",
+    Custom = "custom",
+}
+
+const BOARD_SIZES = [
+    { name: BoardSize.Small, width: 9, height: 9 },
+    { name: BoardSize.Medium, width: 16, height: 16 },
+    { name: BoardSize.Large, width: 25, height: 19 },
+];
+
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const handleChange = (setValue: SetState<any>, process = (x: any) => x) => (
@@ -21,12 +34,12 @@ const handleChange = (setValue: SetState<any>, process = (x: any) => x) => (
 const createSizeInput = (
     value: number,
     setValue: SetState<number>,
-    max = 30
+    max: number = 30
 ) => (
     <input
         type="number"
         min={1}
-        max={30}
+        max={max}
         autoComplete="off"
         value={value}
         onChange={handleChange(setValue, Number)}
@@ -36,9 +49,14 @@ const createSizeInput = (
 const Settings: React.FC = () => {
     const history = useHistory();
 
-    const [difficulty, setDifficulty] = useStoredState("difficulty", 0);
+    const [difficulty, setDifficulty] = useStoredState(
+        "difficulty",
+        Difficulty.Intermediate
+    );
+    const [size, setSize] = useStoredState("size", BoardSize.Medium);
 
-    const selectDifficulty = (i: number) => () => setDifficulty(i);
+    const selectDifficulty = (i: Difficulty) => () => setDifficulty(i);
+    const selectSize = (s: BoardSize) => () => setSize(s);
 
     const difficulties = ["Beginner", "Intermediate", "Expert", "Custom"];
 
@@ -80,16 +98,38 @@ const Settings: React.FC = () => {
 
             <h1>Size</h1>
 
-            <div className="container m0">
-                <div className="col">
-                    <p>Width</p>
-                    {createSizeInput(width, setWidth, 25)}
-                </div>
-                <div className="col">
-                    <p>Height</p>
-                    {createSizeInput(height, setHeight, 19)}
-                </div>
+            <div className="buttons">
+                {BOARD_SIZES.map(({ name }) => (
+                    <Button
+                        className={className({ selected: size === name })}
+                        onClick={selectSize(name)}
+                        key={name}
+                    >
+                        {name}
+                    </Button>
+                ))}
+                <Button
+                    className={className({
+                        selected: size === BoardSize.Custom,
+                    })}
+                    onClick={selectSize(BoardSize.Custom)}
+                >
+                    Custom
+                </Button>
             </div>
+
+            {size === BoardSize.Custom && (
+                <div className="container">
+                    <div className="col">
+                        <p>Width</p>
+                        {createSizeInput(width, setWidth, 25)}
+                    </div>
+                    <div className="col">
+                        <p>Height</p>
+                        {createSizeInput(height, setHeight, 19)}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
