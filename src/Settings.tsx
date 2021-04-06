@@ -1,29 +1,24 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "./components/Button";
 import "./Settings.scss";
 import { call, className } from "./util/functions";
+import match from "./util/functions/match";
 import { useStoredState } from "./util/useStoredState";
 
 enum Difficulty {
-    Beginner = 0,
-    Intermediate = 1,
-    Expert = 2,
-    Custom = 3,
+    Beginner = "beginner",
+    Intermediate = "intermediate",
+    Expert = "expert",
+    Custom = "custom",
 }
 
 enum BoardSize {
     Small = "small",
     Medium = "medium",
-    Large = "large",
+    Huge = "huge",
     Custom = "custom",
 }
-
-const BOARD_SIZES = [
-    { name: BoardSize.Small, width: 9, height: 9 },
-    { name: BoardSize.Medium, width: 16, height: 16 },
-    { name: BoardSize.Large, width: 25, height: 19 },
-];
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -58,11 +53,31 @@ const Settings: React.FC = () => {
     const selectDifficulty = (i: Difficulty) => () => setDifficulty(i);
     const selectSize = (s: BoardSize) => () => setSize(s);
 
-    const difficulties = ["Beginner", "Intermediate", "Expert", "Custom"];
-
     const [width, setWidth] = useStoredState("width", 16);
     const [height, setHeight] = useStoredState("heigth", 16);
     const [mines, setMines] = useStoredState("mines", 20);
+
+    const dimensions = useCallback(
+        (width: number, height: number) => {
+            setWidth(width);
+            setHeight(height);
+        },
+        [setWidth, setHeight]
+    );
+
+    useEffect(() => {
+        match(difficulty)
+            .on(Difficulty.Beginner, () => setMines(12))
+            .on(Difficulty.Intermediate, () => setMines(16))
+            .on(Difficulty.Expert, () => setMines(22));
+    }, [difficulty, setMines]);
+
+    useEffect(() => {
+        match(size)
+            .on(BoardSize.Small, () => dimensions(9, 9))
+            .on(BoardSize.Medium, () => dimensions(14, 14))
+            .on(BoardSize.Huge, () => dimensions(25, 19));
+    }, [dimensions, size]);
 
     return (
         <div className="Settings">
@@ -71,11 +86,11 @@ const Settings: React.FC = () => {
             <h1>Difficulty</h1>
 
             <div className="buttons">
-                {difficulties.map((name, i) => (
+                {(Object.values(Difficulty) as Difficulty[]).map((name) => (
                     <Button
-                        className={className({ selected: difficulty === i })}
-                        onClick={selectDifficulty(i)}
-                        key={i}
+                        className={className({ selected: difficulty === name })}
+                        onClick={selectDifficulty(name)}
+                        key={name}
                     >
                         {name}
                     </Button>
@@ -99,7 +114,7 @@ const Settings: React.FC = () => {
             <h1>Size</h1>
 
             <div className="buttons">
-                {BOARD_SIZES.map(({ name }) => (
+                {(Object.values(BoardSize) as BoardSize[]).map((name) => (
                     <Button
                         className={className({ selected: size === name })}
                         onClick={selectSize(name)}
@@ -108,14 +123,6 @@ const Settings: React.FC = () => {
                         {name}
                     </Button>
                 ))}
-                <Button
-                    className={className({
-                        selected: size === BoardSize.Custom,
-                    })}
-                    onClick={selectSize(BoardSize.Custom)}
-                >
-                    Custom
-                </Button>
             </div>
 
             {size === BoardSize.Custom && (

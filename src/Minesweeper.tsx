@@ -36,8 +36,6 @@ const Minesweeper: React.FC<{}> = () => {
     const [height] = useStoredState("heigth", 16);
     const [mines] = useStoredState("mines", 15);
 
-    console.log("Minesweeper.tsx", width, height);
-
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
         pipe(addBombsPercent(mines), calculateValues)(array2d(width)(height)(0))
     );
