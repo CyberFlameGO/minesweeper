@@ -27,8 +27,8 @@ const NumberInput = (
 ) => (
     <input
         type="number"
-        {...{ min, max, name, value }}
         onChange={handleChange(setValue)}
+        {...{ min, max, name, value }}
     />
 );
 
