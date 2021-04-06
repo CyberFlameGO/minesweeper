@@ -75,7 +75,7 @@ const Settings: React.FC = () => {
     useEffect(() => {
         match(size)
             .on(BoardSize.Small, () => dimensions(9, 9))
-            .on(BoardSize.Medium, () => dimensions(14, 14))
+            .on(BoardSize.Medium, () => dimensions(15, 15))
             .on(BoardSize.Huge, () => dimensions(25, 19));
     }, [dimensions, size]);
 
