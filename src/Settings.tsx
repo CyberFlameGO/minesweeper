@@ -76,7 +76,7 @@ const Settings: React.FC = () => {
         match(size)
             .on(BoardSize.Small, () => dimensions(9, 9))
             .on(BoardSize.Medium, () => dimensions(15, 15))
-            .on(BoardSize.Huge, () => dimensions(25, 19));
+            .on(BoardSize.Huge, () => dimensions(24, 18));
     }, [dimensions, size]);
 
     return (
@@ -129,11 +129,11 @@ const Settings: React.FC = () => {
                 <div className="container">
                     <div className="col">
                         <p>Width</p>
-                        {createSizeInput(width, setWidth, 25)}
+                        {createSizeInput(width, setWidth, 24)}
                     </div>
                     <div className="col">
                         <p>Height</p>
-                        {createSizeInput(height, setHeight, 19)}
+                        {createSizeInput(height, setHeight, 18)}
                     </div>
                 </div>
             )}
