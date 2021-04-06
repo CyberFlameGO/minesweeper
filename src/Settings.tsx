@@ -12,6 +12,20 @@ enum Difficulty {
     Custom = 3,
 }
 
+type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
+
+const handleChange = (setValue: SetState<any>) => (
+    event: React.ChangeEvent<any>
+) => setValue(event.target.value);
+
+const NumberInput = (
+    name: string,
+    min: number,
+    max: number,
+    value: number,
+    setValue: SetState<number>
+) => <input {...{ min, max, name, value }} onChange={handleChange(setValue)} />;
+
 const Settings: React.FC = () => {
     const history = useHistory();
 
@@ -20,6 +34,10 @@ const Settings: React.FC = () => {
     const selectDifficulty = (i: number) => () => setDifficulty(i);
 
     const difficulties = ["Beginner", "Intermediate", "Expert", "Custom"];
+
+    const [width, setWidth] = useStoredState("width", 15);
+    const [height, setHeight] = useStoredState("height", 15);
+    const [mines, setMines] = useStoredState("mines", 20);
 
     return (
         <div className="Settings">
@@ -44,43 +62,42 @@ const Settings: React.FC = () => {
                     <p>Custom options:</p>
 
                     <table>
-                        <tr>
-                            <td>Width</td>
-                            <td>Height</td>
-                            <td>Mines (%)</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input
-                                    type="number"
-                                    name="width"
-                                    autoComplete={"off"}
-                                    min={2}
-                                    max={30}
-                                    value={15}
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    name="height"
-                                    autoComplete={"off"}
-                                    min={2}
-                                    max={30}
-                                    value={15}
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    name="mines"
-                                    autoComplete={"off"}
-                                    min={1}
-                                    max={100}
-                                    value={20}
-                                />
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>Width</td>
+                                <td>Height</td>
+                                <td>Mines (%)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {NumberInput(
+                                        "width",
+                                        2,
+                                        30,
+                                        width,
+                                        setWidth
+                                    )}
+                                </td>
+                                <td>
+                                    {NumberInput(
+                                        "height",
+                                        2,
+                                        30,
+                                        height,
+                                        setHeight
+                                    )}
+                                </td>
+                                <td>
+                                    {NumberInput(
+                                        "mines",
+                                        1,
+                                        100,
+                                        mines,
+                                        setMines
+                                    )}
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             )}
