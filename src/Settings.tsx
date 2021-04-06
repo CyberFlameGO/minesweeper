@@ -24,7 +24,13 @@ const NumberInput = (
     max: number,
     value: number,
     setValue: SetState<number>
-) => <input {...{ min, max, name, value }} onChange={handleChange(setValue)} />;
+) => (
+    <input
+        type="number"
+        {...{ min, max, name, value }}
+        onChange={handleChange(setValue)}
+    />
+);
 
 const Settings: React.FC = () => {
     const history = useHistory();
