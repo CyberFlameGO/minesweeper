@@ -118,3 +118,10 @@ export const openFactory = (board: number[][], actions: Action[]) => (
             : []),
     ];
 };
+
+export const generateBoard = (
+    width: number,
+    height: number,
+    mines: number
+) => () =>
+    pipe(addBombsPercent(mines), calculateValues)(array2d(width)(height)(0));
