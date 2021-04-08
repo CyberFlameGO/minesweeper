@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect } from "react";
-import { addIfNotNull, array2d } from "./util/array";
+import { addIfNotNull } from "./util/array";
 import {
-    addBombsPercent,
-    calculateValues,
     createClearClick,
     openFactory,
     isBomb,
+    generateBoard,
 } from "./util/board";
 import { className, either, preventDefault } from "./util/functions";
 import "./Minesweeper.scss";
@@ -13,7 +12,6 @@ import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
 import { useStoredState } from "./util/useStoredState";
-import { pipe } from "./util/functions/pipe";
 import {
     Action,
     actionFactory,

@@ -1,6 +1,7 @@
 import { Action, actionFactory, ActionType } from "./action";
-import { area, flatten, isIndex } from "./array";
+import { area, array2d, flatten, isIndex } from "./array";
 import { notNull } from "./functions";
+import { pipe } from "./functions/pipe";
 
 export interface Coordinates {
     x: number;
