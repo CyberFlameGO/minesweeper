@@ -31,13 +31,17 @@ enum State {
     LOST,
 }
 
+const generateBoard = (width: number, height: number, mines: number) => () =>
+    pipe(addBombsPercent(mines), calculateValues)(array2d(width)(height)(0));
+
 const Minesweeper: React.FC<{}> = () => {
     const [width] = useStoredState("width", 16);
     const [height] = useStoredState("heigth", 16);
     const [mines] = useStoredState("mines", 15);
 
-    const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
-        pipe(addBombsPercent(mines), calculateValues)(array2d(width)(height)(0))
+    const [board, setBoard, clearStoredBoard] = useStoredState(
+        "board",
+        generateBoard(width, height, mines)
     );
 
     const [actions, setActions, clearStoredActions] = useStoredState<Action[]>(
