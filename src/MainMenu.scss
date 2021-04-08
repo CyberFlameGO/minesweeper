@@ -4,6 +4,9 @@ div.MainMenu {
     height: 100%;
     width: 100%;
 
+    min-width: $menu-size;
+    min-height: $menu-size;
+
     background-color: $color-background;
 
     font-size: 1.1rem;
