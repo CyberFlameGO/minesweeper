@@ -3,6 +3,7 @@ import bombImage from "./assets/bomb.png";
 import flag from "./assets/flag.svg";
 import notBomb from "./assets/not-bomb.png";
 import { className } from "./util/functions";
+import match from "./util/functions/match";
 import { Range } from "./util/types";
 
 interface CellProps {
@@ -13,6 +14,7 @@ interface CellProps {
     lost: boolean;
     onLeftClick: React.EventHandler<React.MouseEvent>;
     onRightClick: React.EventHandler<React.MouseEvent>;
+    onMiddleClick: React.EventHandler<React.MouseEvent>;
 }
 
 const COLORS = {
@@ -30,6 +32,7 @@ const Cell: React.FC<CellProps> = ({
     value,
     onLeftClick,
     onRightClick,
+    onMiddleClick,
     open,
     flagged,
     red,
@@ -41,7 +44,9 @@ const Cell: React.FC<CellProps> = ({
     const isOpen = open || (lost && ((flagged && !bomb) || (!flagged && bomb)));
 
     const mouseDown = (event: React.MouseEvent) =>
-        event.button === 2 && onRightClick(event);
+        match(event)
+            .on((e) => e.button === 2, onRightClick)
+            .on((e) => e.button === 1, onMiddleClick);
 
     const mouseUp = (event: React.MouseEvent) =>
         event.button === 0 && onLeftClick(event);

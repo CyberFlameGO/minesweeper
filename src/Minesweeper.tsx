@@ -5,6 +5,7 @@ import {
     openFactory,
     isBomb,
     generateBoard,
+    surroundingSquares,
 } from "./util/board";
 import { className, either, preventDefault } from "./util/functions";
 import "./Minesweeper.scss";
@@ -19,7 +20,6 @@ import {
     allBombsFlagged,
     createIsActionType,
     createRemoveAction,
-    getLastAction,
 } from "./util/action";
 
 enum State {
@@ -120,7 +120,30 @@ const Minesweeper: React.FC<{}> = () => {
             });
     };
 
-    const lastOpen = getLastAction(actions, ActionType.OPEN);
+    const createMiddleClickHandler = (x: number, y: number) => () => {
+        const newActions: Array<Action> = [];
+        const open = openFactory(board, actions);
+
+        if (isOpen(x, y)) {
+            const surrounding = surroundingSquares(board)(x, y);
+
+            const flagged = surrounding.filter(({ x, y }) => isFlagged(x, y))
+                .length;
+
+            if (flagged === board[y][x]) {
+                surrounding
+                    .filter(({ x, y }) => !isOpen(x, y) && !isFlagged(x, y))
+                    .forEach(({ x, y }) => {
+                        if (isBomb(x, y)(board)) {
+                            setState(State.LOST);
+                        }
+                        newActions.push(...open(x, y));
+                    });
+            }
+        }
+
+        setActions([...actions, ...newActions]);
+    };
 
     return (
         <Borders>
@@ -135,16 +158,13 @@ const Minesweeper: React.FC<{}> = () => {
                             {row.map((value, x) => {
                                 const bomb = value === -1;
                                 const lost = state === State.LOST;
-                                const wasLastOpen =
-                                    lastOpen &&
-                                    lastOpen.y === y &&
-                                    lastOpen.x === x;
+                                const open = isOpen(x, y);
 
                                 return (
                                     <Cell
                                         value={value}
-                                        open={isOpen(x, y)}
-                                        red={bomb && lost && wasLastOpen}
+                                        open={open}
+                                        red={bomb && lost && open}
                                         flagged={isFlagged(x, y)}
                                         lost={lost}
                                         onLeftClick={createLeftClickHandler(
@@ -152,6 +172,10 @@ const Minesweeper: React.FC<{}> = () => {
                                             y
                                         )}
                                         onRightClick={createRightClickHandler(
+                                            x,
+                                            y
+                                        )}
+                                        onMiddleClick={createMiddleClickHandler(
                                             x,
                                             y
                                         )}
