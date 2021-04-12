@@ -17,6 +17,8 @@ const SetLocation = () => {
 
     if (gameState !== null) {
         history.push("/game");
+    } else {
+        history.push("/");
     }
 
     return <></>;
