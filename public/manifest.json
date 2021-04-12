@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Minesweeper",
     "short_name": "Minesweeper",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Single player puzzle game",
 
     "icons": {
