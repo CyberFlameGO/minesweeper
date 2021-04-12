@@ -12,7 +12,7 @@ import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
-import { useStoredState } from "./util/useStoredState";
+import { useStoredState } from "./util/storedState";
 import {
     Action,
     actionFactory,

@@ -4,7 +4,7 @@ import Button from "./components/Button";
 import "./Settings.scss";
 import { call, className } from "./util/functions";
 import match from "./util/functions/match";
-import { useStoredState } from "./util/useStoredState";
+import { useStoredState } from "./util/storedState";
 
 enum Difficulty {
     Beginner = "beginner",

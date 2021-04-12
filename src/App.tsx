@@ -8,7 +8,7 @@ import {
 import Minesweeper from "./Minesweeper";
 import MainMenu from "./MainMenu";
 import Settings from "./Settings";
-import { getStoredState } from "./util/useStoredState";
+import { getStoredState } from "./util/storedState";
 
 // Own component to be able to use the useHistory hook
 const SetLocation = () => {
