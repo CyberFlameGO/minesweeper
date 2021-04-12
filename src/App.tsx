@@ -10,6 +10,7 @@ import MainMenu from "./MainMenu";
 import Settings from "./Settings";
 import { getStoredState } from "./util/useStoredState";
 
+// Own component to be able to use the useHistory hook
 const SetLocation = () => {
     const history = useHistory();
     const gameState = getStoredState("state");
