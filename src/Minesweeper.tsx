@@ -22,7 +22,7 @@ import {
     createRemoveAction,
 } from "./util/action";
 
-enum State {
+enum GameState {
     NOT_STARTED,
     STARTED,
     WON,
@@ -46,7 +46,7 @@ const Minesweeper: React.FC<{}> = () => {
 
     const [state, setState, clearStoredState] = useStoredState(
         "state",
-        State.NOT_STARTED
+        GameState.NOT_STARTED
     );
 
     const clearStorage = useCallback(() => {
@@ -56,11 +56,14 @@ const Minesweeper: React.FC<{}> = () => {
     }, [clearStoredActions, clearStoredBoard, clearStoredState]);
 
     useEffect(() => {
-        match(state).on(either<State>(State.LOST, State.WON), clearStorage);
+        match(state).on(
+            either<GameState>(GameState.LOST, GameState.WON),
+            clearStorage
+        );
     }, [state, clearStorage]);
 
     useEffect(() => {
-        if (allBombsFlagged(board, actions)) setState(State.WON);
+        if (allBombsFlagged(board, actions)) setState(GameState.WON);
     }, [actions, board, setState]);
 
     const is = createIsActionType(actions);
@@ -72,19 +75,22 @@ const Minesweeper: React.FC<{}> = () => {
         const open = openFactory(board, actions);
 
         match(state)
-            .on(State.NOT_STARTED, () => {
+            .on(GameState.NOT_STARTED, () => {
                 setBoard(createClearClick(board, 1)(x, y));
-                setState(State.STARTED);
+                setState(GameState.STARTED);
             })
-            .on(either<State>(State.STARTED, State.NOT_STARTED), () => {
-                if (!isFlagged(x, y)) {
-                    newActions.push(...open(x, y));
+            .on(
+                either<GameState>(GameState.STARTED, GameState.NOT_STARTED),
+                () => {
+                    if (!isFlagged(x, y)) {
+                        newActions.push(...open(x, y));
 
-                    if (isBomb(x, y)(board)) {
-                        setState(State.LOST);
+                        if (isBomb(x, y)(board)) {
+                            setState(GameState.LOST);
+                        }
                     }
                 }
-            });
+            );
 
         const dontOpenFlagged = ({ x, y, type }: Action) =>
             type === ActionType.OPEN && !isFlagged(x, y);
@@ -96,11 +102,11 @@ const Minesweeper: React.FC<{}> = () => {
         const createFlagAction = actionFactory(actions, ActionType.FLAG);
 
         match(state)
-            .on(State.NOT_STARTED, () => {
+            .on(GameState.NOT_STARTED, () => {
                 const leftClick = createLeftClickHandler(x, y);
                 leftClick();
             })
-            .on(State.STARTED, () => {
+            .on(GameState.STARTED, () => {
                 if (isFlagged(x, y)) {
                     const removeFlag = createRemoveAction(ActionType.FLAG);
                     setActions(removeFlag(actions, x, y));
@@ -127,7 +133,7 @@ const Minesweeper: React.FC<{}> = () => {
                     .filter(({ x, y }) => !isOpen(x, y) && !isFlagged(x, y))
                     .forEach(({ x, y }) => {
                         if (isBomb(x, y)(board)) {
-                            setState(State.LOST);
+                            setState(GameState.LOST);
                         }
                         newActions.push(...open(x, y));
                     });
@@ -142,14 +148,14 @@ const Minesweeper: React.FC<{}> = () => {
             <table
                 id="Minesweeper"
                 onContextMenu={preventDefault}
-                className={className({ lost: state === State.LOST })}
+                className={className({ lost: state === GameState.LOST })}
             >
                 <tbody>
                     {board.map((row, y) => (
                         <tr key={y}>
                             {row.map((value, x) => {
                                 const bomb = value === -1;
-                                const lost = state === State.LOST;
+                                const lost = state === GameState.LOST;
                                 const open = isOpen(x, y);
 
                                 return (
