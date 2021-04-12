@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { repeat } from "./functions";
-import { pipe } from "./functions/pipe";
 
-const process = (data: string, callback: (x: string) => string, n: number) =>
-    pipe(...repeat(n)(callback))(data);
-
-const createEncode = (i: number) => (data: string) => process(data, btoa, i);
-const createDecode = (i: number) => (data: string) => process(data, atob, i);
+const encode = (data: string) => btoa(data);
+const decode = (data: string) => atob(data);
 
 export const useStoredState = <T>(
     name: string,
     initialValue: T | (() => T)
 ): [T, React.Dispatch<React.SetStateAction<T>>, () => void] => {
-    const ENCODE_DEPTH = 1;
-
-    const encode = createEncode(ENCODE_DEPTH);
-    const decode = createDecode(ENCODE_DEPTH);
-
     const storedName = encode(name);
     const stored = localStorage.getItem(storedName);
 
@@ -26,7 +16,7 @@ export const useStoredState = <T>(
 
     useEffect(() => {
         localStorage.setItem(storedName, encode(JSON.stringify(state)));
-    }, [storedName, state, encode]);
+    }, [storedName, state]);
 
     const clearState = () => {
         localStorage.removeItem(storedName);
@@ -34,3 +24,6 @@ export const useStoredState = <T>(
 
     return [state, setState, clearState];
 };
+
+export const getStoredState = (name: string): any =>
+    JSON.parse(decode(localStorage.getItem(encode(name)) || encode("null")));
