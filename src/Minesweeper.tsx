@@ -12,7 +12,7 @@ import "./Minesweeper.scss";
 import Cell from "./Cell";
 import match from "./util/functions/match";
 import Borders from "./Borders";
-import { useStoredState } from "./util/storedState";
+import { getStoredState, useStoredState } from "./util/storedState";
 import {
     Action,
     actionFactory,
@@ -30,9 +30,9 @@ enum GameState {
 }
 
 const Minesweeper: React.FC<{}> = () => {
-    const [width] = useStoredState("width", 16);
-    const [height] = useStoredState("heigth", 16);
-    const [mines] = useStoredState("mines", 15);
+    const width = getStoredState("width", 16);
+    const height = getStoredState("height", 16);
+    const mines = getStoredState("mines", 15);
 
     const [board, setBoard, clearStoredBoard] = useStoredState(
         "board",
