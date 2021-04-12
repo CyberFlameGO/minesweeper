@@ -49,19 +49,11 @@ const Minesweeper: React.FC<{}> = () => {
         State.NOT_STARTED
     );
 
-    const [, , clearStoredLocation] = useStoredState("location", "/");
-
     const clearStorage = useCallback(() => {
         clearStoredBoard();
         clearStoredActions();
         clearStoredState();
-        clearStoredLocation();
-    }, [
-        clearStoredActions,
-        clearStoredBoard,
-        clearStoredState,
-        clearStoredLocation,
-    ]);
+    }, [clearStoredActions, clearStoredBoard, clearStoredState]);
 
     useEffect(() => {
         match(state).on(either<State>(State.LOST, State.WON), clearStorage);
