@@ -25,5 +25,10 @@ export const useStoredState = <T>(
     return [state, setState, clearState];
 };
 
-export const getStoredState = (name: string): any =>
-    JSON.parse(decode(localStorage.getItem(encode(name)) || encode("null")));
+export const getStoredState = <T>(name: string, fallback?: T): T =>
+    JSON.parse(
+        decode(
+            localStorage.getItem(encode(name)) ||
+                encode(JSON.stringify(fallback))
+        )
+    );
