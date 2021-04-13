@@ -3,6 +3,15 @@ import React, { useEffect, useState } from "react";
 const encode = (data: string) => btoa(data);
 const decode = (data: string) => atob(data);
 
+const parse = (data: string) => {
+    try {
+        return JSON.parse(data);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 export const useStoredState = <T>(
     name: string,
     initialValue: T | (() => T)
@@ -11,7 +20,7 @@ export const useStoredState = <T>(
     const stored = localStorage.getItem(storedName);
 
     const [state, setState] = useState<T>(
-        stored ? JSON.parse(decode(stored)) : initialValue
+        stored ? parse(decode(stored)) || initialValue : initialValue
     );
 
     useEffect(() => {
@@ -26,7 +35,7 @@ export const useStoredState = <T>(
 };
 
 export const getStoredState = <T>(name: string, fallback?: T): T =>
-    JSON.parse(
+    parse(
         decode(
             localStorage.getItem(encode(name)) ||
                 encode(JSON.stringify(fallback))
