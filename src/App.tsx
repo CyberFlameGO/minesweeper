@@ -13,7 +13,7 @@ import { getStoredState } from "./util/storedState";
 // Own component to be able to use the useHistory hook
 const SetLocation = () => {
     const history = useHistory();
-    const gameState = getStoredState("state");
+    const gameState = getStoredState("state", null);
 
     if (gameState !== null) {
         history.push("/game");

@@ -34,10 +34,12 @@ export const useStoredState = <T>(
     return [state, setState, clearState];
 };
 
-export const getStoredState = <T>(name: string, fallback?: T): T =>
-    parse(
-        decode(
-            localStorage.getItem(encode(name)) ||
-                encode(JSON.stringify(fallback))
-        )
-    );
+export const getStoredState = <T>(name: string, fallback: T): T => {
+    const item = localStorage.getItem(encode(name));
+
+    if (item !== null) {
+        return parse(decode(item));
+    }
+
+    return fallback;
+};
