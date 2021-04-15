@@ -54,7 +54,7 @@ const Settings: React.FC = () => {
     const selectSize = (s: BoardSize) => () => setSize(s);
 
     const [width, setWidth] = useStoredState("width", 16);
-    const [height, setHeight] = useStoredState("heigth", 16);
+    const [height, setHeight] = useStoredState("height", 16);
     const [mines, setMines] = useStoredState("mines", 20);
 
     const dimensions = useCallback(
