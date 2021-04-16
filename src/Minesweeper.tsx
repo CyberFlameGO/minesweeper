@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { addIfNotNull } from "./util/array";
 import {
     createClearClick,
@@ -22,11 +22,17 @@ import {
     createRemoveAction,
 } from "./util/action";
 
-enum GameState {
+export enum GameState {
     NOT_STARTED,
     STARTED,
     WON,
     LOST,
+}
+
+export interface GameContext {
+    board: number[][];
+    actions: Action[];
+    state: GameState;
 }
 
 const Minesweeper: React.FC<{}> = () => {
@@ -54,6 +60,18 @@ const Minesweeper: React.FC<{}> = () => {
         clearStoredActions();
         clearStoredState();
     }, [clearStoredActions, clearStoredBoard, clearStoredState]);
+
+    const context: GameContext = useMemo(
+        () => ({
+            board,
+            setBoard,
+            actions,
+            setActions,
+            state,
+            setState,
+        }),
+        [actions, board, setActions, setBoard, setState, state]
+    );
 
     useEffect(() => {
         match(state).on(
@@ -153,34 +171,20 @@ const Minesweeper: React.FC<{}> = () => {
                 <tbody>
                     {board.map((row, y) => (
                         <tr key={y}>
-                            {row.map((value, x) => {
-                                const bomb = value === -1;
-                                const lost = state === GameState.LOST;
-                                const open = isOpen(x, y);
-
-                                return (
-                                    <Cell
-                                        value={value}
-                                        open={open}
-                                        red={bomb && lost && open}
-                                        flagged={isFlagged(x, y)}
-                                        lost={lost}
-                                        onLeftClick={createLeftClickHandler(
-                                            x,
-                                            y
-                                        )}
-                                        onRightClick={createRightClickHandler(
-                                            x,
-                                            y
-                                        )}
-                                        onMiddleClick={createMiddleClickHandler(
-                                            x,
-                                            y
-                                        )}
-                                        key={x}
-                                    />
-                                );
-                            })}
+                            {row.map((value, x) => (
+                                <Cell
+                                    context={context}
+                                    x={x}
+                                    y={y}
+                                    onLeftClick={createLeftClickHandler(x, y)}
+                                    onRightClick={createRightClickHandler(x, y)}
+                                    onMiddleClick={createMiddleClickHandler(
+                                        x,
+                                        y
+                                    )}
+                                    key={x}
+                                />
+                            ))}
                         </tr>
                     ))}
                 </tbody>

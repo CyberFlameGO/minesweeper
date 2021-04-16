@@ -2,16 +2,17 @@ import React from "react";
 import bombImage from "./assets/bomb.png";
 import flag from "./assets/flag.svg";
 import notBomb from "./assets/not-bomb.png";
+import { GameContext, GameState } from "./Minesweeper";
+import { ActionType, createIsActionType } from "./util/action";
+import { isBomb } from "./util/board";
 import { className } from "./util/functions";
 import match from "./util/functions/match";
 import { Range } from "./util/types";
 
 interface CellProps {
-    value: number;
-    open: boolean;
-    red: boolean;
-    flagged: boolean;
-    lost: boolean;
+    context: GameContext;
+    x: number;
+    y: number;
     onLeftClick: React.EventHandler<React.MouseEvent>;
     onRightClick: React.EventHandler<React.MouseEvent>;
     onMiddleClick: React.EventHandler<React.MouseEvent>;
@@ -29,19 +30,27 @@ const COLORS = {
 };
 
 const Cell: React.FC<CellProps> = ({
-    value,
+    context,
+    x,
+    y,
     onLeftClick,
     onRightClick,
     onMiddleClick,
-    open,
-    flagged,
-    red,
-    lost,
 }) => {
-    const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
-    const bomb = value === -1;
+    const value = context.board[y][x];
 
-    const isOpen = open || (lost && ((flagged && !bomb) || (!flagged && bomb)));
+    const is = createIsActionType(context.actions);
+    const isOpen = is(ActionType.OPEN);
+    const isFlagged = is(ActionType.FLAG);
+
+    const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
+    const bomb = isBomb(x, y)(context.board);
+
+    const flagged = isFlagged(x, y);
+    const lost = context.state === GameState.LOST;
+    const open =
+        isOpen(x, y) || (lost && ((flagged && !bomb) || (!flagged && bomb)));
+    const red = bomb && lost && open;
 
     const mouseDown = (event: React.MouseEvent) =>
         match(event)
@@ -53,7 +62,7 @@ const Cell: React.FC<CellProps> = ({
 
     return (
         <td
-            className={className({ open: isOpen, red, flagged })}
+            className={className({ open, red, flagged })}
             style={open ? { color } : {}}
             onMouseDown={mouseDown}
             onMouseUp={mouseUp}
