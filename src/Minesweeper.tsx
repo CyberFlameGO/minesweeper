@@ -84,82 +84,92 @@ const Minesweeper: React.FC<{}> = () => {
         if (allBombsFlagged(board, actions)) setState(GameState.WON);
     }, [actions, board, setState]);
 
-    const is = createIsActionType(actions);
-    const isFlagged = is(ActionType.FLAG);
-    const isOpen = is(ActionType.OPEN);
+    const is = useMemo(() => createIsActionType(actions), [actions]);
+    const isFlagged = useMemo(() => is(ActionType.FLAG), [is]);
+    const isOpen = useMemo(() => is(ActionType.OPEN), [is]);
 
-    const createLeftClickHandler = (x: number, y: number) => () => {
-        const newActions: Array<Action> = [];
-        const open = openFactory(board, actions);
+    const createLeftClickHandler = useCallback(
+        (x: number, y: number) => () => {
+            const newActions: Array<Action> = [];
+            const open = openFactory(board, actions);
 
-        match(state)
-            .on(GameState.NOT_STARTED, () => {
-                setBoard(createClearClick(board, 1)(x, y));
-                setState(GameState.STARTED);
-            })
-            .on(
-                either<GameState>(GameState.STARTED, GameState.NOT_STARTED),
-                () => {
-                    if (!isFlagged(x, y)) {
-                        newActions.push(...open(x, y));
+            match(state)
+                .on(GameState.NOT_STARTED, () => {
+                    setBoard(createClearClick(board, 1)(x, y));
+                    setState(GameState.STARTED);
+                })
+                .on(
+                    either<GameState>(GameState.STARTED, GameState.NOT_STARTED),
+                    () => {
+                        if (!isFlagged(x, y)) {
+                            newActions.push(...open(x, y));
 
-                        if (isBomb(x, y)(board)) {
-                            setState(GameState.LOST);
+                            if (isBomb(x, y)(board)) {
+                                setState(GameState.LOST);
+                            }
                         }
                     }
+                );
+
+            const dontOpenFlagged = ({ x, y, type }: Action) =>
+                type === ActionType.OPEN && !isFlagged(x, y);
+
+            setActions([...actions, ...newActions.filter(dontOpenFlagged)]);
+        },
+        [actions, board, isFlagged, setActions, setBoard, setState, state]
+    );
+
+    const createRightClickHandler = useCallback(
+        (x: number, y: number) => () => {
+            const createFlagAction = actionFactory(actions, ActionType.FLAG);
+
+            match(state)
+                .on(GameState.NOT_STARTED, () => {
+                    const leftClick = createLeftClickHandler(x, y);
+                    leftClick();
+                })
+                .on(GameState.STARTED, () => {
+                    if (isFlagged(x, y)) {
+                        const removeFlag = createRemoveAction(ActionType.FLAG);
+                        setActions(removeFlag(actions, x, y));
+                    } else if (!isOpen(x, y)) {
+                        setActions(
+                            addIfNotNull(actions, createFlagAction({ x, y }))
+                        );
+                    }
+                });
+        },
+        [actions, createLeftClickHandler, isFlagged, isOpen, setActions, state]
+    );
+
+    const createMiddleClickHandler = useCallback(
+        (x: number, y: number) => () => {
+            const newActions: Array<Action> = [];
+            const open = openFactory(board, actions);
+
+            if (isOpen(x, y)) {
+                const surrounding = surroundingSquares(board)(x, y);
+
+                const flagged = surrounding.filter(({ x, y }) =>
+                    isFlagged(x, y)
+                ).length;
+
+                if (flagged === board[y][x]) {
+                    surrounding
+                        .filter(({ x, y }) => !isOpen(x, y) && !isFlagged(x, y))
+                        .forEach(({ x, y }) => {
+                            if (isBomb(x, y)(board)) {
+                                setState(GameState.LOST);
+                            }
+                            newActions.push(...open(x, y));
+                        });
                 }
-            );
-
-        const dontOpenFlagged = ({ x, y, type }: Action) =>
-            type === ActionType.OPEN && !isFlagged(x, y);
-
-        setActions([...actions, ...newActions.filter(dontOpenFlagged)]);
-    };
-
-    const createRightClickHandler = (x: number, y: number) => () => {
-        const createFlagAction = actionFactory(actions, ActionType.FLAG);
-
-        match(state)
-            .on(GameState.NOT_STARTED, () => {
-                const leftClick = createLeftClickHandler(x, y);
-                leftClick();
-            })
-            .on(GameState.STARTED, () => {
-                if (isFlagged(x, y)) {
-                    const removeFlag = createRemoveAction(ActionType.FLAG);
-                    setActions(removeFlag(actions, x, y));
-                } else if (!isOpen(x, y)) {
-                    setActions(
-                        addIfNotNull(actions, createFlagAction({ x, y }))
-                    );
-                }
-            });
-    };
-
-    const createMiddleClickHandler = (x: number, y: number) => () => {
-        const newActions: Array<Action> = [];
-        const open = openFactory(board, actions);
-
-        if (isOpen(x, y)) {
-            const surrounding = surroundingSquares(board)(x, y);
-
-            const flagged = surrounding.filter(({ x, y }) => isFlagged(x, y))
-                .length;
-
-            if (flagged === board[y][x]) {
-                surrounding
-                    .filter(({ x, y }) => !isOpen(x, y) && !isFlagged(x, y))
-                    .forEach(({ x, y }) => {
-                        if (isBomb(x, y)(board)) {
-                            setState(GameState.LOST);
-                        }
-                        newActions.push(...open(x, y));
-                    });
             }
-        }
 
-        setActions([...actions, ...newActions]);
-    };
+            setActions([...actions, ...newActions]);
+        },
+        [actions, board, isFlagged, isOpen, setActions, setState]
+    );
 
     return (
         <Borders>
