@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { addIfNotNull } from "./util/array";
+import { addIfNotNull, count } from "./util/array";
 import {
     createClearClick,
     openFactory,
@@ -150,9 +150,9 @@ const Minesweeper: React.FC<{}> = () => {
             if (isOpen(x, y)) {
                 const surrounding = surroundingSquares(board)(x, y);
 
-                const flagged = surrounding.filter(({ x, y }) =>
+                const flagged = count(surrounding)(({ x, y }) =>
                     isFlagged(x, y)
-                ).length;
+                );
 
                 if (flagged === board[y][x]) {
                     surrounding
