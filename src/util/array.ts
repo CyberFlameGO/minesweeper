@@ -22,6 +22,18 @@ export const array2d = (width: number) => (height: number) => <T>(
 export const flatten = (arr2d: any[][]) =>
     arr2d.reduce((prev, cur) => [...prev, ...cur], []);
 
+export const count = <T>(array: T[]) => (
+    callback: (x: T) => boolean
+): number => {
+    let c = 0;
+    for (const element of array) {
+        if (callback(element)) {
+            c += 1;
+        }
+    }
+    return c;
+};
+
 export const isIndex = (arr: any[]) => (i: number) => i >= 0 && i < arr.length;
 
 export const addIfNotNull = <T>(arr: T[], value: T | null) =>
