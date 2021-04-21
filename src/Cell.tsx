@@ -29,7 +29,7 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const image = (src: string) => <img src={src} alt={src} />;
+const image = (src: string) => <img src={src} alt={src} draggable={false} />;
 
 const Cell: React.FC<CellProps> = ({
     value,
@@ -52,6 +52,9 @@ const Cell: React.FC<CellProps> = ({
     const onMouseUp = (event: React.MouseEvent) =>
         event.button === 0 && onLeftClick(event);
 
+    const falseFlag = flagged && !bomb;
+    const nonFlaggedBomb = !flagged && bomb;
+
     return (
         <td
             style={open ? { color } : {}}
@@ -59,10 +62,11 @@ const Cell: React.FC<CellProps> = ({
             onMouseUp={onMouseUp}
             onMouseDown={onMouseDown}
         >
-            {flagged && image(flagImage)}
+            {flagged && !(lost && falseFlag) && image(flagImage)}
+
             {open && value > 0 && value}
-            {lost && flagged && !bombImage && image(notBombImage)}
-            {lost && !flagged && bomb && image(bombImage)}
+            {lost && falseFlag && image(notBombImage)}
+            {lost && nonFlaggedBomb && image(bombImage)}
         </td>
     );
 };

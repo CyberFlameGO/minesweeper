@@ -64,7 +64,11 @@ const Minesweeper: React.FC = () => {
 
     const leftClickHandler = (x: number, y: number) => () =>
         match(gameState).on(either<GameState>(GameState.STARTED), () => {
-            updateCell(x, y)({ open: true });
+            if (!board[y][x].flagged) {
+                updateCell(x, y)({ open: true });
+
+                if (board[y][x].value === -1) setGameState(GameState.LOST);
+            }
         });
 
     const rightClickHandler = (x: number, y: number) => () =>
