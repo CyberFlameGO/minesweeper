@@ -1,4 +1,5 @@
 import React from "react";
+import Table from "./components/Table";
 import { array2d } from "./util/array";
 import { getStoredState, useStoredState } from "./util/storedState";
 
@@ -19,7 +20,7 @@ const Minesweeper: React.FC<MinesweeperProps> = () => {
         array2d(width, height, { value: 0, open: false, flagged: false })
     );
 
-    return <table></table>;
+    return <Table></Table>;
 };
 
 export default Minesweeper;
