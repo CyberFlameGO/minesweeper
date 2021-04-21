@@ -1,8 +1,8 @@
 import React from "react";
 
-const Table: React.FC = ({ children }) => {
+const Table: React.FC = ({ children, ...props }) => {
     return (
-        <table>
+        <table {...props}>
             <tbody>{children}</tbody>
         </table>
     );
