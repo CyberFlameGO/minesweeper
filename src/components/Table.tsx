@@ -1,10 +1,9 @@
 import React from "react";
 
-interface TableProps {
-    [key: string]: any;
-}
-
-const Table: React.FC<TableProps> = ({ children, ...props }) => {
+const Table: React.FC<React.TableHTMLAttributes<HTMLTableElement>> = ({
+    children,
+    ...props
+}) => {
     return (
         <table {...props}>
             <tbody>{children}</tbody>
