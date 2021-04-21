@@ -29,7 +29,7 @@ const Minesweeper: React.FC = () => {
     );
 
     const [gameState, setGameState, clearStoredGameState] = useStoredState(
-        "state",
+        "gameState",
         GameState.NOT_STARTED
     );
 
