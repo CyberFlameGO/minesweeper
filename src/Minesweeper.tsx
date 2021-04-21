@@ -30,6 +30,9 @@ const randomizeBoard = (board: BoardCell[][]) =>
         }))
     );
 
+const emptyBoard = (width: number, height: number) =>
+    array2d(width, height, { value: 0, open: false, flagged: false });
+
 const Minesweeper: React.FC = () => {
     localStorage.clear();
 
@@ -38,9 +41,7 @@ const Minesweeper: React.FC = () => {
     const mines = getStoredState("mines", 15);
 
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
-        pipe(randomizeBoard)(
-            array2d(width, height, { value: 0, open: false, flagged: false })
-        )
+        pipe(randomizeBoard)(emptyBoard(width, height))
     );
 
     const [gameState, setGameState, clearStoredGameState] = useStoredState(
