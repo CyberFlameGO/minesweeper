@@ -12,9 +12,7 @@ export type LastElement<T extends any[]> = T[Length<DropFirst<T>>];
 
 export const array = (length: number) => Array<null>(length).fill(null);
 
-export const array2d = (width: number, height: number) => <T>(
-    value: T
-): T[][] =>
+export const array2d = <T>(width: number, height: number, value: T): T[][] =>
     Array(height)
         .fill(null)
         .map(() => Array(width).fill(value));
