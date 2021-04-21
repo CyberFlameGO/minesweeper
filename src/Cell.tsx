@@ -1,16 +1,70 @@
 import React from "react";
-import flag from "./assets/flag.svg";
 import { GameState } from "./Minesweeper";
+import { className } from "./util/functions";
+import match from "./util/functions/match";
+import { Range } from "./util/types";
+
+import flagImage from "./assets/flag.svg";
+import bombImage from "./assets/bomb.png";
+import notBombImage from "./assets/not-bomb.png";
 
 interface CellProps {
     value: number;
     open: boolean;
     flagged: boolean;
     gameState: GameState;
+    onLeftClick: React.EventHandler<React.MouseEvent>;
+    onRightClick: React.EventHandler<React.MouseEvent>;
+    onMiddleClick: React.EventHandler<React.MouseEvent>;
 }
 
-const Cell: React.FC<CellProps> = ({ value, open, flagged, gameState }) => {
-    return <td>{flagged && <img src={flag} alt={flag} />}</td>;
+const COLORS = {
+    1: "#0000FF",
+    2: "#007B00",
+    3: "#FF0000",
+    4: "#00007B",
+    5: "#7B0000",
+    6: "#007B7B",
+    7: "#000000",
+    8: "#7B7B7B",
+};
+
+const image = (src: string) => <img src={src} alt={src} />;
+
+const Cell: React.FC<CellProps> = ({
+    value,
+    open,
+    flagged,
+    gameState,
+    onRightClick,
+    onLeftClick,
+    onMiddleClick,
+}) => {
+    const color = value > 0 ? COLORS[value as Range<1, 9>] : "";
+    const lost = gameState === GameState.LOST;
+    const bomb = value === -1;
+
+    const onMouseDown = (event: React.MouseEvent) =>
+        match(event.button)
+            .on(2, onRightClick, event)
+            .on(1, onMiddleClick, event);
+
+    const onMouseUp = (event: React.MouseEvent) =>
+        event.button === 0 && onLeftClick(event);
+
+    return (
+        <td
+            style={open ? { color } : {}}
+            className={className({ open, red: lost && open && bomb })}
+            onMouseUp={onMouseUp}
+            onMouseDown={onMouseDown}
+        >
+            {flagged && image(flagImage)}
+            {open && value > 0 && value}
+            {lost && flagged && !bombImage && image(notBombImage)}
+            {lost && !flagged && bomb && image(bombImage)}
+        </td>
+    );
 };
 
 export default Cell;
