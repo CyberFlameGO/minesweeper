@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { parse, stringify } from "zipson";
 
-const encode = (data: string) => btoa(data);
-const decode = (data: string) => atob(data);
+const removeNonLatin = (string: string) =>
+    string.replace(
+        /[\u00A0-\u2666]/g,
+        (char) => "&#" + char.charCodeAt(0) + ";"
+    );
 
-const parse = (data: string) => {
-    try {
-        return JSON.parse(data);
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-};
+const addBackNonLatin = (string: string) =>
+    string.replace(/&#(\d+);/g, (match) => {
+        const groups = match.match(/&#(\d+);/);
+        return String.fromCharCode(parseInt(groups![1], 10));
+    });
+
+const parseString = (data: string) => parse(addBackNonLatin(atob(data)));
+const stringifyObject = (data: any) => btoa(removeNonLatin(stringify(data)));
 
 export const useStoredState = <T>(
     name: string,
     initialValue: T | (() => T)
 ): [T, React.Dispatch<React.SetStateAction<T>>, () => void] => {
-    const storedName = encode(name);
+    const storedName = name;
     const stored = localStorage.getItem(storedName);
 
     const [state, setState] = useState<T>(
-        stored ? parse(decode(stored)) || initialValue : initialValue
+        stored ? parseString(stored) || initialValue : initialValue
     );
 
     useEffect(() => {
-        localStorage.setItem(storedName, encode(JSON.stringify(state)));
+        localStorage.setItem(storedName, stringifyObject(state));
     }, [storedName, state]);
 
     const clearState = () => {
@@ -35,10 +39,10 @@ export const useStoredState = <T>(
 };
 
 export const getStoredState = <T>(name: string, fallback: T): T => {
-    const item = localStorage.getItem(encode(name));
+    const item = localStorage.getItem(name);
 
     if (item !== null) {
-        return parse(decode(item));
+        return parseString(item);
     }
 
     return fallback;
