@@ -39,7 +39,7 @@ const Minesweeper: React.FC = () => {
 
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
         pipe(randomizeBoard)(
-            array2d(width, height, { value: 3, open: false, flagged: false })
+            array2d(width, height, { value: 0, open: false, flagged: false })
         )
     );
 
