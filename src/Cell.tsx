@@ -29,7 +29,9 @@ const COLORS = {
     8: "#7B7B7B",
 };
 
-const image = (src: string) => <img src={src} alt={src} draggable={false} />;
+const image = (src: string, alt = "image") => (
+    <img src={src} alt={alt} draggable={false} />
+);
 
 const Cell: React.FC<CellProps> = ({
     value,
@@ -62,11 +64,11 @@ const Cell: React.FC<CellProps> = ({
             onMouseUp={onMouseUp}
             onMouseDown={onMouseDown}
         >
-            {flagged && !(lost && falseFlag) && image(flagImage)}
+            {flagged && !(lost && falseFlag) && image(flagImage, "flag")}
 
             {open && value > 0 && value}
-            {lost && falseFlag && image(notBombImage)}
-            {lost && nonFlaggedBomb && image(bombImage)}
+            {lost && falseFlag && image(notBombImage, "false flag")}
+            {lost && nonFlaggedBomb && image(bombImage, "bomb")}
         </td>
     );
 };
