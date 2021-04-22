@@ -8,7 +8,11 @@ import Borders from "./Borders";
 import match from "./util/functions/match";
 import { either, preventDefault } from "./util/functions";
 import { pipe } from "./util/functions/pipe";
-import { addBombsPercent } from "./util/board";
+import {
+    addBombsPercent,
+    calculateValues,
+    surroundingSquares,
+} from "./util/board";
 
 export interface BoardCell {
     value: number;
@@ -32,7 +36,7 @@ const Minesweeper: React.FC = () => {
     const mines = getStoredState("mines", 15);
 
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
-        pipe(addBombsPercent(mines))(emptyBoard(width, height))
+        pipe(addBombsPercent(mines), calculateValues)(emptyBoard(width, height))
     );
 
     const [gameState, setGameState, clearStoredGameState] = useStoredState(
