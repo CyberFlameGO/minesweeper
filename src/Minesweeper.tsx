@@ -8,11 +8,7 @@ import Borders from "./Borders";
 import match from "./util/functions/match";
 import { either, preventDefault } from "./util/functions";
 import { pipe } from "./util/functions/pipe";
-import {
-    addBombsPercent,
-    calculateValues,
-    surroundingSquares,
-} from "./util/board";
+import { addBombsPercent, calculateValues } from "./util/board";
 
 export interface BoardCell {
     value: number;
