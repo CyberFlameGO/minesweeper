@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import Cell from "./Cell";
 import Table from "./components/Table";
 import { array2d } from "./util/array";
@@ -8,6 +8,7 @@ import Borders from "./Borders";
 import match from "./util/functions/match";
 import { either, preventDefault } from "./util/functions";
 import { pipe } from "./util/functions/pipe";
+import { addBombsPercent } from "./util/board";
 
 export interface BoardCell {
     value: number;
@@ -22,32 +23,32 @@ export enum GameState {
     LOST,
 }
 
-const randomizeBoard = (board: BoardCell[][]) =>
-    board.map((row) =>
-        row.map(({ ...values }) => ({
-            ...values,
-            value: Math.floor(Math.random() * 10 - 1),
-        }))
-    );
-
-const emptyBoard = (width: number, height: number) =>
+const emptyBoard = (width: number, height: number): BoardCell[][] =>
     array2d(width, height, { value: 0, open: false, flagged: false });
 
 const Minesweeper: React.FC = () => {
-    localStorage.clear();
-
     const width = getStoredState("width", 16);
     const height = getStoredState("height", 16);
     const mines = getStoredState("mines", 15);
 
     const [board, setBoard, clearStoredBoard] = useStoredState("board", () =>
-        pipe(randomizeBoard)(emptyBoard(width, height))
+        pipe(addBombsPercent(mines))(emptyBoard(width, height))
     );
 
     const [gameState, setGameState, clearStoredGameState] = useStoredState(
         "gameState",
-        GameState.STARTED
+        GameState.NOT_STARTED
     );
+
+    useEffect(() => {
+        match(gameState).on(
+            either<GameState>(GameState.LOST, GameState.WON),
+            () => {
+                clearStoredBoard();
+                clearStoredGameState();
+            }
+        );
+    }, [clearStoredBoard, clearStoredGameState, gameState]);
 
     const updateCell = useCallback(
         (x: number, y: number) => (
@@ -62,21 +63,29 @@ const Minesweeper: React.FC = () => {
         [board, setBoard]
     );
 
-    const leftClickHandler = (x: number, y: number) => () =>
-        match(gameState).on(either<GameState>(GameState.STARTED), () => {
-            if (!board[y][x].flagged) {
-                updateCell(x, y)({ open: true });
+    const openCell = (x: number, y: number) => updateCell(x, y)({ open: true });
+    const setFlagged = (x: number, y: number, flagged: boolean) =>
+        updateCell(x, y)({ flagged });
 
-                if (board[y][x].value === -1) setGameState(GameState.LOST);
-            }
-        });
+    const leftClickHandler = (x: number, y: number) => () =>
+        match(gameState)
+            .on(GameState.NOT_STARTED, () => {
+                openCell(x, y);
+                setGameState(GameState.STARTED);
+            })
+            .on(GameState.STARTED, () => {
+                if (!board[y][x].flagged) {
+                    openCell(x, y);
+
+                    if (board[y][x].value === -1) setGameState(GameState.LOST);
+                }
+            });
 
     const rightClickHandler = (x: number, y: number) => () =>
-        match(gameState).on(GameState.STARTED, () => {
-            if (!board[y][x].open) {
-                updateCell(x, y)({ flagged: !board[y][x].flagged });
-            }
-        });
+        match(gameState).on(
+            GameState.STARTED,
+            () => !board[y][x].open && setFlagged(x, y, !board[y][x].flagged)
+        );
 
     const middleClickHandler = (x: number, y: number) => () => match(gameState);
 
