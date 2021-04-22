@@ -17,7 +17,7 @@ export const array2d = <T>(width: number, height: number, value: T): T[][] =>
         .fill(null)
         .map(() => Array(width).fill(value));
 
-export const flatten = (arr2d: any[][]) =>
+export const flatten = <T>(arr2d: T[][]): T[] =>
     arr2d.reduce((prev, cur) => [...prev, ...cur], []);
 
 export const count = <T>(array: T[]) => (
@@ -37,12 +37,12 @@ export const isIndex = (arr: any[]) => (i: number) => i >= 0 && i < arr.length;
 export const addIfNotNull = <T>(arr: T[], value: T | null) =>
     value === null ? arr : [...arr, value];
 
-export const area = (arr: any[][]) => (
+export const area = <T>(arr: T[][]) => (
     x1: number,
     y1: number,
     x2: number,
     y2: number
-) =>
+): { x: number; y: number; value: T }[][] =>
     array(y2 + 1 - y1)
         .map((_, offsetY) => {
             const y = y1 + offsetY;
