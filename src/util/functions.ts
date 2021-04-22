@@ -18,6 +18,10 @@ export const preventDefault: React.EventHandler<any> = (event) =>
 export const either = <T>(...values: T[]) => (value: T) =>
     values.some((it) => it === value);
 
+export const createFilter = <T>(
+    ...functions: ((arg: T, ...args: any[]) => boolean)[]
+) => (value: T) => functions.every((f) => f(value));
+
 export const toggle = (bool: boolean) => !bool;
 
 export const repeat = <I extends number>(i: I) => <T>(x: T) =>
