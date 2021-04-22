@@ -8,7 +8,7 @@ import Borders from "./Borders";
 import match from "./util/functions/match";
 import { either, preventDefault } from "./util/functions";
 import { pipe } from "./util/functions/pipe";
-import { addBombsPercent, calculateValues } from "./util/board";
+import { addBombsPercent, calculateValues, clearClick } from "./util/board";
 
 export interface BoardCell {
     value: number;
@@ -70,6 +70,7 @@ const Minesweeper: React.FC = () => {
     const leftClickHandler = (x: number, y: number) => () =>
         match(gameState)
             .on(GameState.NOT_STARTED, () => {
+                setBoard(clearClick(board)(x, y));
                 openCell(x, y);
                 setGameState(GameState.STARTED);
             })
