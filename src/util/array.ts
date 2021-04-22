@@ -1,5 +1,3 @@
-import { notNull } from "./functions";
-
 export type Length<T extends any[]> = T extends { length: infer L } ? L : never;
 export type DropFirst<T extends any[]> = ((...args: T) => any) extends (
     arg: any,
@@ -37,34 +35,28 @@ export const isIndex = (arr: any[]) => (i: number) => i >= 0 && i < arr.length;
 export const addIfNotNull = <T>(arr: T[], value: T | null) =>
     value === null ? arr : [...arr, value];
 
-export const area = <T>(arr: T[][]) => (
+export const area = <T>(matrix: T[][]) => (
     x1: number,
     y1: number,
     x2: number,
     y2: number
-): { x: number; y: number; value: T }[][] =>
-    array(y2 + 1 - y1)
-        .map((_, offsetY) => {
-            const y = y1 + offsetY;
+) => {
+    const yLength = y2 - y1 + 1;
+    const xLength = x2 - x1 + 1;
 
-            if (y < 0 || y >= arr.length) {
-                return null;
-            }
+    const elements = [];
 
-            return array(x2 + 1 - x1)
-                .map((_, offsetX) => {
-                    const x = x1 + offsetX;
+    for (let offsetY = 0; offsetY < yLength; offsetY++) {
+        const y = y1 + offsetY;
+        if (!isIndex(matrix)(y)) continue;
 
-                    if (x < 0 || x > arr[y].length) {
-                        return null;
-                    }
+        for (let offsetX = 0; offsetX < xLength; offsetX++) {
+            const x = x1 + offsetX;
+            if (!isIndex(matrix[y])(x)) continue;
 
-                    return {
-                        x,
-                        y,
-                        value: arr[y][x],
-                    };
-                })
-                .filter(notNull);
-        })
-        .filter(notNull);
+            elements.push({ x, y, value: matrix[y][x] });
+        }
+    }
+
+    return elements;
+};
