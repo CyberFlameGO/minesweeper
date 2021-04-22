@@ -57,10 +57,16 @@ const Minesweeper: React.FC = () => {
             }
         ) => {
             const newBoard = board.slice();
-            newBoard[y][x] = { ...newBoard[y][x], ...newValues };
+            const newCell = { ...newBoard[y][x], ...newValues };
+
+            newBoard[y][x] = newCell;
             setBoard(newBoard);
+
+            if (newCell.value === -1 && newCell.open) {
+                setGameState(GameState.LOST);
+            }
         },
-        [board, setBoard]
+        [board, setBoard, setGameState]
     );
 
     const openCell = (x: number, y: number) => updateCell(x, y)({ open: true });
@@ -77,8 +83,6 @@ const Minesweeper: React.FC = () => {
             .on(GameState.STARTED, () => {
                 if (!board[y][x].flagged) {
                     openCell(x, y);
-
-                    if (board[y][x].value === -1) setGameState(GameState.LOST);
                 }
             });
 
