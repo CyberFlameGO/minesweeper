@@ -8,7 +8,12 @@ import Borders from "./Borders";
 import match from "./util/functions/match";
 import { either, preventDefault } from "./util/functions";
 import { pipe } from "./util/functions/pipe";
-import { addBombsPercent, calculateValues, clearClick } from "./util/board";
+import {
+    addBombsPercent,
+    calculateValues,
+    clearClick,
+    won,
+} from "./util/board";
 
 export interface BoardCell {
     value: number;
@@ -57,13 +62,19 @@ const Minesweeper: React.FC = () => {
             }
         ) => {
             const newBoard = board.slice();
-            const newCell = { ...newBoard[y][x], ...newValues };
+            const previous = newBoard[y][x];
+            const newCell = { ...previous, ...newValues };
 
             newBoard[y][x] = newCell;
             setBoard(newBoard);
 
             if (newCell.value === -1 && newCell.open) {
                 setGameState(GameState.LOST);
+            }
+
+            if (newCell.flagged !== previous.flagged && won(board)) {
+                setGameState(GameState.WON);
+                console.log("win");
             }
         },
         [board, setBoard, setGameState]

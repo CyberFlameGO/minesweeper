@@ -1,5 +1,5 @@
 import { BoardCell } from "../Minesweeper";
-import { area } from "./array";
+import { area, flatten } from "./array";
 
 export const addBombsPercent = (percent: number) => (board: BoardCell[][]) =>
     board.map((row) =>
@@ -40,7 +40,7 @@ export const clearClick = (board: BoardCell[][]) => (x: number, y: number) => {
     const newBoard = board.slice();
 
     area(board)(x - RADIUS, y - RADIUS, x + RADIUS, y + RADIUS).forEach(
-        ({ x, y }) => (board[y][x].value = 0)
+        ({ x, y }) => (newBoard[y][x].value = 0)
     );
 
     const CALCULATION_RADIUS = RADIUS + 1;
@@ -50,7 +50,23 @@ export const clearClick = (board: BoardCell[][]) => (x: number, y: number) => {
         y - CALCULATION_RADIUS,
         x + CALCULATION_RADIUS,
         y + CALCULATION_RADIUS
-    ).forEach(({ x, y }) => (board[y][x].value = calculateValue(board, x, y)));
+    ).forEach(
+        ({ x, y }) => (newBoard[y][x].value = calculateValue(board, x, y))
+    );
 
     return newBoard;
+};
+
+export const won = (board: BoardCell[][]) => {
+    const flattenedBoard = flatten(board);
+
+    const bombs = flattenedBoard.filter(({ value }) => value === -1);
+
+    const allBombsFlagged = bombs.every(({ flagged }) => flagged);
+
+    const win =
+        allBombsFlagged &&
+        flattenedBoard.filter(({ flagged }) => flagged).length === bombs.length;
+
+    return win;
 };
