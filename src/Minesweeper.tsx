@@ -62,8 +62,8 @@ const Minesweeper: React.FC = () => {
             }
         ) => {
             const newBoard = board.slice();
-            const previous = newBoard[y][x];
-            const newCell = { ...previous, ...newValues };
+            const previousCell = newBoard[y][x];
+            const newCell = { ...previousCell, ...newValues };
 
             newBoard[y][x] = newCell;
             setBoard(newBoard);
@@ -72,7 +72,7 @@ const Minesweeper: React.FC = () => {
                 setGameState(GameState.LOST);
             }
 
-            if (newCell.flagged !== previous.flagged && won(board)) {
+            if (newCell.flagged !== previousCell.flagged && won(board)) {
                 setGameState(GameState.WON);
                 console.log("win");
             }
