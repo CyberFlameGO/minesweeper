@@ -18,7 +18,7 @@ export interface BoardCell {
 
 export enum GameState {
     NOT_STARTED,
-    STARTED,
+    PLAYING,
     WON,
     LOST,
 }
@@ -78,9 +78,9 @@ const Minesweeper: React.FC = () => {
             .on(GameState.NOT_STARTED, () => {
                 setBoard(clearClick(board)(x, y));
                 openCell(x, y);
-                setGameState(GameState.STARTED);
+                setGameState(GameState.PLAYING);
             })
-            .on(GameState.STARTED, () => {
+            .on(GameState.PLAYING, () => {
                 if (!board[y][x].flagged) {
                     openCell(x, y);
                 }
@@ -88,7 +88,7 @@ const Minesweeper: React.FC = () => {
 
     const rightClickHandler = (x: number, y: number) => () =>
         match(gameState).on(
-            GameState.STARTED,
+            GameState.PLAYING,
             () => !board[y][x].open && setFlagged(x, y, !board[y][x].flagged)
         );
 
